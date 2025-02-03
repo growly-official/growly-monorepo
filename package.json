@@ -1,0 +1,43 @@
+{
+  "name": "chainsmith",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint --debug --fix '**/*.{js,jsx,ts,tsx}'",
+    "format": "npx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --write",
+    "build": "npx lerna run build",
+    "setup": "npm install && npx lerna run setup",
+    "app": "lerna run --scope @chainsmith/app"
+  },
+  "precommit.silent": true,
+  "pre-commit": [
+    "format"
+  ],
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "eslint": "^8.0.0",
+    "moment": "^2.29.4",
+    "prettier": "^3.4.2",
+    "react-icons": "^4.10.1",
+    "tsyringe": "^4.8.0",
+    "typescript": "~5.6.2"
+  },
+  "devDependencies": {
+    "@parcel/transformer-typescript-types": "^2.8.3",
+    "@types/lodash": "^4.14.202",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint-config-react-app": "^7.0.1",
+    "lerna": "^5.1.4",
+    "nx": "^14.4.1",
+    "pre-commit": "^1.2.2",
+    "ts-node": "^10.9.2",
+    "fs-extra": "^9.0.1",
+    "globby": "^11.0.2"
+  }
+}
