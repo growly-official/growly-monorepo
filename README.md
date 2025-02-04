@@ -7,6 +7,12 @@ Targetted Tracks:
 - DeFAI
 - Treasury
 
+## Architecture
+
+- app: web app, desktop ui
+- core: chainsmith core
+- eliza-agent: agent code built on top of ElizaOS framework
+
 ## Feature List
 
 ## Setup
