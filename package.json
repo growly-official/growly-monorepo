@@ -8,11 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint --debug --fix '**/*.{js,jsx,ts,tsx}'",
-    "format": "npx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --write",
-    "build": "npx lerna run build",
-    "setup": "npm install && npx lerna run setup",
-    "app": "lerna run --scope @chainsmith/app"
+    "lint": "eslint --debug --fix '**/*.{js,jsx,ts,tsx}'",
+    "format": "bunx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --write",
+    "build": "bunx run build",
+    "setup": "bun install && bun run setup"
   },
   "precommit.silent": true,
   "pre-commit": [
@@ -33,8 +32,6 @@
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "eslint-config-react-app": "^7.0.1",
-    "lerna": "^5.1.4",
-    "nx": "^14.4.1",
     "pre-commit": "^1.2.2",
     "ts-node": "^10.9.2",
     "fs-extra": "^9.0.1",
