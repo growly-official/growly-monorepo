@@ -1,13 +1,20 @@
 import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
-import { Chain, mainnet } from 'viem/chains';
+import { mainnet } from 'viem/chains';
+import { MultichainPortfolioPlugin, MultichainTokenPlugin, TPlugin } from './plugins';
+import { TChain } from './types';
 
 @singleton()
 export default class ChainsmithSdk {
-  chain: Chain = mainnet;
-  plugins: any[] = [];
+  chain: TChain = { ...mainnet, ecosystem: 'evm', chainName: 'mainnet' };
+  plugins: TPlugin[] = [];
 
-  constructor() {}
+  constructor(
+    public portfolio: MultichainPortfolioPlugin,
+    public token: MultichainTokenPlugin
+  ) {
+    this.plugins = [portfolio, token];
+  }
 }
 
 export const initializeSdk = () => {

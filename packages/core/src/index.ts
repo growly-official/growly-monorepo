@@ -1,16 +1,34 @@
-import * as emvChains from 'viem/chains';
+import * as utils from './utils';
+import * as services from './plugins';
 import ChainsmithSdk, { useChainsmithSdk } from './sdk';
+import { ChainTypeBuilder } from './wrapper';
+import { EvmChainList } from './data';
+import { TChainEcosystem } from './types';
+export type * as Types from './types';
+export * from './rpc';
+export * from './wrapper';
+export * from './utils';
+
+const mainnet = new ChainTypeBuilder(EvmChainList.mainnet).withEcosystem('evm').build();
+
+const evmChains = utils.iterateObject(
+  {
+    ...EvmChainList,
+    mainnet,
+  },
+  (_, item) => item
+);
 
 export const EcosystemRegistry: Record<
-  any,
+  TChainEcosystem,
   {
     name: string;
-    chains: any;
+    chains: EvmChainList.Chain[];
   }
 > = {
   evm: {
     name: 'Ethereum Virtual Machine (EVM)',
-    chains: emvChains,
+    chains: evmChains,
   },
   svm: {
     name: 'Solana Virtual Machine (SVM)',
@@ -22,6 +40,6 @@ export const EcosystemRegistry: Record<
   },
 };
 
-export const Ecosystems: any[] = Object.keys(EcosystemRegistry) as any;
+export const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;
 
-export { ChainsmithSdk, useChainsmithSdk };
+export { utils, services, ChainsmithSdk, useChainsmithSdk };
