@@ -16,9 +16,9 @@ type Props = {
   children: ReactNode;
 };
 
-const Modal = ({ title, open, footer, children, handleOpen = () => {} }: Props & DialogProps) => {
+const Modal = ({ title, open, footer, children, handleOpen }: Props & DialogProps) => {
   return (
-    <Dialog open={open} handler={handleOpen} {...materialUiProps}>
+    <Dialog open={open} handler={handleOpen as any} {...materialUiProps}>
       <DialogHeader {...materialUiProps}>{title}</DialogHeader>
       <DialogBody {...materialUiProps}>{children}</DialogBody>
       <DialogFooter {...materialUiProps}>{footer}</DialogFooter>

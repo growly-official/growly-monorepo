@@ -68,23 +68,20 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
     const USDC = this.chainTokenMap[chain.id]['USDC'];
     const marketTokens: TMarketToken[] = [];
     for (const token of tokens) {
-      try {
-        const price = await this.quote(chain, rpc, {
-          amountIn: 1,
-          in: wrapUniswapTokenType(USDC),
-          out: wrapUniswapTokenType(token),
-          poolFee: FeeAmount.MEDIUM,
-        });
-        const usdValue = price * token.balance;
+      this.quote(chain, rpc, {
+        amountIn: 1,
+        in: wrapUniswapTokenType(USDC),
+        out: wrapUniswapTokenType(token),
+        poolFee: FeeAmount.MEDIUM,
+      }).then(p => {
+        const usdValue = p * token.balance;
         totalUsdValue += usdValue;
         marketTokens.push({
           ...token,
           usdValue,
-          marketPrice: price,
+          marketPrice: p,
         });
-      } finally {
-        continue;
-      }
+      });
     }
     return {
       tokens: marketTokens,

@@ -8,9 +8,9 @@
     "skipLibCheck": true,
     "paths": {
       "chainsmith-ui": ["./lib/ui/main.ts"],
-      "chainsmith-core": ["../core/src/index.ts"],
-      "chainsmith-data": ["../core/src/data/index.ts"],
-      "chainsmith-types": ["../core/src/types/index.ts"]
+      "chainsmith-core": ["../../packages/core/src/index.ts"],
+      "chainsmith-data": ["../../packages/core/src/data/index.ts"],
+      "chainsmith-types": ["../../packages/core/src/types/index.ts"]
     },
 
     /* Bundler mode */

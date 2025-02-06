@@ -67,7 +67,7 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     );
 
     // Map token with its USD value.
-    let totalUsdValue: number = 0;
+    let totalUsdValue = 0;
     const marketTokens: TMarketToken[] = [];
     for (const token of tokens) {
       const cmcTokenDetail = tokenSymbolMap[token.symbol];

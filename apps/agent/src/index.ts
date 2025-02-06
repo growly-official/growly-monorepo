@@ -17,7 +17,7 @@ import { initializeDatabase } from './database/index.ts';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const wait = (minTime: number = 1000, maxTime: number = 3000) => {
+export const wait = (minTime = 1000, maxTime = 3000) => {
   const waitTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
   return new Promise(resolve => setTimeout(resolve, waitTime));
 };
@@ -108,7 +108,7 @@ const startAgents = async () => {
   let serverPort = parseInt(settings.SERVER_PORT || '3000');
   const args = parseArguments();
 
-  let charactersArg = args.characters || args.character;
+  const charactersArg = args.characters || args.character;
   let characters = [character];
 
   console.log('charactersArg', charactersArg);

@@ -25,7 +25,7 @@ export function parseArguments(): {
 }
 
 export async function loadCharacters(charactersArg: string): Promise<Character[]> {
-  let characterPaths = charactersArg?.split(',').map(filePath => {
+  const characterPaths = charactersArg?.split(',').map(filePath => {
     if (path.basename(filePath) === filePath) {
       filePath = '../characters/' + filePath;
     }

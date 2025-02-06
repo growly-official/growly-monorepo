@@ -10,8 +10,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --debug --fix '**/*.{js,jsx,ts,tsx}'",
     "format": "bunx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --write",
-    "start:app": "cd packages/app && bun dev",
-    "start:agent": "cd packages/eliza-agent && bun start"
+    "check": "bunx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --check && eslint '**/*.{js,jsx,ts,tsx}'",
+    "start:app": "cd apps/app && bun dev",
+    "start:server": "cd apps/app && bun dev",
+    "start:agent": "cd apps/agent && bun start"
   },
   "precommit.silent": true,
   "pre-commit": [

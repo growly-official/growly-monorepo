@@ -16,8 +16,6 @@ export default defineConfig(async () => ({
     lib: {
       entry: {
         ui: resolve(__dirname, 'lib/ui/main.ts'),
-        core: resolve(__dirname, 'lib/core/main.ts'),
-        data: resolve(__dirname, 'lib/data/main.ts'),
       },
       name: 'chainsmith',
       fileName: 'chainsmith',
