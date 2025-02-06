@@ -1,5 +1,5 @@
 import { autoInjectable } from 'tsyringe';
-import { SocialGithubPlugin } from './onchain-buster';
+import { SocialGithubPlugin } from './github';
 import { Logger } from 'tslog';
 
 @autoInjectable()
