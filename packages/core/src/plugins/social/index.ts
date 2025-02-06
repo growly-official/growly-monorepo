@@ -5,5 +5,7 @@ import { Logger } from 'tslog';
 export class MultiPlatformSocialPlugin {
   logger = new Logger({ name: 'MultiPlatformSocialPlugin' });
 
-  constructor() {}
+  constructor() {
+    console.log('Place holder');
+  }
 }

@@ -41,6 +41,7 @@ export class EvmscanAdapter implements IOnchainActivityAdapter {
     let offset = 0;
     let previousResultCount = 0;
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const evmScanResp = await this.getTokenActivities('tokentx', address, {
         offset,
