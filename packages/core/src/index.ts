@@ -1,6 +1,6 @@
 import * as utils from './utils';
 import * as services from './plugins';
-import ChainsmithSdk, { useChainsmithSdk } from './sdk';
+import ChainsmithSdk from './sdk';
 import { ChainTypeBuilder } from './wrapper';
 import { EvmChainList } from './data';
 import { TChainEcosystem } from './types';
@@ -42,4 +42,4 @@ export const EcosystemRegistry: Record<
 
 export const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;
 
-export { utils, services, ChainsmithSdk, useChainsmithSdk };
+export { utils, services, ChainsmithSdk };

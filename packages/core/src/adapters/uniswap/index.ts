@@ -24,7 +24,8 @@ const wrapUniswapTokenType = (token: TContractToken | TUniswapTokenDetail) => {
 };
 
 export class UniswapSdkAdapter implements IMarketDataAdapter {
-  logger = new Logger({ name: 'UniswapSdkAdapater' });
+  name = 'UniswapSdkAdapater';
+  logger = new Logger({ name: this.name });
 
   getRpcUrl: GetChainRpcEndpoint;
   chainTokenMap: IUniswapChainTokenMap;

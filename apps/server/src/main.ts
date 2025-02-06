@@ -13,17 +13,26 @@ import * as Constants from './constants';
 import { Adapters } from './config';
 
 async function testing() {
-  const sdk = initializeSdk();
-
   const chains = buildEvmChains(['base', 'mainnet'], alchemy(Constants.ALCHEMY_API_KEY));
-  const wallet = Wallets.ETH_MAINNET_WALLET_PCMINH;
+  const sdk = initializeSdk(chains);
 
-  const portfolioB = await sdk.portfolio.getMultichainTokenPortfolio(Adapters.CoinMarketcap)(
-    chains,
-    wallet
-  );
+  // Set the memory storage for `walleAddress` key.
+  sdk.storage.writeToRam('walletAddress', Wallets.ETH_MAINNET_WALLET_PCMINH);
 
-  console.log(portfolioB.mainnet);
+  // Get multichain token portfolio.
+  const multichainPortfolio = await sdk.portfolio.getMultichainTokenPortfolio(
+    Adapters.CoinMarketcap
+  )();
+
+  console.log(multichainPortfolio);
+
+  // TODO: Handle EVMScan
+  // const multichainTokenActivities = await sdk.token.listTokenTransferActivities(Adapters.Evmscan)(
+  //   'mainnet',
+  //   wallet
+  // );
+
+  // console.log(multichainTokenActivities);
 }
 testing();
 
