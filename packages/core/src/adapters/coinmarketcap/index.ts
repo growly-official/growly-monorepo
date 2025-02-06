@@ -23,7 +23,8 @@ const NATIVE_TOKEN_MAP = {
 
 @autoInjectable()
 export class CoinMarketcapAdapter implements IMarketDataAdapter {
-  logger = new Logger({ name: 'CoinMarketcapAdapter' });
+  name = 'CoinMarketcapAdapter';
+  logger = new Logger({ name: this.name });
 
   apiUrl: string;
   apiKey: string;
@@ -62,6 +63,7 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
   ): Promise<{ tokens: TMarketToken[]; totalUsdValue: number }> => {
     // Get token USD values from CoinMarketcap adapter.
     const tokenSymbolMap = this.getTokenSymbolMap(tokens);
+    console.log(tokenSymbolMap);
     const prices = await this.getTokenPriceMap(
       Object.values(tokenSymbolMap).map(value => value.id)
     );

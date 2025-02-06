@@ -31,7 +31,7 @@ export function createClient({ chain, config }: TCreateClientParameters): TClien
   }
 }
 
-export function formatReadableToken(chain: TChain, balance: bigint): number {
+export function formatReadableToken(chain: TBaseChain, balance: bigint): number {
   if (chain.ecosystem === 'evm') return parseFloat(formatEther(balance));
   return parseFloat(balance.toString());
 }

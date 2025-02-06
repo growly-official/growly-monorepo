@@ -1,8 +1,8 @@
-import { Address } from '.';
+import { TAddress } from './chains';
 
 export type TTokenSymbol = string;
 export type TTokenId = number;
-export type TTokenAddress = string;
+export type TTokenAddress = TAddress;
 
 export type TTokenMetadata = {
   chainId: number;
@@ -10,6 +10,15 @@ export type TTokenMetadata = {
   symbol: string;
   decimals: number;
   logoURI?: string;
+};
+
+export type TTokenTransferActivity = {
+  chainId: number;
+  symbol: TTokenSymbol;
+  from: TAddress;
+  to: TAddress;
+  value: string | number;
+  timestamp: string;
 };
 
 export type TContractTokenMetadata = TTokenMetadata & {

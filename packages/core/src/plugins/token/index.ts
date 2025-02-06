@@ -1,12 +1,26 @@
 import { autoInjectable } from 'tsyringe';
-import { TAddress, TClient, TContractToken, TMarketToken, TNativeToken, TToken } from '../../types';
+import {
+  TAddress,
+  TChainName,
+  TClient,
+  TContractToken,
+  TMarketToken,
+  TNativeToken,
+  TToken,
+  TTokenAddress,
+  TTokenTransferActivity,
+} from '../../types';
 import { EvmTokenPlugin } from './evm';
 import { formatReadableToken } from '../../wrapper';
 import { Logger } from 'tslog';
 import { getClientChain } from '../../utils';
-import { IMarketDataAdapter, WithAdapter } from '../../adapters/adapter';
+import { IMarketDataAdapter, IOnchainActivityAdapter, WithAdapter } from '../../adapters/adapter';
 
-type IGetTokenPrice = (client: TClient, tokenAddress: TAddress) => Promise<TMarketToken>;
+type IGetTokenPrice = (client: TClient, tokenAddress: TTokenAddress) => Promise<TMarketToken>;
+type IGetTokenActivities = (
+  chain: TChainName,
+  address: TAddress
+) => Promise<TTokenTransferActivity[]>;
 
 @autoInjectable()
 export class MultichainTokenPlugin {
@@ -17,20 +31,27 @@ export class MultichainTokenPlugin {
   getTokenPrice: WithAdapter<IMarketDataAdapter, IGetTokenPrice> =
     adapter => async (client: TClient, tokenAddress: TAddress) => {
       try {
-        const chain = client.chain;
-        if (!chain) throw new Error('No chain initialized.');
-
-        return adapter.fetchTokenWithPrice(chain.chainName, { address: tokenAddress } as TToken);
+        const chain = getClientChain(client);
+        return adapter.fetchTokenWithPrice(chain.chainName!, { address: tokenAddress } as TToken);
       } catch (error: any) {
         this.logger.error(`Failed to get token price: ${error.message}`);
         throw new Error(error);
       }
     };
 
+  listTokenTransferActivities: WithAdapter<IOnchainActivityAdapter, IGetTokenActivities> =
+    adapter => async (chain: TChainName, address: TAddress) => {
+      try {
+        return adapter.listAllTokenActivities(chain, address, 100);
+      } catch (error: any) {
+        this.logger.error(`Failed to get token activities: ${error.message}`);
+        throw new Error(error);
+      }
+    };
+
   async getNativeToken(client: TClient, address: TAddress): Promise<TNativeToken> {
     try {
-      const chain = client.chain;
-      if (!chain) throw new Error('No chain initialized.');
+      const chain = getClientChain(client);
       const balance = await client.getBalance({
         address: address as any,
       });

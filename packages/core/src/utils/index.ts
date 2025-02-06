@@ -5,3 +5,10 @@ export * from './chain.util';
 export const getVariableName = (v: object) => {
   return Object.keys(v)[0];
 };
+
+export const objectToQueryString = (obj: Object): string => {
+  return Object.entries(obj)
+    .filter(([_, value]) => !!value)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+};

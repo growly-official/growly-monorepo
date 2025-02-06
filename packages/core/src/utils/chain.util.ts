@@ -25,21 +25,21 @@ export function getClientChain(client: TClient): TBaseChain {
   return chain;
 }
 
-export function buildEvmChains(chains: TChainName[], getRpcUrl: GetChainRpcEndpoint) {
-  return buildChains(chains, 'evm', getRpcUrl);
+export function buildEvmChains(chains: TChainName[], chainRpcUrl: GetChainRpcEndpoint) {
+  return buildChains(chains, 'evm', chainRpcUrl);
 }
 
 export function buildChains(
   chains: TChainName[],
   ecosystem: TChainEcosystem,
-  getRpcUrl: GetChainRpcEndpoint
+  getRpcUrl?: GetChainRpcEndpoint
 ): TChain[] {
   return chains.map(c => {
     const chain = getChainByName(c);
     if (!chain) throw new Error('No chain found');
-    return new ChainTypeBuilder(chain)
-      .withEcosystem(ecosystem)
-      .withRpcUrl(getRpcUrl(chain))
-      .build();
+
+    const builder = new ChainTypeBuilder(chain).withEcosystem(ecosystem);
+    if (getRpcUrl) builder.withRpcUrl(getRpcUrl(chain)).build();
+    return builder.build();
   });
 }
