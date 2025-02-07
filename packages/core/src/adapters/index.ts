@@ -1,3 +1,4 @@
 export * from './coinmarketcap';
-export * from './uniswap';
+export * from './dexscreener';
 export * from './evmscan';
+export * from './uniswap';
