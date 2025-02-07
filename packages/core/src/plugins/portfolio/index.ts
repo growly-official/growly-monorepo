@@ -3,7 +3,7 @@ import { IMultichain, TAddress, TChain, TChainTokenData } from '../../types';
 import { createClient } from '../../wrapper';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
-import { IMarketDataAdapter, WithAdapter } from '../../adapters/adapter';
+import { IMarketDataAdapter, WithAdapter } from '../../types/adapter';
 import { Disk, Ram, StoragePlugin } from '../storage';
 
 type WithRamExist<F extends string, T> = Ram[F] extends undefined ? void : T;

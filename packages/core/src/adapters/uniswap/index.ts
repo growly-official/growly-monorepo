@@ -10,7 +10,7 @@ import { TContractToken, TMarketToken, TChainId, TChainName, TChain } from '../.
 import { Files } from '../../data';
 import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json';
 import { fromReadableAmount } from './utils';
-import { IMarketDataAdapter } from '../adapter';
+import { IMarketDataAdapter } from '../../types/adapter';
 import { CHAIN_TO_ADDRESSES_MAP, Token, WETH9 } from '@uniswap/sdk-core';
 import { computePoolAddress, FeeAmount } from '@uniswap/v3-sdk';
 import { GetChainRpcEndpoint } from '../../rpc';

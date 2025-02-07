@@ -15,7 +15,7 @@ import { EvmTokenPlugin } from './evm';
 import { formatReadableToken } from '../../wrapper';
 import { Logger } from 'tslog';
 import { getClientChain } from '../../utils';
-import { IMarketDataAdapter, IOnchainActivityAdapter, WithAdapter } from '../../adapters/adapter';
+import { IMarketDataAdapter, IOnchainActivityAdapter, WithAdapter } from '../../types/adapter';
 import { StoragePlugin } from '../storage';
 
 type IGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;

@@ -1,7 +1,7 @@
 import { Logger } from 'tslog';
 import { TChainName, TAddress, TTokenTransferActivity } from '../../types';
 import { getChainByName, objectToQueryString } from '../../utils';
-import { IOnchainActivityAdapter } from '../adapter';
+import { IOnchainActivityAdapter } from '../../types/adapter';
 import { TEVMScanResponse, TEVMScanTokenActivity } from './types';
 import axios from 'axios';
 import { autoInjectable } from 'tsyringe';

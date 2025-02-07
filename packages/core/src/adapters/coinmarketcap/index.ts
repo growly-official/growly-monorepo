@@ -4,7 +4,7 @@ import { TChainName, TMarketToken, TToken, TTokenId, TTokenSymbol } from '../../
 import { TCMCDetailMap, TCMCStaticMap, TCMCTokenDetail, TCMCTokenIDDetail } from './types';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
-import { IMarketDataAdapter } from '../adapter';
+import { IMarketDataAdapter } from '../../types/adapter';
 
 // Some tokens have a conflict symbol with others, like Ethereum and The Inifinite Garden.
 const NATIVE_TOKEN_MAP = {

@@ -1,5 +1,5 @@
 import { Logger } from 'tslog';
-import { IAdapter } from '../adapter';
+import { IAdapter } from '../../types/adapter';
 import { IDexScreenerData, IDexScreenerPair } from './types';
 
 const DEX_SCREENER_ENDPOINT = 'https://api.dexscreener.com/latest/dex';

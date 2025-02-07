@@ -1,5 +1,5 @@
 import { Logger } from 'tslog';
-import { TAddress, TChainName, TTokenAddress } from '../types';
+import { TAddress, TChainName, TTokenAddress } from '.';
 
 export type WithAdapter<A, R> = (adapter: A) => R;
 export type WithManyAdapters<A extends IAdapter[], R> = (adapters: A) => R;
@@ -7,6 +7,8 @@ export interface IAdapter {
   name: string;
   logger?: Logger;
 }
+
+export type SingleAdapterPlugin<T> = IAdapter & T;
 
 export interface IMarketDataAdapter extends IAdapter {
   fetchTokenWithPrice(chain: TChainName, token: TToken): Promise<TMarketToken | undefined>;
