@@ -8,9 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc --build",
-    "start:prod": "node -r ts-node/register -r tsconfig-paths/register dist/main.js",
-    "start:script": "ts-node-esm --experimental-specifier-resolution=node -r dotenv/config ./src/_scripts/index.ts",
-    "start": "ts-node-esm --experimental-specifier-resolution=node -r dotenv/config src/main.ts",
+    "start": "node -r ts-node/register -r tsconfig-paths/register dist/main.js",
+    "dev:script": "ts-node-esm --experimental-specifier-resolution=node -r dotenv/config ./src/_scripts/index.ts",
     "dev": "nodemon --exec node --experimental-specifier-resolution=node --loader ts-node/esm -r dotenv/config src/server.ts",
     "start:watch": "nest start --watch",
     "start:debug": "nest start --debug --watch",

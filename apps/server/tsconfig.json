@@ -3,6 +3,7 @@
     "module": "commonjs",
     "target": "es2021",
     "paths": {
+      "@/*": ["./src/*"],
       "../../../core/src/*": ["../core/src/*"]
     },
     "removeComments": true,
