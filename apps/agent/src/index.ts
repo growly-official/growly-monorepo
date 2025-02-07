@@ -15,7 +15,7 @@ import { startChat } from './chat/index.ts';
 import { initializeClients } from './clients/index.ts';
 import { getTokenForProvider, loadCharacters, parseArguments } from './config/index.ts';
 import { initializeDatabase } from './database/index.ts';
-import { ChainsmithSdk } from 'chainsmith';
+import { ChainsmithSdk } from 'chainsmith/src/index.ts';
 
 console.log(ChainsmithSdk);
 
