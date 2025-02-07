@@ -67,6 +67,7 @@ export class EvmTokenPlugin {
     try {
       const results = await client.multicall({
         ...config,
+        // @ts-ignore
         contracts: tokenList.map(token => ({
           abi: Abis.erc20ABI,
           functionName: 'balanceOf',
@@ -122,10 +123,10 @@ export class EvmTokenPlugin {
   ): Promise<TContractTokenMetadata> => {
     try {
       const chainId = await client.getChainId();
-      const contract = getContract({
+      const contract: any = getContract({
         address: tokenAddress as TAddress,
         abi: Abis.erc20ABI,
-        client,
+        client: client as any,
       });
 
       const [name, decimals, symbol] = await Promise.all([

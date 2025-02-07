@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { Wallets } from '@chainsmith-data';
-import { alchemy, buildEvmChains, ChainsmithSdk } from '@chainsmith-sdk';
+import { Wallets } from 'chainsmith/src/data';
+import { alchemy, buildEvmChains, ChainsmithSdk } from 'chainsmith/src';
 import * as Constants from '../constants';
 import { Adapters } from './config';
 
