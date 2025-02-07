@@ -148,7 +148,7 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
         fee: params.poolFee,
       });
 
-      const poolContract = getContract({
+      const poolContract: any = getContract({
         client,
         address: currentPoolAddress as any,
         abi: UniswapV3PoolAbi,
@@ -180,7 +180,7 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
           multicall: true,
         },
       });
-      const quoterContract = getContract({
+      const quoterContract: any = getContract({
         client,
         address: (CHAIN_TO_ADDRESSES_MAP as any)[chain.id]?.quoterAddress as any,
         abi: Quoter.abi,

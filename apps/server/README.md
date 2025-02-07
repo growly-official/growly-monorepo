@@ -1,124 +1,73 @@
-## Chainsmith Server
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-### Requirements
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-- NodeJS: 19.0.0
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-### Technical stack
+## Description
 
-- TypegraphQL
-- GraphQL
-- Firebase SDK Admin
-- NodeJS
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-### Docker image
+## Installation
 
-#### Build docker image
-
-Building the image that is compatible with both Intenl and AMD64 chip.
-
-```
-docker buildx build --platform linux/amd64 -t chainsmith-prod:amd64 .
-```
-
-#### Run docker image locally
-
-```
-docker run --env-file ./.env --publish 8080:8080 chainsmith-server
-```
-
-#### Run docker image remotely
-
-```
-docker run -it --name chainsmith-server --env-file .env -d --restart always registry.digitalocean.com/chainsmith-prod/chainsmith-server
-```
-
-Required an approriate .env file to work.
-
-#### Development & Production .env
-
-```
-OPENAI_API_KEY=
-OPENAI_ORGANIZATION=
-
-FIREBASE_SECRET={"private_key":"FIREBASE_PRIVATE_KEY","client_email":"FIREBASE_CLIENT_EMAIL","project_id":"FIREbASE_PROJECT_ID"}
-
-SERVER_PORT=8080
+```bash
+$ yarn install
 ```
 
-### Nginx & SSL .env
+## Running the app
 
-```
-VIRTUAL_PORT=8080
-VIRTUAL_HOST=api.chainsmith.io
-LETSENCRYPT_HOST=api.chainsmith.io
-LETSENCRYPT_EMAIL=team@chainsmith.io
-```
+```bash
+# development
+$ yarn run start
 
-### Deploy to digital ocean
+# watch mode
+$ yarn run start:dev
 
-#### Push docker image to Digital Ocean
-
-Authorize your digital ocean account with access token and deploy
-
-```
-doctl auth init --context Chainsmith-Infra => Enter access token
-docker tag chainsmith-prod registry.digitalocean.com/chainsmith/chainsmith-prod
-docker push registry.digitalocean.com/chainsmith/chainsmith-prod
+# production mode
+$ yarn run start:prod
 ```
 
-## Configure production environment
+## Test
 
-Resource: https://200lab.io/blog/docker-nginx-lets-encrypt-web-service-ssl/
+```bash
+# unit tests
+$ yarn run test
 
-Server is configured and running on Digital Ocean droplet
+# e2e tests
+$ yarn run test:e2e
 
-### Install dependencies for Nginx
-
-```
-sudo apt-get update
-
-sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+# test coverage
+$ yarn run test:cov
 ```
 
-Why Nginx? We need Nginx for automated proxy. It routes defined port to the mapped port when running Nginx docker image.
+## Support
 
-### Boot Container Nginx
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-Define ports after flag -p. For example `-p 8080:8080`. In this case, we use Nginx as a reverse proxy to redirect the web request.
+## Stay in touch
 
-```
-docker run -d -p 80:80 -p 443:443 --name nginx-proxy  --privileged=true \
-  -e ENABLE_IPV6=true \
-  -v ~/nginx/vhost.d:/etc/nginx/vhost.d \
-  -v ~/nginx-certs:/etc/nginx/certs:ro \
-  -v ~/nginx-conf:/etc/nginx/conf.d \
-  -v ~/nginx-logs:/var/log/nginx \
-  -v /usr/share/nginx/html \
-  -v /var/run/docker.sock:/tmp/docker.sock:ro \
-  jwilder/nginx-proxy
-```
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-### Container web server
+## License
 
-After the container Nginx boot, run the command from above section to run the server docker image remotely (Remember to configure the `.env` with a correct variables).
-
-### Configure free SSL using Let's Encrypt
-
-The purpose of the below docker container is to watch every docker containers running and it works with the Nginx container above to authorize domain with SSL certificate.
-
-```
-docker run -d --privileged=true \
-  -v ~/nginx/vhost.d:/etc/nginx/vhost.d \
-  -v ~/nginx-certs:/etc/nginx/certs:rw \
-  -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  --volumes-from nginx-proxy \
-  jrcs/letsencrypt-nginx-proxy-companion
-```
-
-NOTE: Don't require cron-job to revalidate the certificate, the container has a mechanism to handle that already.
+Nest is [MIT licensed](LICENSE).

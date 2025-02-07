@@ -1,39 +1,24 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2021",
-    "paths": {
-      "@/*": ["./src/*"],
-      "../../../core/src/*": ["../core/src/*"]
-    },
+    "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
-    "declaration": true,
-
-    /* Linting */
-    "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": false
+    "esModuleInterop": true
   },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "../../packages/core"
-    }
-  ]
+  "include": ["**/*.ts", "**/*.json"]
 }
