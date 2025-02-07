@@ -21,7 +21,7 @@ async function bootstrap() {
   app.use('/graphql', graphqlUploadExpress());
 
   const port = process.env.SERVER_PORT || 8080;
-  // await app.listen(port);
+  await app.listen(port);
   console.log(`DEBUG: ${!!process.env.NODE_DEBUG}`);
   console.log(`PRODUCTION: ${isProduction()}`);
   console.log(`Server is running at: http://localhost:${port}`);

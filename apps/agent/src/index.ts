@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { DirectClient } from '@elizaos/client-direct';
 import { AgentRuntime, elizaLogger, settings, stringToUuid, type Character } from '@elizaos/core';
 import { bootstrapPlugin } from '@elizaos/plugin-bootstrap';
@@ -13,6 +15,9 @@ import { startChat } from './chat/index.ts';
 import { initializeClients } from './clients/index.ts';
 import { getTokenForProvider, loadCharacters, parseArguments } from './config/index.ts';
 import { initializeDatabase } from './database/index.ts';
+import { ChainsmithSdk } from 'chainsmith';
+
+console.log(ChainsmithSdk);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,7 +70,7 @@ async function startAgent(character: Character, directClient: DirectClient) {
     await db.init();
 
     const cache = initializeDbCache(character, db);
-    const runtime = createAgent(character, db, cache, token);
+    const runtime = createAgent(character, db, cache, token!);
 
     await runtime.initialize();
 

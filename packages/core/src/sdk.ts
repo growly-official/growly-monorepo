@@ -4,9 +4,9 @@ import {
   MultichainPortfolioPlugin,
   MultichainTokenPlugin,
   MultiPlatformSocialPlugin,
+  StoragePlugin,
 } from './plugins';
 import { TChain } from './types';
-import { StoragePlugin } from './plugins/memory';
 
 @singleton()
 export default class ChainsmithSdk {
@@ -16,10 +16,10 @@ export default class ChainsmithSdk {
     public social: MultiPlatformSocialPlugin,
     public storage: StoragePlugin
   ) {}
-}
 
-export const initializeSdk = (chains?: TChain[]) => {
-  const sdk = container.resolve(ChainsmithSdk);
-  if (chains) sdk.storage.writeToDisk('chains', chains);
-  return sdk;
-};
+  public static init(chains?: TChain[]) {
+    const sdk = container.resolve(ChainsmithSdk);
+    if (chains) sdk.storage.writeToDisk('chains', chains);
+    return sdk;
+  }
+}

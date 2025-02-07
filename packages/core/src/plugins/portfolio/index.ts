@@ -4,7 +4,7 @@ import { createClient } from '../../wrapper';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
 import { IMarketDataAdapter, WithAdapter } from '../../adapters/adapter';
-import { Disk, Ram, StoragePlugin } from '../memory';
+import { Disk, Ram, StoragePlugin } from '../storage';
 
 type WithRamExist<F extends string, T> = Ram[F] extends undefined ? void : T;
 type WithDiskExist<F extends keyof Disk, T> = Disk[F] extends undefined ? void : T;

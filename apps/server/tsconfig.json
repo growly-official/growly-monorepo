@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
     "target": "es2021",
+    "outDir": "./dist",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "../../../core/src/*": ["../core/src/*"]
+      "@chainsmith-adapters": ["../../packages/core/src/adapters/index.ts"],
+      "@chainsmith-data": ["../../packages/core/src/data/index.ts"],
+      "@chainsmith-sdk": ["../../packages/core/src/index.ts"],
+      "@chainsmith-types": ["../../packages/core/src/types/index.ts"]
     },
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
