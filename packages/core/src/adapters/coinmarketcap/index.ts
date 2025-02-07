@@ -63,7 +63,6 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
   ): Promise<{ tokens: TMarketToken[]; totalUsdValue: number }> => {
     // Get token USD values from CoinMarketcap adapter.
     const tokenSymbolMap = this.getTokenSymbolMap(tokens);
-    console.log(tokenSymbolMap);
     const prices = await this.getTokenPriceMap(
       Object.values(tokenSymbolMap).map(value => value.id)
     );

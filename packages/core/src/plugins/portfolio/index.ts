@@ -1,9 +1,9 @@
 import { MultichainTokenPlugin } from '../token';
-import { IMultichainTokenData, TAddress, TChain, TChainTokenData } from '../../types';
+import { IMultichain, TAddress, TChain, TChainTokenData } from '../../types';
 import { createClient } from '../../wrapper';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
-import { IMarketDataAdapter, WithManyAdapters } from '../../adapters/adapter';
+import { IMarketDataAdapter, WithAdapter } from '../../adapters/adapter';
 import { Disk, Ram, StoragePlugin } from '../memory';
 
 type WithRamExist<F extends string, T> = Ram[F] extends undefined ? void : T;
@@ -12,7 +12,7 @@ type WithDiskExist<F extends keyof Disk, T> = Disk[F] extends undefined ? void :
 type IGetMultichainPortfolio = (
   walletAddress?: WithRamExist<'walletAddress', TAddress>,
   chains?: WithDiskExist<'chains', TChain[]>
-) => Promise<IMultichainTokenData>;
+) => Promise<IMultichain<TChainTokenData>>;
 type IGetChainPortfolio = (chain: TChain, address: TAddress) => Promise<TChainTokenData>;
 
 @autoInjectable()
@@ -24,14 +24,14 @@ export class MultichainPortfolioPlugin {
     private storage: StoragePlugin
   ) {}
 
-  getMultichainTokenPortfolio: WithManyAdapters<[IMarketDataAdapter], IGetMultichainPortfolio> =
+  getMultichainTokenPortfolio: WithAdapter<IMarketDataAdapter, IGetMultichainPortfolio> =
     adapter =>
     async (
       walletAddress?: WithRamExist<'walletAddress', TAddress>,
       chains?: WithDiskExist<'chains', TChain[]>
     ) => {
       try {
-        const portfolio: IMultichainTokenData = {};
+        const portfolio: IMultichain<TChainTokenData> = {};
         for (const chain of this.storage.readDiskOrReturn({ chains })) {
           portfolio[chain.chainName] = await this.getChainTokenPortfolio(adapter)(
             chain,
@@ -45,7 +45,7 @@ export class MultichainPortfolioPlugin {
       }
     };
 
-  getChainTokenPortfolio: WithManyAdapters<[IMarketDataAdapter], IGetChainPortfolio> =
+  getChainTokenPortfolio: WithAdapter<IMarketDataAdapter, IGetChainPortfolio> =
     adapter =>
     async (chain: TChain, address: TAddress): Promise<TChainTokenData> => {
       try {
