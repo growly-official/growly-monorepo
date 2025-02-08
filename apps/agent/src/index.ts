@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
 import { DirectClient } from '@elizaos/client-direct';
 import { AgentRuntime, elizaLogger, settings, stringToUuid, type Character } from '@elizaos/core';
@@ -15,9 +15,9 @@ import { startChat } from './chat/index.ts';
 import { initializeClients } from './clients/index.ts';
 import { getTokenForProvider, loadCharacters, parseArguments } from './config/index.ts';
 import { initializeDatabase } from './database/index.ts';
-import { ChainsmithSdk } from 'chainsmith/src/index.ts';
+// import { ChainsmithSdk } from 'chainsmith/src/index.ts';
 
-console.log(ChainsmithSdk);
+// console.log(ChainsmithSdk);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -116,11 +116,11 @@ const startAgents = async () => {
   const charactersArg = args.characters || args.character;
   let characters = [character];
 
-  console.log('charactersArg', charactersArg);
+  // console.log('charactersArg', charactersArg);
   if (charactersArg) {
     characters = await loadCharacters(charactersArg);
   }
-  console.log('characters', characters);
+  // console.log('characters', characters);
   try {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
