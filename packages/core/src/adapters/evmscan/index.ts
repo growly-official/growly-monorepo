@@ -43,7 +43,7 @@ export class EvmscanAdapter implements IOnchainActivityAdapter {
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const evmScanResp = await this.getTokenActivities('tokentx', address, {
+      const evmScanResp = await this.getTokenActivities('tokentx', address, chain.id, {
         offset,
       });
       const currentResultCount = evmScanResp.result.length;
@@ -73,6 +73,7 @@ export class EvmscanAdapter implements IOnchainActivityAdapter {
   async getTokenActivities(
     action: string,
     address: string,
+    chainId: number,
     queryOptions: Partial<GetTokenActivityQueryOptions> = {
       offset: 0,
       startblock: 0,
@@ -80,14 +81,14 @@ export class EvmscanAdapter implements IOnchainActivityAdapter {
     }
   ): Promise<TEVMScanResponse> {
     const params = objectToQueryString(queryOptions);
-    const query = `module=account&action=${action}&address=${address}&${params}&&apikey=${this.apiKey}`;
+    const query = `chainid=${chainId}&module=account&action=${action}&address=${address}&${params}&apikey=${this.apiKey}`;
     const res = await axios.get(`${this.apiUrl}?${query}`, {
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'PostmanRuntime/7.40.0',
       },
     });
-    const result = await res.data.json();
-    return result.data;
+    const result = await res.data;
+    return result;
   }
 }

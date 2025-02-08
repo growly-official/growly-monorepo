@@ -13,7 +13,7 @@ function testExternalities(enabled: boolean, f: () => Promise<any>) {
 
 async function fetchMultichainPortfolioWorks() {
   const wallets = {};
-  for (const wallet of [Wallets.ETH_MAINNET_WALLET_PCMINH, Wallets.ETH_MAINNET_WALLET_JESSE]) {
+  for (const wallet of [Wallets.ETH_MAINNET_WALLET_PCMINH]) {
     wallets[wallet] = await sdk.portfolio.getMultichainTokenPortfolio(
       AdapterRegistry.CoinMarketcap
     )(wallet);
@@ -23,15 +23,18 @@ async function fetchMultichainPortfolioWorks() {
 
 async function fetchEvmscanTokenActivitiesWorks() {
   sdk.storage.writeToRam('walletAddress', Wallets.ETH_MAINNET_WALLET_PCMINH);
-  return sdk.token.listTokenTransferActivities(AdapterRegistry.Evmscan)();
+  const tokenTransferActivities = await sdk.token.listTokenTransferActivities(
+    AdapterRegistry.Evmscan
+  )();
+  return tokenTransferActivities;
 }
 
 async function fetchDexScreenerParis() {
   return AdapterRegistry.DexScreener.fetchDexScreenerData(
-    'A55XjvzRU4KtR3Lrys8PpLZQvPojPqvnv5bJVHMYy3Jv'
+    '0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842'
   );
 }
 
 testExternalities(false, fetchMultichainPortfolioWorks);
-testExternalities(false, fetchEvmscanTokenActivitiesWorks);
-testExternalities(true, fetchDexScreenerParis);
+testExternalities(true, fetchEvmscanTokenActivitiesWorks);
+testExternalities(false, fetchDexScreenerParis);
