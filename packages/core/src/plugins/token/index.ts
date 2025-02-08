@@ -55,7 +55,7 @@ export class MultichainTokenPlugin {
       try {
         const chainActivitiesRecord: IMultichain<TTokenTransferActivity[]> = {};
         for (const chain of this.storagePlugin.readDiskOrReturn({ chains })) {
-          chainActivitiesRecord[chain.chainName] = adapter.listAllTokenActivities(
+          chainActivitiesRecord[chain.chainName] = await adapter.listAllTokenActivities(
             chain.chainName,
             this.storagePlugin.readRamOrReturn({ walletAddress }),
             100
