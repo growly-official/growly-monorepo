@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { Button, Modal } from '../../atoms';
 import { EcosystemRegistry, Ecosystems } from 'chainsmith/src';
 import { CircleCheck } from 'lucide-react';
-import { Option, Select } from '@material-tailwind/react';
+import { Atoms } from '@/ui';
 import ChainList from '../ChainList/ChainList';
-import { materialUiProps } from '@/ui';
 import { TChain, TChainEcosystem } from 'chainsmith/src/types';
 
 type Props = {
@@ -23,20 +22,15 @@ const ChainListModal = ({ open, handleOpen, handleOnClick }: Props) => {
   }, [selectedChain]);
 
   return (
-    <Modal open={open} handler={handleOpen} title="Select a network" footer={<></>}>
-      <Select
-        onChange={(value: any) => {
-          setSelectedEcosystem(value);
-        }}
+    <Modal open={open} handleOpen={handleOpen} title="Select a network">
+      <Atoms.Select
         value={selectedEcosystem}
-        label="Ecosystem"
-        {...materialUiProps}>
-        {Ecosystems.map(ecosystem => (
-          <Option key={ecosystem} value={ecosystem}>
-            {EcosystemRegistry[ecosystem].name}
-          </Option>
-        ))}
-      </Select>
+        onValueChange={v => setSelectedEcosystem(v as TChainEcosystem)}
+        options={Ecosystems.map(ecosystem => ({
+          label: EcosystemRegistry[ecosystem].name,
+          value: ecosystem,
+        }))}
+      />
       <ChainList
         className="mt-5"
         ecosystem={selectedEcosystem}

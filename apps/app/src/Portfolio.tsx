@@ -1,4 +1,4 @@
-import { Atoms, Molecules } from '@/ui';
+import { Molecules } from '@/ui';
 import { useEffect, useState } from 'react';
 import { TChain, TPortfolio, TToken } from 'chainsmith/src/types';
 
@@ -19,8 +19,7 @@ const useAccountBalance = (address: string, _chains: TChain[]) => {
 };
 
 export default function MultichainPortfolio(portfolio: TPortfolio) {
-  const { tokens, setRefreshing } = useAccountBalance(portfolio.address, portfolio.chainList);
-
+  const { tokens } = useAccountBalance(portfolio.address, portfolio.chainList);
   return (
     <div>
       <Molecules.WalletAddress truncated truncatedLength={20} address={portfolio.address} />
@@ -29,7 +28,6 @@ export default function MultichainPortfolio(portfolio: TPortfolio) {
           {token.balance.toString()} {token.symbol}
         </div>
       ))}
-      <Atoms.Button onClick={() => setRefreshing(+new Date())}>Refresh</Atoms.Button>
     </div>
   );
 }

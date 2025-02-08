@@ -1,20 +1,22 @@
 import MultichainPortfolio from './Portfolio';
-import { Wallets, EvmChainList } from 'chainsmith/src/data';
-import { ChainTypeBuilder } from 'chainsmith/src/wrapper';
-
-const { mainnet, base } = EvmChainList;
+import { Wallets } from 'chainsmith/src/data';
+import { buildEvmChains } from 'chainsmith/src/utils';
+import { alchemy } from 'chainsmith/src/rpc';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 
 function App() {
   return (
     <main className="container">
-      <MultichainPortfolio
-        address={Wallets.ETH_MAINNET_WALLET_VITALIK}
-        chainList={[
-          // TODO: In production, chain type builder should not be used directly.
-          new ChainTypeBuilder(mainnet).withEcosystem('evm').build(),
-          new ChainTypeBuilder(base).withEcosystem('evm').build(),
-        ]}
-      />
+      <Theme>
+        <MultichainPortfolio
+          address={Wallets.ETH_MAINNET_WALLET_VITALIK}
+          chainList={
+            // TODO: In production, chain type builder should not be used directly.
+            buildEvmChains(['base', 'mainnet'], alchemy(''))
+          }
+        />
+      </Theme>
     </main>
   );
 }

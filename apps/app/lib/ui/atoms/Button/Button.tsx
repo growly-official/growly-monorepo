@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import { Button, ButtonProps } from '@material-tailwind/react';
-import { materialUiProps } from '@/ui';
+import { Button, ButtonProps } from '@radix-ui/themes';
 
 type Props = ButtonProps & {
   children: ReactNode;
@@ -10,7 +9,7 @@ type Props = ButtonProps & {
 
 export default function ({ children, disabled, placeholder = '', ...props }: Props) {
   return (
-    <Button className="flex items-center gap-3" disabled={disabled} {...materialUiProps} {...props}>
+    <Button className="flex items-center gap-3" disabled={disabled} {...props}>
       {children}
     </Button>
   );

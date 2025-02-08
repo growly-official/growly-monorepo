@@ -1,8 +1,7 @@
 import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
-import { Avatar } from '@material-tailwind/react';
-import { TAddress } from 'chainsmith-types';
-import { materialUiProps } from '@/ui';
+import { Avatar } from '@radix-ui/themes';
+import { TAddress } from 'chainsmith/src/types';
 
 type Props = {
   address: TAddress;
@@ -31,5 +30,5 @@ export default ({ address, size }: Props) => {
     shapeColor: ['0a5b83', '1c799f', '69d2e7'],
   }).toDataUri();
 
-  return <Avatar style={{ width: size, height: size }} src={randomAvatar} {...materialUiProps} />;
+  return <Avatar src={randomAvatar} fallback={address} />;
 };

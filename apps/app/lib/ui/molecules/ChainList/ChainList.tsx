@@ -1,5 +1,3 @@
-import { Card, Input, List } from '@material-tailwind/react';
-import { materialUiProps } from '@/ui';
 import { EcosystemRegistry } from 'chainsmith/src';
 import Empty from '../../atoms/Empty/Empty';
 import { useMemo, Fragment, useEffect, useState } from 'react';
@@ -7,6 +5,8 @@ import pluralize from 'pluralize';
 import Fuse from 'fuse.js';
 import ChainListItem from '../ChainListItem/ChainListItem';
 import { TChain, TChainEcosystem } from 'chainsmith/src/types';
+import { Card, TextField } from '@radix-ui/themes';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 type Props = {
   searchQuery: {
@@ -49,28 +49,25 @@ export default ({
 
   return (
     <div {...props}>
-      <Input
-        crossOrigin={undefined}
-        size="lg"
-        onChange={(e: any) => onChainNameChanged && onChainNameChanged(e.target.value)}
-        label="Your selected network"
+      <TextField.Root
         value={chainName}
-        {...materialUiProps}
-      />
+        onChange={e => onChainNameChanged && onChainNameChanged(e.target.value)}>
+        <TextField.Slot>
+          <MagnifyingGlassIcon height="16" width="16" />
+        </TextField.Slot>
+      </TextField.Root>
       {ecosystemChainResults.length > 0 ? (
         <Fragment>
           <h2 className="mb-3 mt-3 text-center">
             There {pluralize('is', ecosystemChainResults.length)} {ecosystemChainResults.length}{' '}
             {pluralize('chain', ecosystemChainResults.length)} found
           </h2>
-          <Card className="max-h-[300px] overflow-scroll py-2 mt-3" {...materialUiProps}>
-            <List {...materialUiProps}>
-              {ecosystemChainResults.map(chain => (
-                <div onClick={() => onChainSelected && onChainSelected(chain)}>
-                  <ChainListItem chain={chain} highlighted={selectedChain?.id === chain.id} />
-                </div>
-              ))}
-            </List>
+          <Card className="max-h-[300px] overflow-scroll py-2 mt-3">
+            {ecosystemChainResults.map(chain => (
+              <div onClick={() => onChainSelected && onChainSelected(chain)}>
+                <ChainListItem chain={chain} highlighted={selectedChain?.id === chain.id} />
+              </div>
+            ))}
           </Card>
         </Fragment>
       ) : (

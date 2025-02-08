@@ -1,4 +1,4 @@
-import { TChain } from 'chainsmith-types';
+import { TChain } from 'chainsmith/src/types';
 import clsx from 'clsx';
 
 interface Props {

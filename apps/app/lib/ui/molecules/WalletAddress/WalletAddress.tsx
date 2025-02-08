@@ -1,4 +1,4 @@
-import { TAddress } from 'chainsmith-types';
+import { TAddress } from 'chainsmith/src/types';
 import { Avatar, Button, TooltipContainer } from '../../atoms';
 import { Wallet } from 'lucide-react';
 
@@ -16,7 +16,7 @@ export default ({ address, truncated, truncatedLength = 4, className }: Props) =
     <TooltipContainer
       tooltipId={`wallet-address-${address}`}
       tooltipContent={`Address: ${address}`}>
-      <Button className={`font-bold ${className} flex items-center gap-3 py-2 px-3`}>
+      <Button className={`font-bold ${className} flex items-center cursor-pointer gap-3 py-7 px-3`}>
         <Avatar address={address} size={35} />
         {truncated && first.length < address.length / 2 && truncatedLength > 0
           ? `${first}...${second}`

@@ -1,5 +1,5 @@
 import { Logger } from 'tslog';
-import type { TAddress, TChainName, TTokenAddress } from './index.d.ts';
+import type { TAddress, TChainName } from './index.d.ts';
 
 export type WithAdapter<A, R> = (adapter: A) => R;
 export type WithManyAdapters<A extends IAdapter[], R> = (adapters: A) => R;
@@ -23,4 +23,4 @@ export interface IOnchainActivityAdapter extends IAdapter {
   listAllTokenActivities(chain: TChainName, address: TAddress, limit: number);
 }
 
-export interface ISmartWalletAdapter extends IAdapter {}
+export type ISmartWalletAdapter = IAdapter;

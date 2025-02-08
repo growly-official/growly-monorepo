@@ -1,0 +1,28 @@
+import { Select as BaseSelect } from '@radix-ui/themes';
+
+interface Props {
+  defaultValue?: string;
+  value: string;
+  onValueChange: (value: string) => void;
+  options: {
+    value: string;
+    label: string;
+  }[];
+}
+
+const Select = ({ defaultValue, onValueChange, value, options }: Props) => {
+  return (
+    <BaseSelect.Root defaultValue={defaultValue} value={value} onValueChange={onValueChange}>
+      <BaseSelect.Trigger />
+      <BaseSelect.Content>
+        <BaseSelect.Group>
+          {options.map(option => (
+            <BaseSelect.Item value={option.value}>{option.label}</BaseSelect.Item>
+          ))}
+        </BaseSelect.Group>
+      </BaseSelect.Content>
+    </BaseSelect.Root>
+  );
+};
+
+export default Select;

@@ -1,28 +1,35 @@
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  DialogProps,
-} from '@material-tailwind/react';
-import { materialUiProps } from '@/ui';
 import type { ReactNode } from 'react';
+import ReactModal from 'react-modal';
 
 type Props = {
   title: string;
   open: boolean;
   handleOpen?: (open: boolean) => void;
-  footer: ReactNode;
   children: ReactNode;
 };
 
-const Modal = ({ title, open, footer, children, handleOpen }: Props & DialogProps) => {
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+const Modal = ({ title, open, children, handleOpen }: Props) => {
   return (
-    <Dialog open={open} handler={handleOpen as any} {...materialUiProps}>
-      <DialogHeader {...materialUiProps}>{title}</DialogHeader>
-      <DialogBody {...materialUiProps}>{children}</DialogBody>
-      <DialogFooter {...materialUiProps}>{footer}</DialogFooter>
-    </Dialog>
+    <ReactModal
+      onRequestClose={() => {
+        if (handleOpen) handleOpen(false);
+      }}
+      isOpen={open}
+      style={customStyles}
+      contentLabel={title}>
+      {children}
+    </ReactModal>
   );
 };
 
