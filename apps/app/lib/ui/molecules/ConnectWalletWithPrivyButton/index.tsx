@@ -25,7 +25,7 @@ const ConnectWalletWithPrivyButton = () => {
       <Loadable
         isLoading={!readyWallets || connectedWallet === undefined}
         loadComponent={
-          <Atoms.Button disabled={loginDisabled} onClick={login}>
+          <Atoms.Button loading={!ready || !readyWallets} disabled={loginDisabled} onClick={login}>
             Connect your wallet <Wallet size={18} />
           </Atoms.Button>
         }>

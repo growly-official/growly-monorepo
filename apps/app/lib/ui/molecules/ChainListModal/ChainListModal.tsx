@@ -6,18 +6,28 @@ import { Atoms } from '../..';
 import ChainList from '../ChainList/ChainList';
 import { IMultichain, TChainEcosystem, TChainName } from 'chainsmith/src/types';
 import clsx from 'clsx';
-import { countExistentialObject } from 'chainsmith/src/utils';
-import { LocalEcosystemRegistry } from '@/core';
+import { countExistentialObject, filterObject } from 'chainsmith/src/utils';
+import { LocalEcosystemRegistry, mustBeBoolean } from '@/core';
 
 type Props = {
   open: boolean;
   handleOpen: (open: boolean) => void;
   handleOnClick: (ecosystem: TChainEcosystem, chains: TChainName[]) => void;
+  ecosystemDisabled?: boolean;
+  defaultEcosystem?: TChainEcosystem;
+  defaultChains?: IMultichain<boolean>;
 };
 
-const ChainListModal = ({ open, handleOpen, handleOnClick }: Props) => {
-  const [selectedChains, setSelectedChains] = useState<IMultichain<boolean>>({});
-  const [selectedEcosystem, setSelectedEcosystem] = useState<TChainEcosystem>('evm');
+const ChainListModal = ({
+  open,
+  handleOpen,
+  handleOnClick,
+  ecosystemDisabled,
+  defaultEcosystem = 'evm',
+  defaultChains = {},
+}: Props) => {
+  const [selectedChains, setSelectedChains] = useState<IMultichain<boolean>>(defaultChains);
+  const [selectedEcosystem, setSelectedEcosystem] = useState<TChainEcosystem>(defaultEcosystem);
   const [chainNameSearch, setChainNameSearch] = useState<TChainName | ''>('');
 
   const selectedChainCount = useMemo(
@@ -28,14 +38,16 @@ const ChainListModal = ({ open, handleOpen, handleOnClick }: Props) => {
   return (
     <Modal open={open} handleOpen={handleOpen}>
       <div className="min-h-[300px] min-w-[400px]">
-        <Atoms.Select
-          value={selectedEcosystem}
-          onValueChange={v => setSelectedEcosystem(v as TChainEcosystem)}
-          options={Ecosystems.map(ecosystem => ({
-            label: EcosystemRegistry[ecosystem].name,
-            value: ecosystem,
-          }))}
-        />
+        {!ecosystemDisabled && (
+          <Atoms.Select
+            value={selectedEcosystem}
+            onValueChange={v => setSelectedEcosystem(v as TChainEcosystem)}
+            options={Ecosystems.map(ecosystem => ({
+              label: EcosystemRegistry[ecosystem]!.name,
+              value: ecosystem,
+            }))}
+          />
+        )}
         <ChainList
           className="mt-5"
           ecosystemRegistry={LocalEcosystemRegistry}
@@ -53,7 +65,9 @@ const ChainListModal = ({ open, handleOpen, handleOnClick }: Props) => {
           }
         />
         <Button
-          onClick={() => handleOnClick(selectedEcosystem, Object.keys(selectedChains) as any)}
+          onClick={() =>
+            handleOnClick(selectedEcosystem, filterObject(selectedChains, mustBeBoolean) as any)
+          }
           disabled={selectedChainCount === 0}
           className={clsx(
             'w-full mt-3 flex items-center rounded-xl justify-center',

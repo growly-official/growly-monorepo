@@ -1,9 +1,11 @@
-import { Button, ButtonProps } from '@radix-ui/themes';
+import { mustBeBoolean } from '@/core';
+import { Button, ButtonProps, Spinner } from '@radix-ui/themes';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 type Props = ButtonProps & {
   children: ReactNode;
+  loading?: boolean;
   disabled?: boolean;
 };
 
@@ -15,7 +17,9 @@ export default function ({ children, disabled, className, ...props }: Props) {
       variant="soft"
       disabled={disabled}
       {...props}>
-      {children}
+      <Spinner size={'3'} loading={mustBeBoolean(props.loading)}>
+        {children}
+      </Spinner>
     </Button>
   );
 }
