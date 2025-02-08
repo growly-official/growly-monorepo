@@ -11,9 +11,8 @@ export default ({ chain, highlighted }: Props) => {
     <div
       key={`${chain.id}-${chain.name}`}
       className={clsx([
-        highlighted && 'bg-blue-400 text-white',
+        highlighted ? 'bg-green text-white' : 'hover:bg-gray-200',
         'cursor-pointer',
-        'hover:bg-blue-400 hover:text-white',
         'py-2 px-2',
         'rounded-xl',
       ])}>

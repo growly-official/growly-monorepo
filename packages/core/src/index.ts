@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as utils from './utils/index.ts';
 import { ChainTypeBuilder } from './wrapper.ts';
 import { EvmChainList } from './data/index.ts';
-import type { TChainEcosystem } from './types/index.d.ts';
+import type { IEcosystemRegistry, TChainEcosystem } from './types/index.d.ts';
 // Exports.
 export * as adapters from './adapters/index.ts';
 export * as plugins from './plugins/index.ts';
@@ -20,13 +20,7 @@ const evmChains = utils.iterateObject(
   (_, item) => item
 );
 
-export const EcosystemRegistry: Record<
-  TChainEcosystem,
-  {
-    name: string;
-    chains: EvmChainList.Chain[];
-  }
-> = {
+export const EcosystemRegistry: IEcosystemRegistry = {
   evm: {
     name: 'Ethereum Virtual Machine (EVM)',
     chains: evmChains,

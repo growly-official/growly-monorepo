@@ -29,8 +29,6 @@ export type TChainTokenData = {
   tokens: TMarketToken[];
 };
 
-export type IMultichain<T> = Partial<Record<TChainName, T>>;
-
 export type TSymbolAggregationBalance = Record<string, TMarketToken>;
 
 export type TTokenPortfolioStats = {

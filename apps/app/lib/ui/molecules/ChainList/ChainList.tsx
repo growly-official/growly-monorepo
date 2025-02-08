@@ -1,35 +1,43 @@
-import { EcosystemRegistry } from 'chainsmith/src';
 import Empty from '../../atoms/Empty/Empty';
-import { useMemo, Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import pluralize from 'pluralize';
 import Fuse from 'fuse.js';
 import ChainListItem from '../ChainListItem/ChainListItem';
-import { TChain, TChainEcosystem } from 'chainsmith/src/types';
-import { Card, TextField } from '@radix-ui/themes';
+import {
+  TChainEcosystem,
+  IEcosystemChainRegistry,
+  IMultichain,
+  TChainName,
+} from 'chainsmith/src/types';
+import { Card, Separator, TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { EcosystemRegistry } from 'chainsmith/src';
+import { getChainByName } from 'chainsmith/src/utils';
 
 type Props = {
   searchQuery: {
-    chainName: string;
-    onChainNameChanged?: (chainName: string) => void;
+    chainName: TChainName | '';
+    onChainNameChanged?: (chainName: TChainName | '') => void;
   };
-  selectedChain?: TChain;
-  onChainSelected?: (chain: TChain) => void;
+  selectedChains: IMultichain<boolean>;
+  onChainSelected?: (chain: TChainName) => void;
   ecosystem: TChainEcosystem;
+  ecosystemRegistry: Partial<IEcosystemChainRegistry>;
   className?: string;
 };
 
 export default ({
   ecosystem = 'evm',
-  selectedChain,
-  searchQuery: { chainName = selectedChain?.name || '', onChainNameChanged },
+  ecosystemRegistry = EcosystemRegistry,
+  selectedChains = {},
+  searchQuery: { chainName = '', onChainNameChanged },
   onChainSelected,
   ...props
 }: Props) => {
-  const [ecosystemChainResults, setEcosystemChainResult] = useState<TChain[]>([]);
+  const [ecosystemChainResults, setEcosystemChainResult] = useState<TChainName[]>([]);
   const ecosystemChains = useMemo(
-    () => EcosystemRegistry[ecosystem].chains,
-    [ecosystem, EcosystemRegistry]
+    () => (ecosystemRegistry as any)[ecosystem]?.chains || [],
+    [ecosystem, ecosystemRegistry]
   );
 
   useEffect(() => {
@@ -44,30 +52,38 @@ export default ({
 
     const result = fuse.search(chainName);
     const chains = chainName.length > 0 ? result.map(r => r.item) : ecosystemChains;
-    setEcosystemChainResult(chains as TChain[]);
+    setEcosystemChainResult(chains as TChainName[]);
   }, [ecosystemChains, chainName]);
 
   return (
     <div {...props}>
       <TextField.Root
         value={chainName}
+        className="rounded-xl"
+        placeholder="Search chains by name..."
         onChange={e => onChainNameChanged && onChainNameChanged(e.target.value)}>
-        <TextField.Slot>
+        <TextField.Slot className="py-2 px-3 rounded-xl">
           <MagnifyingGlassIcon height="16" width="16" />
         </TextField.Slot>
       </TextField.Root>
       {ecosystemChainResults.length > 0 ? (
         <Fragment>
-          <h2 className="mb-3 mt-3 text-center">
+          <h2 className="mb-3 mt-3 text-gray-600 text-center">
             There {pluralize('is', ecosystemChainResults.length)} {ecosystemChainResults.length}{' '}
             {pluralize('chain', ecosystemChainResults.length)} found
           </h2>
+          <Separator />
           <Card className="max-h-[300px] overflow-scroll py-2 mt-3">
-            {ecosystemChainResults.map(chain => (
-              <div onClick={() => onChainSelected && onChainSelected(chain)}>
-                <ChainListItem chain={chain} highlighted={selectedChain?.id === chain.id} />
-              </div>
-            ))}
+            {ecosystemChainResults
+              .sort((chainA, chainB) => chainA.localeCompare(chainB))
+              .map(chain => (
+                <div className="my-1" onClick={() => onChainSelected && onChainSelected(chain)}>
+                  <ChainListItem
+                    chain={getChainByName(chain)}
+                    highlighted={selectedChains[chain]}
+                  />
+                </div>
+              ))}
           </Card>
         </Fragment>
       ) : (

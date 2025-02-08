@@ -5,7 +5,7 @@ type Props = {
 
 export default ({ title, subtitle }: Props) => {
   return (
-    <div className="relative min-h-60 w-full flex flex-col justify-center items-center my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-2">
+    <div className="relative min-h-60 w-full flex rounded-xl flex-col justify-center items-center my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-2">
       <div className="p-3 text-center">
         <div className="flex justify-center mb-4">
           <svg

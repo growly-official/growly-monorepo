@@ -1,14 +1,13 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 type Props = {
-  title: string;
   open: boolean;
   handleOpen?: (open: boolean) => void;
   children: ReactNode;
 };
 
-const customStyles = {
+const customStyles: Record<string, CSSProperties> = {
   content: {
     top: '50%',
     left: '50%',
@@ -16,18 +15,20 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    borderRadius: 20,
+    boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
   },
 };
 
-const Modal = ({ title, open, children, handleOpen }: Props) => {
+const Modal = ({ open, children, handleOpen }: Props) => {
   return (
     <ReactModal
+      shouldCloseOnEsc
       onRequestClose={() => {
         if (handleOpen) handleOpen(false);
       }}
       isOpen={open}
-      style={customStyles}
-      contentLabel={title}>
+      style={customStyles}>
       {children}
     </ReactModal>
   );

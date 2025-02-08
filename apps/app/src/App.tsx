@@ -7,7 +7,7 @@ import { Dashboard } from './screens';
 function App() {
   return (
     <Providers>
-      <Theme accentColor={'white' as any}>
+      <Theme accentColor="teal" grayColor="gray" radius="large" scaling="95%">
         <main className="container">
           <Dashboard />
         </main>
