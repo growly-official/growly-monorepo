@@ -1,4 +1,4 @@
-import { PublicClient } from 'viem';
+import { PublicClient, PrivateKeyAccount, WalletClient, Transport, Chain, Account } from 'viem';
 import type { TChain } from './chains.d.ts';
 
 export interface TCreateClientParameters {
@@ -10,5 +10,13 @@ export interface TCreateClientParameters {
 }
 
 export type TClient = PublicClient & {
+  chain: TChain;
+};
+
+export interface TCreateWalletClientParameters extends TCreateClientParameters {
+  account: PrivateKeyAccount;
+}
+
+export type TWalletClient = WalletClient<Transport, Chain, Account> & {
   chain: TChain;
 };

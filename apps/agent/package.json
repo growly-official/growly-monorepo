@@ -9,7 +9,6 @@
     "clean": "./scripts/clean.sh"
   },
   "dependencies": {
-    "@elizaos/adapter-postgres": "0.1.9",
     "@elizaos/adapter-sqlite": "0.1.9",
     "@elizaos/adapter-supabase": "0.1.9",
     "@elizaos/client-auto": "0.1.9",
@@ -18,7 +17,7 @@
     "@elizaos/core": "0.1.9",
     "@elizaos/plugin-bootstrap": "0.1.9",
     "@elizaos/plugin-node": "0.1.9",
-    "@elizaos/plugin-solana": "0.1.9",
+    "@elizaos/plugin-tee": "0.1.9",
     "amqplib": "0.10.5",
     "fs": "0.0.1-security",
     "net": "1.0.2",
