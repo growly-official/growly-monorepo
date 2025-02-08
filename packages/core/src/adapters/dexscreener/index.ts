@@ -1,9 +1,11 @@
 import { Logger } from 'tslog';
 import type { IAdapter } from '../../types/adapter.d.ts';
 import type { IDexScreenerData, IDexScreenerPair } from './types.d.ts';
+import { autoInjectable } from 'tsyringe';
 
 const DEX_SCREENER_ENDPOINT = 'https://api.dexscreener.com/latest/dex';
 
+@autoInjectable()
 export class DexScreenerAdapter implements IAdapter {
   name = 'DexScreenerAdapter';
   logger = new Logger({ name: this.name });
