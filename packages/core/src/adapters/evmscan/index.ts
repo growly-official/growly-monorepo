@@ -1,8 +1,8 @@
 import { Logger } from 'tslog';
-import { TChainName, TAddress, TTokenTransferActivity } from '../../types';
-import { getChainByName, objectToQueryString } from '../../utils';
-import { IOnchainActivityAdapter } from '../../types/adapter';
-import { TEVMScanResponse, TEVMScanTokenActivity } from './types';
+import type { TChainName, TAddress, TTokenTransferActivity } from '../../types/index.d.ts';
+import { getChainByName, objectToQueryString } from '../../utils/index.ts';
+import type { IOnchainActivityAdapter } from '../../types/adapter.d.ts';
+import type { TEVMScanResponse, TEVMScanTokenActivity } from './types.d.ts';
 import axios from 'axios';
 import { autoInjectable } from 'tsyringe';
 

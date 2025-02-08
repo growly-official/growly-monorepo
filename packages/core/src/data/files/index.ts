@@ -1,1 +1,1 @@
-export * as TokenList from './tokenLists';
+export * as TokenList from './tokenLists/index.ts';

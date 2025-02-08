@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import { Wallets } from 'chainsmith/src/data';
-import { alchemy, buildEvmChains, ChainsmithSdk } from 'chainsmith/src';
-import * as Constants from '../constants';
-import { AdapterRegistry } from './config';
+import { AdapterRegistry, ALCHEMY_API_KEY } from './config.ts';
+import { Wallets } from 'chainsmith/src/data/index.ts';
+import { ChainsmithSdk } from 'chainsmith/src/index.ts';
+import { buildEvmChains } from 'chainsmith/src/utils/index.ts';
+import { alchemy } from 'chainsmith/src/rpc/index.ts';
 
-const chains = buildEvmChains(['base', 'mainnet'], alchemy(Constants.ALCHEMY_API_KEY));
+const chains = buildEvmChains(['base', 'mainnet'], alchemy(ALCHEMY_API_KEY));
 const sdk = ChainsmithSdk.init(chains);
 
 function testExternalities(enabled: boolean, f: () => Promise<any>) {
@@ -35,6 +36,6 @@ async function fetchDexScreenerParis() {
   );
 }
 
-testExternalities(false, fetchMultichainPortfolioWorks);
-testExternalities(true, fetchEvmscanTokenActivitiesWorks);
+testExternalities(true, fetchMultichainPortfolioWorks);
+testExternalities(false, fetchEvmscanTokenActivitiesWorks);
 testExternalities(false, fetchDexScreenerParis);

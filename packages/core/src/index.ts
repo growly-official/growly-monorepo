@@ -1,13 +1,14 @@
-import * as utils from './utils';
-import * as services from './plugins';
-import ChainsmithSdk from './sdk';
-import { ChainTypeBuilder } from './wrapper';
-import { EvmChainList } from './data';
-import { TChainEcosystem } from './types';
-export type * as Types from './types';
-export * from './rpc';
-export * from './wrapper';
-export * from './utils';
+import 'reflect-metadata';
+import * as utils from './utils/index.ts';
+import { ChainTypeBuilder } from './wrapper.ts';
+import { EvmChainList } from './data/index.ts';
+import type { TChainEcosystem } from './types/index.d.ts';
+// Exports.
+export * as adapters from './adapters/index.ts';
+export * as plugins from './plugins/index.ts';
+export { default as ChainsmithSdk } from './sdk.ts';
+export * as rpc from './rpc/index.ts';
+export * as wrapper from './wrapper.ts';
 
 const mainnet = new ChainTypeBuilder(EvmChainList.mainnet).withEcosystem('evm').build();
 
@@ -19,7 +20,7 @@ const evmChains = utils.iterateObject(
   (_, item) => item
 );
 
-export const EcosystemRegistry: Record<
+const EcosystemRegistry: Record<
   TChainEcosystem,
   {
     name: string;
@@ -40,6 +41,4 @@ export const EcosystemRegistry: Record<
   },
 };
 
-export const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;
-
-export { utils, services, ChainsmithSdk };
+const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;

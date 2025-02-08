@@ -1,14 +1,14 @@
 import { formatUnits, getContract } from 'viem';
-import { stoi } from '../../utils';
-import { Abis } from '../../data';
-import {
+import { stoi } from '../../utils/index.ts';
+import { Abis } from '../../data/index.ts';
+import type {
   TAddress,
   TBlockNumber,
   TClient,
   TContractToken,
   TContractTokenMetadata,
   TTokenListResponse,
-} from '../../types';
+} from '../../types/index.d.ts';
 import { autoInjectable } from 'tsyringe';
 import { Logger } from 'tslog';
 

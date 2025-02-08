@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "author": "",
+  "type": "module",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -10,7 +11,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "dev:script": "npx ts-node -r dotenv/config -r tsconfig-paths/register ./src/_scripts/index.ts",
+    "dev:script": "tsc && node --loader ts-node/esm -r dotenv/config -r tsconfig-paths/register ./src/_scripts/index.ts",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

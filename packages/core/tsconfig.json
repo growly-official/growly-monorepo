@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "commonjs",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "sourceMap": true,
     "baseUrl": "./",
     "incremental": true,

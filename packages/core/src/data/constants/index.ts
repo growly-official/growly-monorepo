@@ -1,2 +1,2 @@
-export * from './chains';
-export * from './wallets';
+export * from './chains.ts';
+export * from './wallets.ts';

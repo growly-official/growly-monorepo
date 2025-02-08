@@ -1,5 +1,5 @@
-import { TChainName } from './chains';
-import { TMarketToken } from './tokens';
+import type { TChainName } from './chains.d.ts';
+import type { TMarketToken } from './tokens.d.ts';
 
 export type IValueByChain = {
   chainName: string;

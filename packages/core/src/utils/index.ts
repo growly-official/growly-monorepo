@@ -1,6 +1,6 @@
-export * from './array.util';
-export * from './number.util';
-export * from './chain.util';
+export * from './array.util.ts';
+export * from './number.util.ts';
+export * from './chain.util.ts';
 
 export const getVariableName = (v: object) => {
   return Object.keys(v)[0];

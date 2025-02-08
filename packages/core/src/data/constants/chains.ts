@@ -1,6 +1,6 @@
 import * as EvmChainList from 'viem/chains';
-import { TChainEcosystem } from '../../types';
-import { iterateObject } from '../../utils';
+import type { TChainEcosystem } from '../../types/index.d.ts';
+import { iterateObject } from '../../utils/index.ts';
 
 export const EcosystemRegistry: Record<
   TChainEcosystem,
@@ -11,7 +11,7 @@ export const EcosystemRegistry: Record<
 > = {
   evm: {
     name: 'Ethereum Virtual Machine (EVM)',
-    chains: iterateObject(EvmChainList, (_, chain) => chain),
+    chains: iterateObject(EvmChainList, (_, chain) => chain) as any,
   },
   svm: {
     name: 'Solana Virtual Machine (SVM)',

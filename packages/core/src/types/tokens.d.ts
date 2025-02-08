@@ -1,4 +1,4 @@
-import { TAddress } from './chains';
+import type { TAddress } from './chains.d.ts';
 
 export type TTokenSymbol = string;
 export type TTokenId = number;

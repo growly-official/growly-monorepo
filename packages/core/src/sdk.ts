@@ -1,12 +1,11 @@
-import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
 import {
   MultichainPortfolioPlugin,
   MultichainTokenPlugin,
   MultiPlatformSocialPlugin,
   StoragePlugin,
-} from './plugins';
-import { TChain } from './types';
+} from './plugins/index.ts';
+import type { TChain } from './types/index.d.ts';
 
 @singleton()
 export default class ChainsmithSdk {

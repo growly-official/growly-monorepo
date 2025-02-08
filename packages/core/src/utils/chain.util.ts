@@ -1,7 +1,7 @@
-import { EvmChainList } from '../data';
-import { GetChainRpcEndpoint } from '../rpc';
-import { TBaseChain, TChain, TChainEcosystem, TChainName, TClient } from '../types';
-import { ChainTypeBuilder } from '../wrapper';
+import { EvmChainList } from '../data/index.ts';
+import { GetChainRpcEndpoint } from '../rpc/index.ts';
+import type { TBaseChain, TChain, TChainEcosystem, TChainName, TClient } from '../types/index.d.ts';
+import { ChainTypeBuilder } from '../wrapper.ts';
 
 export function getChainEcosystem(name: TChainName): TChainEcosystem {
   if (EvmChainList[name]) return 'evm';

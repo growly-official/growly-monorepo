@@ -1,5 +1,5 @@
 import { Logger } from 'tslog';
-import { TAddress, TChainName, TTokenAddress } from '.';
+import type { TAddress, TChainName, TTokenAddress } from './index.d.ts';
 
 export type WithAdapter<A, R> = (adapter: A) => R;
 export type WithManyAdapters<A extends IAdapter[], R> = (adapters: A) => R;

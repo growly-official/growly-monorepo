@@ -1,5 +1,5 @@
 import { autoInjectable } from 'tsyringe';
-import {
+import type {
   IMultichain,
   TAddress,
   TChain,
@@ -10,13 +10,17 @@ import {
   TToken,
   TTokenAddress,
   TTokenTransferActivity,
-} from '../../types';
-import { EvmTokenPlugin } from './evm';
-import { formatReadableToken } from '../../wrapper';
+} from '../../types/index.d.ts';
+import { EvmTokenPlugin } from './evm.ts';
+import { formatReadableToken } from '../../wrapper.ts';
 import { Logger } from 'tslog';
-import { getClientChain } from '../../utils';
-import { IMarketDataAdapter, IOnchainActivityAdapter, WithAdapter } from '../../types/adapter';
-import { StoragePlugin } from '../storage';
+import { getClientChain } from '../../utils/index.ts';
+import type {
+  IMarketDataAdapter,
+  IOnchainActivityAdapter,
+  WithAdapter,
+} from '../../types/adapter.d.ts';
+import { StoragePlugin } from '../storage/index.ts';
 
 type IGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
 type IGetMultichainTokenActivities = (

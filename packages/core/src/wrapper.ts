@@ -1,12 +1,12 @@
 import { createPublicClient, formatEther, http } from 'viem';
-import {
+import type {
   TChain,
   TChainEcosystem,
   TBaseChain,
   TCreateClientParameters,
   TClient,
   TChainName,
-} from './types';
+} from './types/index.d.ts';
 
 const DEFAULT_MULTICAL_BATCH_SIZE = 32 * 1026;
 
