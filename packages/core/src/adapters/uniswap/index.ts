@@ -23,12 +23,14 @@ import { GetChainRpcEndpoint } from '../../rpc/index.ts';
 import { getChainByName, getChainIdByName } from '../../utils/chain.util.ts';
 import { createClient, formatUnits, getContract, http } from 'viem';
 import { UniswapV3PoolAbi } from '../../data/abis/index.ts';
+import { autoInjectable } from 'tsyringe';
 
 const wrapUniswapTokenType = (token: TContractToken | TUniswapTokenDetail) => {
   if (token.symbol === 'ETH') return WETH9[token.chainId];
   return new Token(token.chainId, token.address, token.decimals, token.symbol, token.name);
 };
 
+@autoInjectable()
 export class UniswapSdkAdapter implements IMarketDataAdapter {
   name = 'UniswapSdkAdapater';
   logger = new Logger({ name: this.name });
