@@ -15,9 +15,11 @@ function testExternalities(enabled: boolean, f: () => Promise<any>) {
 async function fetchMultichainPortfolioWorks() {
   const wallets = {};
   for (const wallet of [Wallets.ETH_MAINNET_WALLET_PCMINH]) {
-    wallets[wallet] = await sdk.portfolio.getMultichainTokenPortfolio(
+    const portfolio = await sdk.portfolio.getMultichainTokenPortfolio(
       AdapterRegistry.CoinMarketcap
     )(wallet);
+    console.log(portfolio.base.tokens[0]);
+    wallets[wallet] = portfolio;
   }
   return wallets;
 }

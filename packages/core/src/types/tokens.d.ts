@@ -12,6 +12,8 @@ export type TTokenMetadata = {
   logoURI?: string;
 };
 
+export type TExtraField<T> = { extra?: T };
+
 export type TTokenTransferActivity = {
   chainId: number;
   symbol: TTokenSymbol;
@@ -43,9 +45,9 @@ export type TContractToken = TContractTokenMetadata & {
   balance: number;
 };
 
-export type TToken = TNativeToken | TContractToken;
+export type TToken<T = any> = (TNativeToken | TContractToken) & TExtraField<T>;
 
-export type TMarketToken = TToken & {
+export type TMarketToken<T = any> = TToken<T> & {
   usdValue: number;
   marketPrice: number;
 };

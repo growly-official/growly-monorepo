@@ -12,6 +12,7 @@ import type {
   TCMCStaticMap,
   TCMCTokenDetail,
   TCMCTokenIDDetail,
+  TCMCUSDPrice,
 } from './types.d.ts';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
@@ -47,10 +48,10 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     this.tokenSymbolMap = this.intoTokenSymbolMap(Files.TokenList.CoinMarketcapTokenList as any);
   }
 
-  fetchTokenWithPrice = async (
+  async fetchTokenWithPrice(
     _chain: TChainName,
     token: TToken
-  ): Promise<TMarketToken | undefined> => {
+  ): Promise<TMarketToken<TCMCUSDPrice> | undefined> {
     const tokenSymbolMap = this.getTokenSymbolMap([token]);
     const prices = await this.getTokenPriceMap(
       Object.values(tokenSymbolMap).map(value => value.id)
@@ -65,13 +66,14 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       ...token,
       usdValue,
       marketPrice: price,
+      extra: tokenPriceData.quote.USD,
     };
-  };
+  }
 
   fetchTokensWithPrice = async (
     _chainName: TChainName,
     tokens: TToken[]
-  ): Promise<{ tokens: TMarketToken[]; totalUsdValue: number }> => {
+  ): Promise<{ tokens: TMarketToken<TCMCUSDPrice>[]; totalUsdValue: number }> => {
     // Get token USD values from CoinMarketcap adapter.
     const tokenSymbolMap = this.getTokenSymbolMap(tokens);
     const prices = await this.getTokenPriceMap(
@@ -88,13 +90,14 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       }
 
       const tokenPriceData = prices[cmcTokenDetail.id];
-      const price = tokenPriceData.quote.USD.price;
-      const usdValue = price * token.balance;
+      const usd = tokenPriceData.quote.USD;
+      const usdValue = usd.price * token.balance;
       totalUsdValue += usdValue;
       marketTokens.push({
         ...token,
         usdValue,
-        marketPrice: price,
+        marketPrice: usd.price,
+        extra: usd,
       });
     }
     return {
