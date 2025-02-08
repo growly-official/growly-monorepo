@@ -1,5 +1,5 @@
 import type { TChainName } from './chains.d.ts';
-import type { TMarketToken } from './tokens.d.ts';
+import type { TMarketToken, TTokenSymbol } from './tokens.d.ts';
 
 export type IValueByChain = {
   chainName: string;
@@ -29,7 +29,7 @@ export type TChainTokenData = {
   tokens: TMarketToken[];
 };
 
-export type TSymbolAggregationBalance = Record<string, TMarketToken>;
+export type TSymbolAggregationBalance = Record<TTokenSymbol, TChainTokenData>;
 
 export type TTokenPortfolioStats = {
   sumPortfolioUSDValue: number;

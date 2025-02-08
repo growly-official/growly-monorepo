@@ -13,7 +13,7 @@ export default function ({ children, disabled, className, ...props }: Props) {
   return (
     <Button
       className={clsx('flex gap-2 py-3 items-center cursor-pointer', className)}
-      size={'4'}
+      size={'3'}
       variant="soft"
       disabled={disabled}
       {...props}>

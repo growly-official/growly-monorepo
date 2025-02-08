@@ -61,7 +61,7 @@ export default ({
         value={chainName}
         className="rounded-xl"
         placeholder="Search chains by name..."
-        onChange={e => onChainNameChanged && onChainNameChanged(e.target.value)}>
+        onChange={e => onChainNameChanged && onChainNameChanged(e.target.value as any)}>
         <TextField.Slot className="py-2 px-3 rounded-xl">
           <MagnifyingGlassIcon height="16" width="16" />
         </TextField.Slot>

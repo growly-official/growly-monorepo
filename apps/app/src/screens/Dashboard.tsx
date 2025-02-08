@@ -1,7 +1,5 @@
-import { Molecules } from '../../lib/ui';
+import { Molecules, Atoms } from '@/ui';
 import React, { useState } from 'react';
-import { ChainListModal } from '../../lib/ui/molecules';
-import { Button } from '../../lib/ui/atoms';
 import { TChainName, IMultiEcosystem } from 'chainsmith/src/types';
 import { countExistentialObject, iterateObject } from 'chainsmith/src/utils';
 import pluralize from 'pluralize';
@@ -18,41 +16,40 @@ const Dashboard: React.FC<any> = () => {
   );
 
   return (
-    <div>
-      <Molecules.ConnectWalletWithPrivybutton />
-      {countExistentialObject(selectedNetworks) > 0 ? (
+    <div className="py-5 px-5 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white">
+      <div className="flex justify-between items-center">
+        <Molecules.ConnectWalletWithPrivybutton />
         <div>
-          {iterateObject(selectedNetworks, (network, chains) => (
-            <Button onClick={() => setOpenChainList(true)}>
-              {network.toUpperCase()}: {chains.length} {pluralize('chain', chains.length)} selected
-            </Button>
-          ))}
+          {countExistentialObject(selectedNetworks) > 0 ? (
+            <div>
+              {iterateObject(selectedNetworks, (network, chains) => (
+                <Atoms.Button onClick={() => setOpenChainList(true)}>
+                  {network.toUpperCase()}: {chains.length} {pluralize('chain', chains.length)}{' '}
+                  selected
+                </Atoms.Button>
+              ))}
+            </div>
+          ) : (
+            <Atoms.Button onClick={() => setOpenChainList(true)}>Select your network</Atoms.Button>
+          )}
+          {openChainList && (
+            <Molecules.ChainListModal
+              open={true}
+              ecosystemDisabled
+              defaultEcosystem="evm"
+              defaultChains={defaultEcosystemChains}
+              handleOnClick={(ecosystem, chains) => {
+                setSelectedNetworks({
+                  ...selectedNetworks,
+                  [ecosystem]: chains,
+                });
+                setOpenChainList(false);
+              }}
+              handleOpen={() => setOpenChainList(false)}
+            />
+          )}
         </div>
-      ) : (
-        <Button onClick={() => setOpenChainList(true)}>Select your network</Button>
-      )}
-      {openChainList && (
-        <ChainListModal
-          open={true}
-          defaultEcosystem="evm"
-          defaultChains={defaultEcosystemChains}
-          handleOnClick={(ecosystem, chains) => {
-            setSelectedNetworks({
-              ...selectedNetworks,
-              [ecosystem]: chains,
-            });
-            setOpenChainList(false);
-          }}
-          handleOpen={() => setOpenChainList(false)}
-        />
-      )}
-      {/* <MultichainPortfolio
-            address={Wallets.ETH_MAINNET_WALLET_VITALIK}
-            chainList={
-              // TODO: In production, chain type builder should not be used directly.
-              buildEvmChains(['base', 'mainnet'], alchemy(''))
-            }
-          /> */}
+      </div>
     </div>
   );
 };

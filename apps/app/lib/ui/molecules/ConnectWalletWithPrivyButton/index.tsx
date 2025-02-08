@@ -31,8 +31,9 @@ const ConnectWalletWithPrivyButton = () => {
         }>
         {connectedWallet && (
           <Popover
+            transformMode={'relative'}
             isOpen={popoverOpen}
-            positions={['bottom']}
+            positions={['bottom', 'right', 'left', 'top']}
             clickOutsideCapture={popoverOpen}
             onClickOutside={() => popoverOpen && setPopoverOpen(false)}
             padding={10}
@@ -56,7 +57,7 @@ const ConnectWalletWithPrivyButton = () => {
             <WalletAddress
               onClick={() => setPopoverOpen(true)}
               truncated
-              className="py-7"
+              className="py-7 relative"
               truncatedLength={15}
               address={connectedWallet}
             />
