@@ -1,12 +1,12 @@
 import { Card, Input, List } from '@material-tailwind/react';
-import { materialUiProps } from 'chainsmith-ui';
-import { EcosystemRegistry } from 'chainsmith-core';
+import { materialUiProps } from '@/ui';
+import { EcosystemRegistry } from 'chainsmith/src';
 import Empty from '../../atoms/Empty/Empty';
 import { useMemo, Fragment, useEffect, useState } from 'react';
 import pluralize from 'pluralize';
 import Fuse from 'fuse.js';
 import ChainListItem from '../ChainListItem/ChainListItem';
-import { TChain, TChainEcosystem } from 'chainsmith-types';
+import { TChain, TChainEcosystem } from 'chainsmith/src/types';
 
 type Props = {
   searchQuery: {

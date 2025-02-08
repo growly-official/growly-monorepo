@@ -7,10 +7,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "chainsmith-ui": ["./lib/ui/main.ts"],
-      "chainsmith-core": ["../../packages/core/src/index.ts"],
-      "chainsmith-data": ["../../packages/core/src/data/index.ts"],
-      "chainsmith-types": ["../../packages/core/src/types/index.ts"]
+      "@/ui": ["./lib/ui/main.ts"]
     },
 
     /* Bundler mode */

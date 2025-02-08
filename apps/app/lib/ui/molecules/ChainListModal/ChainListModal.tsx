@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Button, Modal } from '../../atoms';
-import { EcosystemRegistry, Ecosystems } from 'chainsmith-core';
+import { EcosystemRegistry, Ecosystems } from 'chainsmith/src';
 import { CircleCheck } from 'lucide-react';
 import { Option, Select } from '@material-tailwind/react';
 import ChainList from '../ChainList/ChainList';
-import { materialUiProps } from 'chainsmith-ui';
-import { TChain, TChainEcosystem } from 'chainsmith-types';
+import { materialUiProps } from '@/ui';
+import { TChain, TChainEcosystem } from 'chainsmith/src/types';
 
 type Props = {
   open: boolean;

@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogProps,
 } from '@material-tailwind/react';
-import { materialUiProps } from 'chainsmith-ui';
+import { materialUiProps } from '@/ui';
 import type { ReactNode } from 'react';
 
 type Props = {

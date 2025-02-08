@@ -22,3 +22,5 @@ export interface IMarketDataAdapter extends IAdapter {
 export interface IOnchainActivityAdapter extends IAdapter {
   listAllTokenActivities(chain: TChainName, address: TAddress, limit: number);
 }
+
+export interface ISmartWalletAdapter extends IAdapter {}

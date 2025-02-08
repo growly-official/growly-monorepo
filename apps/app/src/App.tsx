@@ -1,6 +1,6 @@
 import MultichainPortfolio from './Portfolio';
-import { Wallets, EvmChainList } from 'chainsmith-data';
-import { ChainTypeBuilder } from 'chainsmith-core';
+import { Wallets, EvmChainList } from 'chainsmith/src/data';
+import { ChainTypeBuilder } from 'chainsmith/src/wrapper';
 
 const { mainnet, base } = EvmChainList;
 

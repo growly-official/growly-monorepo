@@ -20,7 +20,7 @@ const evmChains = utils.iterateObject(
   (_, item) => item
 );
 
-const EcosystemRegistry: Record<
+export const EcosystemRegistry: Record<
   TChainEcosystem,
   {
     name: string;
@@ -41,4 +41,4 @@ const EcosystemRegistry: Record<
   },
 };
 
-const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;
+export const Ecosystems: TChainEcosystem[] = Object.keys(EcosystemRegistry) as any;

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Button, ButtonProps } from '@material-tailwind/react';
-import { materialUiProps } from 'chainsmith-ui';
+import { materialUiProps } from '@/ui';
 
 type Props = ButtonProps & {
   children: ReactNode;

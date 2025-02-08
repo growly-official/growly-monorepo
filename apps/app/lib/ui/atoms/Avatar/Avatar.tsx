@@ -2,7 +2,7 @@ import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
 import { Avatar } from '@material-tailwind/react';
 import { TAddress } from 'chainsmith-types';
-import { materialUiProps } from 'chainsmith-ui';
+import { materialUiProps } from '@/ui';
 
 type Props = {
   address: TAddress;
