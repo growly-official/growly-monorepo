@@ -30,5 +30,5 @@ export default ({ address, size }: Props) => {
     shapeColor: ['0a5b83', '1c799f', '69d2e7'],
   }).toDataUri();
 
-  return <Avatar src={randomAvatar} fallback={address} />;
+  return <Avatar className="rounded-2xl" src={randomAvatar} fallback={address} />;
 };

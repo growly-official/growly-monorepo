@@ -17,8 +17,10 @@
     "clean": "rm -fR ./node_modules"
   },
   "dependencies": {
+    "@privy-io/react-auth": "^2.4.2",
     "@radix-ui/react-icons": "^1.3.2",
     "@radix-ui/themes": "^3.2.0",
+    "@tanstack/react-query": "^5.66.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
     "@types/node": "^22.10.2",
@@ -29,15 +31,18 @@
     "fuse.js": "^7.0.0",
     "lucide": "^0.469.0",
     "lucide-react": "^0.469.0",
+    "permissionless": "^0.2.30",
     "pluralize": "^8.0.0",
     "precommit": "^1.2.2",
     "prettier": "^3.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.3",
+    "react-tiny-popover": "^8.1.6",
     "react-tooltip": "^5.28.0",
-    "viem": "^2.21.57",
-    "vite-tsconfig-paths": "^4.3.2"
+    "viem": "2.x",
+    "vite-tsconfig-paths": "^4.3.2",
+    "wagmi": "^2.14.11"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.3",

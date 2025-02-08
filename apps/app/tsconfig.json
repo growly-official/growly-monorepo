@@ -7,7 +7,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@/ui": ["./lib/ui/main.ts"]
+      "@/ui": ["./lib/ui/index.ts"],
+      "@/core": ["./lib/core/index.ts"]
     },
 
     /* Bundler mode */

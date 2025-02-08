@@ -9,7 +9,7 @@ type Props = ButtonProps & {
 
 export default function ({ children, disabled, placeholder = '', ...props }: Props) {
   return (
-    <Button className="flex items-center gap-3" disabled={disabled} {...props}>
+    <Button className="flex items-center" size={'3'} disabled={disabled} {...props}>
       {children}
     </Button>
   );

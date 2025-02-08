@@ -1,4 +1,4 @@
-import { Molecules } from '@/ui';
+import { Molecules } from '../../lib/ui';
 import { useEffect, useState } from 'react';
 import { TChain, TPortfolio, TToken } from 'chainsmith/src/types';
 

@@ -1,28 +1,29 @@
 import { TAddress } from 'chainsmith/src/types';
-import { Avatar, Button, TooltipContainer } from '../../atoms';
-import { Wallet } from 'lucide-react';
+import { Avatar, Button } from '../../atoms';
+import { ButtonProps } from '@radix-ui/themes';
+import { ChevronDownIcon } from 'lucide-react';
 
 type Props = {
   address: TAddress;
   truncatedLength?: number;
   truncated?: boolean;
   className?: string;
-};
+} & ButtonProps;
 
-export default ({ address, truncated, truncatedLength = 4, className }: Props) => {
+export default ({ address, truncated, truncatedLength = 4, className, ...props }: Props) => {
   const first = address.slice(0, truncatedLength / 2);
   const second = address.slice(address.length - truncatedLength / 2);
   return (
-    <TooltipContainer
-      tooltipId={`wallet-address-${address}`}
-      tooltipContent={`Address: ${address}`}>
-      <Button className={`font-bold ${className} flex items-center cursor-pointer gap-3 py-7 px-3`}>
-        <Avatar address={address} size={35} />
-        {truncated && first.length < address.length / 2 && truncatedLength > 0
-          ? `${first}...${second}`
-          : address}
-        <Wallet size={18} />{' '}
-      </Button>
-    </TooltipContainer>
+    <Button
+      {...props}
+      data-popover-target="popover-default"
+      style={{ textTransform: 'lowercase' }}
+      className={`${className} hover:bg-gray-200 flex items-center cursor-pointer gap-3 py-7 px-3 rounded-xl shadow-xl`}>
+      <Avatar address={address} size={35} />
+      {truncated && first.length < address.length / 2 && truncatedLength > 0
+        ? `${first}...${second}`
+        : address}
+      <ChevronDownIcon />
+    </Button>
   );
 };

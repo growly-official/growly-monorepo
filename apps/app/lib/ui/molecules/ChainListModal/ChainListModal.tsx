@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Modal } from '../../atoms';
 import { EcosystemRegistry, Ecosystems } from 'chainsmith/src';
 import { CircleCheck } from 'lucide-react';
-import { Atoms } from '@/ui';
+import { Atoms } from '../..';
 import ChainList from '../ChainList/ChainList';
 import { TChain, TChainEcosystem } from 'chainsmith/src/types';
 

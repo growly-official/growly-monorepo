@@ -8,7 +8,7 @@ import {
   IconButton,
   Tooltip,
 } from '@material-tailwind/react';
-import { materialUiProps } from '@/ui';
+import { materialUiProps } from '../..';
 import { PencilIcon } from 'lucide-react';
 import { Button } from '../../atoms';
 
