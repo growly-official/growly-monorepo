@@ -25,16 +25,16 @@ export type TChainMetadata = {
   ecosystem: TChainEcosystem;
 };
 
-export type IMultichain<T> = Partial<Record<TChainName, T>>;
-export type IMultiEcosystem<T> = Partial<Record<TChainEcosystem, T>>;
+export type TMultichain<T> = Partial<Record<TChainName, T>>;
+export type TMultiEcosystem<T> = Partial<Record<TChainEcosystem, T>>;
 
 export type TBaseChain = TBaseChainType & Partial<TChainMetadata>;
 
 export type TChain = TBaseChainType & TChainMetadata;
 
-export type IEcosystemRegistry = IMultiEcosystem<{
+export type IEcosystemRegistry = TMultiEcosystem<{
   name: string;
   chains: TChainName[];
 }>;
 
-export type IEcosystemChainRegistry = IMultiEcosystem<{ chains: TChainName[] }>;
+export type IEcosystemChainRegistry = TMultiEcosystem<{ chains: TChainName[] }>;

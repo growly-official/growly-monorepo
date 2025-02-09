@@ -1,11 +1,9 @@
 import 'reflect-metadata';
-import { AdapterRegistry, ALCHEMY_API_KEY } from './config.ts';
+import { AdapterRegistry, buildDefaultChains } from '../config/index.ts';
 import { Wallets } from 'chainsmith/src/data/index.ts';
 import { ChainsmithSdk } from 'chainsmith/src/index.ts';
-import { buildEvmChains } from 'chainsmith/src/utils/index.ts';
-import { alchemy } from 'chainsmith/src/rpc/index.ts';
 
-const chains = buildEvmChains(['base', 'mainnet'], alchemy(ALCHEMY_API_KEY));
+const chains = buildDefaultChains(['base', 'mainnet', 'zksync', 'optimism']);
 const sdk = ChainsmithSdk.init(chains);
 
 function testExternalities(enabled: boolean, f: () => Promise<any>) {
@@ -18,7 +16,6 @@ async function fetchMultichainPortfolioWorks() {
     const portfolio = await sdk.portfolio.getMultichainTokenPortfolio(
       AdapterRegistry.CoinMarketcap
     )(wallet);
-    console.log(portfolio.base.tokens[0]);
     wallets[wallet] = portfolio;
   }
   return wallets;

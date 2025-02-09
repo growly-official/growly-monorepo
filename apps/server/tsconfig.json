@@ -17,6 +17,7 @@
     "noImplicitAny": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "checkJs": false,
     "noEmitOnError": false,
     "skipDefaultLibCheck": true,

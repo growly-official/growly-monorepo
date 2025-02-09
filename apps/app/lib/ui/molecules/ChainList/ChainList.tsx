@@ -6,7 +6,7 @@ import ChainListItem from '../ChainListItem/ChainListItem';
 import {
   TChainEcosystem,
   IEcosystemChainRegistry,
-  IMultichain,
+  TMultichain,
   TChainName,
 } from 'chainsmith/src/types';
 import { Card, Separator, TextField } from '@radix-ui/themes';
@@ -19,7 +19,7 @@ type Props = {
     chainName: TChainName | '';
     onChainNameChanged?: (chainName: TChainName | '') => void;
   };
-  selectedChains: IMultichain<boolean>;
+  selectedChains: TMultichain<boolean>;
   onChainSelected?: (chain: TChainName) => void;
   ecosystem: TChainEcosystem;
   ecosystemRegistry: Partial<IEcosystemChainRegistry>;

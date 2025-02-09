@@ -1,12 +1,12 @@
 import { Molecules, Atoms } from '@/ui';
 import React, { useState } from 'react';
-import { TChainName, IMultiEcosystem } from 'chainsmith/src/types';
+import { TChainName, TMultiEcosystem } from 'chainsmith/src/types';
 import { countExistentialObject, iterateObject } from 'chainsmith/src/utils';
 import pluralize from 'pluralize';
 
 const Dashboard: React.FC<any> = () => {
   const [openChainList, setOpenChainList] = useState<boolean>(false);
-  const [selectedNetworks, setSelectedNetworks] = useState<IMultiEcosystem<TChainName[]>>({});
+  const [selectedNetworks, setSelectedNetworks] = useState<TMultiEcosystem<TChainName[]>>({});
   const defaultEcosystemChains = (selectedNetworks['evm'] || []).reduce<Record<string, true>>(
     (acc, item) => {
       acc[item] = true;
