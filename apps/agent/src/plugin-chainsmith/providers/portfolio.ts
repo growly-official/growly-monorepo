@@ -1,0 +1,169 @@
+import {
+  type IAgentRuntime,
+  type ICacheManager,
+  type Memory,
+  type Provider,
+  type State,
+  elizaLogger,
+} from '@elizaos/core';
+import { DeriveKeyProvider, TEEMode } from '@elizaos/plugin-tee';
+import NodeCache from 'node-cache';
+import * as path from 'node:path';
+import type { Address, PrivateKeyAccount } from 'viem';
+import { formatUnits } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+
+import { alchemy } from 'chainsmith/src/rpc';
+import {
+  TChain,
+  TChainName,
+  TClient,
+  TWalletClient,
+  TAddress,
+  TChainTokenData,
+  TMultichain,
+} from 'chainsmith/src/types';
+import {
+  aggregateMultichainTokenBalance,
+  buildEvmChains,
+  getChainByName,
+} from 'chainsmith/src/utils';
+import { createClient } from 'chainsmith/src/wrapper';
+import { ChainsmithSdk } from 'chainsmith/src';
+import { AdapterRegistry } from '../config/chainsmith';
+
+export class PortfolioProvider {
+  private sdk: ChainsmithSdk;
+  private cache: NodeCache;
+  private cacheKey = 'evm/portfolio';
+  private CACHE_EXPIRY_SEC = 5;
+  chains: TChain[];
+  address: TAddress;
+
+  constructor(
+    private cacheManager: ICacheManager,
+    address: TAddress,
+    chains: TChain[]
+  ) {
+    this.address = address;
+    this.chains = chains;
+    this.sdk = ChainsmithSdk.init(chains);
+    this.cache = new NodeCache({ stdTTL: this.CACHE_EXPIRY_SEC });
+  }
+
+  getPublicClient(chainName: TChainName): TClient {
+    const chain = getChainByName(chainName);
+    return createClient({ chain });
+  }
+
+  async getENSName(): Promise<string> {
+    const publicClient = this.getPublicClient('mainnet');
+    const ensName = await publicClient.getEnsName({
+      address: this.address,
+    });
+
+    return ensName;
+  }
+
+  async fetchMultichainPortfolio(): Promise<TMultichain<TChainTokenData>> {
+    const cacheKey = `walletPortfolio_${this.address}`;
+    const cachedData = await this.getCachedData<TMultichain<TChainTokenData>>(cacheKey);
+
+    if (cachedData) {
+      elizaLogger.log(`Returning cached portfolio for wallet: ${this.address}`);
+      return cachedData;
+    }
+
+    try {
+      const portfolio = await this.sdk.portfolio.getMultichainTokenPortfolio(
+        AdapterRegistry.CoinMarketcap
+      )(this.address);
+
+      this.setCachedData<TMultichain<TChainTokenData>>(cacheKey, portfolio);
+      elizaLogger.log('Portfolio cached for address: ', this.address);
+      return portfolio;
+    } catch (error: any) {
+      console.error('Error getting address portfolio:', error);
+      return null;
+    }
+  }
+
+  formatPortfolio(portfolio: TMultichain<TChainTokenData>): string {
+    const multichainTokenBalance = aggregateMultichainTokenBalance(portfolio);
+
+    let output = `Wallet Address: ${this.address}\n`;
+
+    return 'Hello';
+  }
+
+  async getFormattedPortfolio(): Promise<string> {
+    try {
+      const portfolio = await this.fetchMultichainPortfolio();
+
+      return this.formatPortfolio(portfolio);
+    } catch (error) {
+      elizaLogger.error('Error generating portfolio report:', error);
+      return 'Unable to fetch wallet information. Please try again later.';
+    }
+  }
+
+  // Cache related functions
+  private async readFromCache<T>(key: string): Promise<T | null> {
+    const cached = await this.cacheManager.get<T>(path.join(this.cacheKey, key));
+    return cached;
+  }
+
+  private async writeToCache<T>(key: string, data: T): Promise<void> {
+    await this.cacheManager.set(path.join(this.cacheKey, key), data, {
+      expires: Date.now() + this.CACHE_EXPIRY_SEC * 1000,
+    });
+  }
+
+  private async getCachedData<T>(key: string): Promise<T | null> {
+    // Check in-memory cache first
+    const cachedData = this.cache.get<T>(key);
+    if (cachedData) {
+      return cachedData;
+    }
+
+    // Check file-based cache
+    const fileCachedData = await this.readFromCache<T>(key);
+    if (fileCachedData) {
+      // Populate in-memory cache
+      this.cache.set(key, fileCachedData);
+      return fileCachedData;
+    }
+
+    return null;
+  }
+
+  private async setCachedData<T>(cacheKey: string, data: T): Promise<void> {
+    // Set in-memory cache
+    this.cache.set(cacheKey, data);
+
+    // Write to file-based cache
+    await this.writeToCache(cacheKey, data);
+  }
+}
+
+export const evmPortfolioProvider: Provider = {
+  async get(runtime: IAgentRuntime, _message: Memory, state?: State): Promise<string | null> {
+    try {
+      const chainNames = (runtime.character.settings.chains?.evm as TChainName[]) || ['mainnet'];
+      const ALCHEMY_API_KEY = runtime.getSetting('ALCHEMY_API_KEY');
+      const address = state?.address as TAddress;
+
+      const chains = buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
+
+      const portfolioProvider = new PortfolioProvider(runtime.cacheManager, address, chains);
+
+      const agentName = state?.agentName || 'The agent';
+      return `${agentName}'s EVM Wallet Address: ${address}`;
+
+      // return `${agentName}'s EVM Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
+    } catch (error) {
+      console.error('Error in EVM wallet provider:', error);
+      return null;
+    }
+  },
+};

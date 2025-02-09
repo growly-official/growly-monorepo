@@ -1,4 +1,4 @@
-import type { TMultiChain, TChainId } from './chains.d.ts';
+import type { TMultiChain, TChainId, TChainName } from './chains.d.ts';
 import type { TMarketToken, TTokenSymbol, TTokenMetadataPrice } from './tokens.d.ts';
 
 export type TChainStats = {
@@ -28,29 +28,39 @@ export type TTokenChainData = {
   totalUsdValue: number;
   totalBalance: number;
   marketData: TTokenMetadataPrice;
-  allocations: TMultiChain<TValueByChain>;
+  allocations: TMultiChain<TTokenValueByChain>;
 };
 
 export type TValueByChain = {
-  chainId: TChainId;
+  chainId: number;
+  totalUsdValue: number;
+};
+
+export type TTokenValueByChain = TValueByChain & {
   balance: number;
-  usdValue: number;
 };
 
 export type TTokenAggregationBalance = Record<TTokenSymbol, TTokenChainData>;
+export type TChainAggregationBalance = Record<string, TValueByChain>; // Sorry Tin by didn't use TChainName
 
-export type TTokenPortfolioStats = {
-  sumPortfolioUSDValue: number;
-  sumMemeUSDValue: number;
-  mostValuableToken: {
-    name: string;
-    symbol: string;
-    value: number;
-    logoURI: string;
-  };
-  aggregatedBalanceBySymbol: TTokenAggregationBalance;
-  chainRecordsWithTokens: TChainRecordWithTokens;
+export type TTokenPortfolio = {
+  totalUsdValue: number;
+  aggregatedBalanceByToken: TTokenAggregationBalance;
+  aggregatedBalanceByChain: TChainAggregationBalance;
 };
+
+// export type TTokenPortfolioStats = {
+//   sumPortfolioUSDValue: number;
+//   sumMemeUSDValue: number;
+//   mostValuableToken: {
+//     name: string;
+//     symbol: string;
+//     value: number;
+//     logoURI: string;
+//   };
+//   aggregatedBalanceBySymbol: TTokenAggregationBalance;
+//   chainRecordsWithTokens: TChainRecordWithTokens;
+// };
 
 export type TNumberInPercentage = number;
 

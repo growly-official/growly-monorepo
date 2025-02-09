@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "start": "tsc && node --loader ts-node/esm src/index.ts",
-    "clean": "./scripts/clean.sh"
+    "clean": "./scripts/clean.sh",
+    "dev:script": "bun run ./scripts/index.ts"
   },
   "dependencies": {
     "@elizaos/adapter-sqlite": "0.1.9",

@@ -3,14 +3,26 @@ import type {
   TChainTokenData,
   TTokenAggregationBalance,
   TChainName,
+  TTokenPortfolio,
+  TChainAggregationBalance,
 } from '../types/index.d.ts';
 import _ from 'lodash';
 import { getChainIdByName } from './chain.util.ts';
 
 export function aggregateMultichainTokenBalance(
   portfolio: TMultichain<TChainTokenData>
-): TTokenAggregationBalance {
+): TTokenPortfolio {
+  let totalPortfolioValue = 0;
+
   const tokenAggregation: TTokenAggregationBalance = {};
+  const chainAggregation: TChainAggregationBalance = {};
+
+  for (const chainName in portfolio) {
+    chainAggregation[chainName] = {
+      chainId: getChainIdByName(chainName as TChainName),
+      totalUsdValue: portfolio[chainName].totalUsdValue,
+    };
+  }
 
   // Iterate through each chain in the multiChainData
   for (const chainName in portfolio) {
@@ -43,8 +55,15 @@ export function aggregateMultichainTokenBalance(
         balance: token.balance,
         usdValue: token.usdValue,
       };
+
+      // Global: Update totalPortfolioValue
+      totalPortfolioValue += token.usdValue;
     }
   }
 
-  return tokenAggregation;
+  return {
+    totalUsdValue: totalPortfolioValue,
+    aggregatedBalanceByToken: tokenAggregation,
+    aggregatedBalanceByChain: chainAggregation,
+  } as TTokenPortfolio;
 }
