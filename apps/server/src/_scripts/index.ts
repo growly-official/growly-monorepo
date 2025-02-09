@@ -4,7 +4,7 @@ import { Wallets } from 'chainsmith/src/data/index.ts';
 import { ChainsmithSdk } from 'chainsmith/src/index.ts';
 import { aggregateMultichainTokenBalance } from 'chainsmith/src/utils/portfolio.util.ts';
 
-const chains = buildDefaultChains(['base', 'mainnet', 'zksync', 'optimism', 'baseSepolia']);
+const chains = buildDefaultChains(['base', 'mainnet', 'optimism']);
 const sdk = ChainsmithSdk.init(chains);
 
 function testExternalities(enabled: boolean, f: () => Promise<any>) {
