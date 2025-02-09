@@ -5,7 +5,7 @@ import type { TAddress, TChain, TChainTokenList, TMultichain } from '../../types
 import { createClient } from '../../wrapper.ts';
 import { StoragePlugin } from '../storage/index.ts';
 import { MultichainTokenPlugin } from '../token/index.ts';
-import { aggregateMultichainTokenBalance } from 'src/utils/portfolio.util.ts';
+import { aggregateMultichainTokenBalance } from '../../utils/portfolio.util.ts';
 import type {
   IGetMultichainTokenPortfolio,
   TGetChainTokenList,
