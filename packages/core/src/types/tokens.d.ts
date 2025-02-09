@@ -52,8 +52,8 @@ export type TPriceData = {
   marketPrice: number;
 };
 
-export type TMarketToken<T = any> = TToken<T> & TPriceData;
+export type TMarketToken<T = any> = TToken<T> & TPriceData & { tags: string[] };
 
 export type TTokenMetadataPrice<T = any> = TTokenMetadata &
   TExtraField<T> &
-  Pick<TPriceData, 'marketPrice'>;
+  Pick<TPriceData, 'marketPrice'> & { tags: string[] };

@@ -24,8 +24,8 @@ export const AdapterRegistry = {
   DexScreener: new adapters.DexScreenerAdapter(),
 };
 
-export const buildDefaultChains = (chainName: TChainName[]) =>
-  buildEvmChains(chainName, alchemy(ALCHEMY_API_KEY));
+export const buildDefaultChains = (chainNames: TChainName[]) =>
+  buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
 
 export const initChainsmithSdk = (chainNames: TChainName[]) => {
   const chains = buildDefaultChains(chainNames);

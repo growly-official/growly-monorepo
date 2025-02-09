@@ -5,9 +5,13 @@ import type {
   TChainName,
   TTokenPortfolio,
   TChainAggregationBalance,
+  TMarketToken,
+  TTokenPortfolioStats,
+  TTokenChainData,
 } from '../types/index.d.ts';
 import _ from 'lodash';
 import { getChainIdByName } from './chain.util.ts';
+import { POPULAR_MEMES } from 'src/data/constants/tokens.ts';
 
 export function aggregateMultichainTokenBalance(
   portfolio: TMultichain<TChainTokenList>
@@ -67,3 +71,26 @@ export function aggregateMultichainTokenBalance(
     aggregatedBalanceByChain: chainAggregation,
   } as TTokenPortfolio;
 }
+
+export const calculateMultichainTokenPortfolio = (
+  multichainTokenPortfolio: TTokenPortfolio
+): TTokenPortfolioStats => {
+  let sumMemeUSDValue = 0;
+  let mostValuableToken: TTokenChainData | undefined = undefined;
+  Object.entries(multichainTokenPortfolio.aggregatedBalanceByToken).map(
+    ([tokenSymbol, tokenDetail]) => {
+      const { marketData, totalUsdValue } = tokenDetail;
+      if (!mostValuableToken || tokenDetail.totalUsdValue > mostValuableToken?.totalUsdValue)
+        mostValuableToken = tokenDetail;
+      if (marketData.tags.includes('memes') || POPULAR_MEMES.includes(tokenSymbol))
+        sumMemeUSDValue += totalUsdValue;
+    }
+  );
+
+  return {
+    sumPortfolioUSDValue: multichainTokenPortfolio.totalUsdValue,
+    sumMemeUSDValue,
+    mostValuableToken,
+    ...multichainTokenPortfolio,
+  };
+};

@@ -7,10 +7,11 @@ import type { TTokenPortfolio } from 'chainsmith/src/types/stats.d.ts';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('/portfolio')
   async getWalletTokenPortfolio(
     @Body() payload: { walletAddress: TAddress; chainNames: TChainName[] }
   ): Promise<TTokenPortfolio> {
+    if (payload.chainNames.length === 0) throw new Error('No chain provided');
     return this.appService.getWalletTokenPortfolio(payload.walletAddress, payload.chainNames);
   }
 }
