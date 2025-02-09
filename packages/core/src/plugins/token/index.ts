@@ -1,6 +1,6 @@
 import { autoInjectable } from 'tsyringe';
 import type {
-  IMultichain,
+  TMultichain,
   TAddress,
   TChain,
   TClient,
@@ -22,11 +22,11 @@ import type {
 } from '../../types/adapter.d.ts';
 import { StoragePlugin } from '../storage/index.ts';
 
-type IGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
-type IGetMultichainTokenActivities = (
+type TGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
+type TGetMultichainTokenActivities = (
   chains?: TChain[],
   address?: TAddress
-) => Promise<IMultichain<TTokenTransferActivity[]>>;
+) => Promise<TMultichain<TTokenTransferActivity[]>>;
 
 @autoInjectable()
 export class MultichainTokenPlugin {
@@ -41,7 +41,7 @@ export class MultichainTokenPlugin {
     }>
   ) {}
 
-  getTokenPrice: WithAdapter<IMarketDataAdapter, IGetTokenPrice> =
+  getTokenPrice: WithAdapter<IMarketDataAdapter, TGetTokenPrice> =
     adapter => async (client?: TClient, tokenAddress?: TAddress) => {
       try {
         const chain = getClientChain(this.storagePlugin.readRamOrReturn({ client }));
@@ -54,10 +54,10 @@ export class MultichainTokenPlugin {
       }
     };
 
-  listTokenTransferActivities: WithAdapter<IOnchainActivityAdapter, IGetMultichainTokenActivities> =
+  listTokenTransferActivities: WithAdapter<IOnchainActivityAdapter, TGetMultichainTokenActivities> =
     adapter => async (chains?: TChain[], walletAddress?: TAddress) => {
       try {
-        const chainActivitiesRecord: IMultichain<TTokenTransferActivity[]> = {};
+        const chainActivitiesRecord: TMultichain<TTokenTransferActivity[]> = {};
         for (const chain of this.storagePlugin.readDiskOrReturn({ chains })) {
           chainActivitiesRecord[chain.chainName] = await adapter.listAllTokenActivities(
             chain.chainName,

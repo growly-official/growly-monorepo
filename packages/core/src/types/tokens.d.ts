@@ -47,23 +47,14 @@ export type TContractToken = TContractTokenMetadata & {
 
 export type TToken<T = any> = (TNativeToken | TContractToken) & TExtraField<T>;
 
-export type TMarketToken<T = any> = TToken<T> & {
+export type TPriceData = {
   usdValue: number;
   marketPrice: number;
 };
+
+export type TMarketToken<T = any> = TToken<T> & TPriceData;
 
 export type TValueByChain = {
   chainName: string;
   value: number;
 };
-
-export type TPriceData = {
-  price: number;
-  totalUSDValue: number;
-};
-
-export type TMultichainToken = Omit<TToken, 'chainId'> &
-  Partial<TPriceData> & {
-    chains: TValueByChain[];
-    tags: string[];
-  };

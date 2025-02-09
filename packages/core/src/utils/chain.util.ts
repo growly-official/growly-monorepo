@@ -37,9 +37,10 @@ export function buildChains(
   return chains.map(c => {
     const chain = getChainByName(c);
     if (!chain) throw new Error('No chain found');
+    console.log(chain);
 
     const builder = new ChainTypeBuilder(chain).withEcosystem(ecosystem);
-    if (getRpcUrl) builder.withRpcUrl(getRpcUrl(chain)).build();
+    if (getRpcUrl && getRpcUrl(chain)) builder.withRpcUrl(getRpcUrl(chain)).build();
     return builder.build();
   });
 }

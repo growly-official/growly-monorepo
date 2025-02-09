@@ -9,7 +9,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "tsc && node --loader ts-node/esm src/main.ts",
+    "start": "tsc && node --loader ts-node/esm -r dotenv/config -r tsconfig-paths/register src/main.ts",
     "start:dev": "nest start --watch",
     "dev:script": "tsc && node --loader ts-node/esm -r dotenv/config -r tsconfig-paths/register ./src/_scripts/index.ts",
     "start:debug": "nest start --debug --watch",

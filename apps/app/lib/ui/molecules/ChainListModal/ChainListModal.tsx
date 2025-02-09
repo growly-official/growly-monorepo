@@ -4,7 +4,7 @@ import { EcosystemRegistry, Ecosystems } from 'chainsmith/src';
 import { CircleCheck } from 'lucide-react';
 import { Atoms } from '../..';
 import ChainList from '../ChainList/ChainList';
-import { IMultichain, TChainEcosystem, TChainName } from 'chainsmith/src/types';
+import { TMultichain, TChainEcosystem, TChainName } from 'chainsmith/src/types';
 import clsx from 'clsx';
 import { countExistentialObject, filterObject } from 'chainsmith/src/utils';
 import { LocalEcosystemRegistry, mustBeBoolean } from '@/core';
@@ -15,7 +15,7 @@ type Props = {
   handleOnClick: (ecosystem: TChainEcosystem, chains: TChainName[]) => void;
   ecosystemDisabled?: boolean;
   defaultEcosystem?: TChainEcosystem;
-  defaultChains?: IMultichain<boolean>;
+  defaultChains?: TMultichain<boolean>;
 };
 
 const ChainListModal = ({
@@ -26,7 +26,7 @@ const ChainListModal = ({
   defaultEcosystem = 'evm',
   defaultChains = {},
 }: Props) => {
-  const [selectedChains, setSelectedChains] = useState<IMultichain<boolean>>(defaultChains);
+  const [selectedChains, setSelectedChains] = useState<TMultichain<boolean>>(defaultChains);
   const [selectedEcosystem, setSelectedEcosystem] = useState<TChainEcosystem>(defaultEcosystem);
   const [chainNameSearch, setChainNameSearch] = useState<TChainName | ''>('');
 

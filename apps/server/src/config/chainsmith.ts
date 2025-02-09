@@ -1,4 +1,7 @@
-import { rpc, adapters } from 'chainsmith/src/index.ts';
+import { rpc, adapters, ChainsmithSdk } from 'chainsmith/src/index.ts';
+import { alchemy } from 'chainsmith/src/rpc/index.ts';
+import { TChainName } from 'chainsmith/src/types/index.ts';
+import { buildEvmChains } from 'chainsmith/src/utils/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
 
@@ -19,4 +22,12 @@ export const AdapterRegistry = {
   Uniswap: new adapters.UniswapSdkAdapter(rpc.alchemy(ALCHEMY_API_KEY)),
   Evmscan: new adapters.EvmscanAdapter(ETHERSCAN_BASE_URL, ETHERSCAN_API_KEY),
   DexScreener: new adapters.DexScreenerAdapter(),
+};
+
+export const buildDefaultChains = (chainName: TChainName[]) =>
+  buildEvmChains(chainName, alchemy(ALCHEMY_API_KEY));
+
+export const initChainsmithSdk = (chainNames: TChainName[]) => {
+  const chains = buildDefaultChains(chainNames);
+  return ChainsmithSdk.init(chains);
 };

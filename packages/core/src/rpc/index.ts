@@ -7,11 +7,11 @@ const ALCHEMY_CHAIN_ENDPOINT = {
   [EvmChainList.polygon.id]: alchemyRpcUrl('polygon-mainnet'),
 };
 
-export type GetChainRpcEndpoint = (chain: TBaseChain) => string;
+export type GetChainRpcEndpoint = (chain: TBaseChain) => string | undefined;
 
 export const alchemy: (apiKey: string) => GetChainRpcEndpoint = (apiKey: string) => chain => {
   const endpoint = (ALCHEMY_CHAIN_ENDPOINT as any)[chain.id];
-  if (!endpoint) throw new Error('Invalid chain ID');
+  if (!endpoint) return undefined;
   return `${endpoint}/v2/${apiKey}`;
 };
 
