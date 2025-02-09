@@ -1,6 +1,6 @@
 import type {
   TMultichain,
-  TChainTokenData,
+  TChainTokenList,
   TTokenAggregationBalance,
   TChainName,
   TTokenPortfolio,
@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { getChainIdByName } from './chain.util.ts';
 
 export function aggregateMultichainTokenBalance(
-  portfolio: TMultichain<TChainTokenData>
+  portfolio: TMultichain<TChainTokenList>
 ): TTokenPortfolio {
   let totalPortfolioValue = 0;
 

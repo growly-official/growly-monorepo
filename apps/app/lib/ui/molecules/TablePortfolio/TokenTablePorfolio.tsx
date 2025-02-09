@@ -1,10 +1,10 @@
 import { formatNumberUSD } from '@/core';
 import { Table } from '@radix-ui/themes';
-import { TMultichain, TChainTokenData } from 'chainsmith/src/types';
+import { TMultichain, TChainTokenList } from 'chainsmith/src/types';
 import React from 'react';
 
 type Props = {
-  multichainTokenData: TMultichain<TChainTokenData>;
+  multichainTokenData: TMultichain<TChainTokenList>;
 };
 
 const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
