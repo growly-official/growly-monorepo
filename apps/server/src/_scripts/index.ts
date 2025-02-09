@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { AdapterRegistry, buildDefaultChains } from '../config/index.ts';
 import { Wallets } from 'chainsmith/src/data/index.ts';
 import { ChainsmithSdk } from 'chainsmith/src/index.ts';
+import { aggregateMultichainTokenBalance } from 'chainsmith/src/utils/portfolio.util.ts';
 
 const chains = buildDefaultChains(['base', 'mainnet', 'zksync', 'optimism', 'baseSepolia']);
 const sdk = ChainsmithSdk.init(chains);
@@ -35,6 +36,15 @@ async function fetchDexScreenerParis() {
   );
 }
 
-testExternalities(true, fetchMultichainPortfolioWorks);
+async function fetchAggregateMultichainTokenWorks() {
+  const portfolio = await sdk.portfolio.getMultichainTokenPortfolio(AdapterRegistry.CoinMarketcap)(
+    Wallets.ETH_MAINNET_WALLET_PCMINH
+  );
+
+  return aggregateMultichainTokenBalance(portfolio);
+}
+
+testExternalities(true, fetchAggregateMultichainTokenWorks);
+testExternalities(false, fetchMultichainPortfolioWorks);
 testExternalities(false, fetchEvmscanTokenActivitiesWorks);
 testExternalities(false, fetchDexScreenerParis);
