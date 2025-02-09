@@ -1,10 +1,10 @@
-import { MultichainTokenPlugin } from '../token/index.ts';
-import type { TMultichain, TAddress, TChain, TChainTokenData } from '../../types/index.d.ts';
-import { createClient } from '../../wrapper.ts';
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
 import type { IMarketDataAdapter, WithAdapter } from '../../types/adapter.d.ts';
+import type { TAddress, TChain, TChainTokenData, TMultichain } from '../../types/index.d.ts';
+import { createClient } from '../../wrapper.ts';
 import { Disk, Ram, StoragePlugin } from '../storage/index.ts';
+import { MultichainTokenPlugin } from '../token/index.ts';
 
 type WithRamExist<F extends string, T> = Ram[F] extends undefined ? void : T;
 type WithDiskExist<F extends keyof Disk, T> = Disk[F] extends undefined ? void : T;

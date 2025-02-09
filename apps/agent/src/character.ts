@@ -1,13 +1,17 @@
 import { Character, ModelClass, ModelProviderName } from '@elizaos/core';
+import chainsmithPlugin from './plugin-chainsmith/index.ts';
 
 export const character: Character = {
   name: 'Eliza',
-  plugins: [],
+  plugins: [chainsmithPlugin],
   clients: [],
-  modelProvider: ModelProviderName.OPENAI,
+  modelProvider: ModelProviderName.OLLAMA,
   settings: {
     secrets: {},
     model: ModelClass.SMALL,
+    chains: {
+      evm: ['mainnet', 'base', 'optimism'],
+    },
   },
   system: 'Roleplay and generate interesting on behalf of Eliza.',
   bio: [

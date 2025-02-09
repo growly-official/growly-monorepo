@@ -1,10 +1,5 @@
-import type { TChainName } from './chains.d.ts';
-import type { TMarketToken, TTokenSymbol } from './tokens.d.ts';
-
-export type IValueByChain = {
-  chainName: string;
-  value: number;
-};
+import type { TMultiChain, TChainId } from './chains.d.ts';
+import type { TMarketToken, TTokenSymbol, TMarketTokenMetadata } from './tokens.d.ts';
 
 export type TChainStats = {
   totalChains: string[];
@@ -29,7 +24,20 @@ export type TChainTokenData = {
   tokens: TMarketToken[];
 };
 
-export type TSymbolAggregationBalance = Record<TTokenSymbol, TChainTokenData>;
+export type TTokenChainData = {
+  totalUsdValue: number;
+  totalBalance: number;
+  marketData: TTokenMetadataPrice;
+  allocations: TMultiChain<TValueByChain>;
+};
+
+export type TValueByChain = {
+  chainId: TChainId;
+  balance: number;
+  usdValue: number;
+};
+
+export type TTokenAggregationBalance = Record<TTokenSymbol, TTokenChainData>;
 
 export type TTokenPortfolioStats = {
   sumPortfolioUSDValue: number;
@@ -40,7 +48,7 @@ export type TTokenPortfolioStats = {
     value: number;
     logoURI: string;
   };
-  aggregatedBalanceBySymbol: TSymbolAggregationBalance;
+  aggregatedBalanceBySymbol: TTokenAggregationBalance;
   chainRecordsWithTokens: TChainRecordWithTokens;
 };
 
