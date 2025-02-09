@@ -1,4 +1,4 @@
-import type { TMultichain, TChainId, TChainName } from './chains.d.ts';
+import type { TMultichain } from './chains.d.ts';
 import type { TMarketToken, TTokenSymbol, TTokenMetadataPrice } from './tokens.d.ts';
 
 export type TChainStats = {
