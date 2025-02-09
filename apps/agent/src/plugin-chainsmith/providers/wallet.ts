@@ -44,6 +44,15 @@ export class WalletProvider {
     return createClient({ chain });
   }
 
+  async getENSName(): Promise<string> {
+    const publicClient = this.getPublicClient('mainnet');
+    const ensName = await publicClient.getEnsName({
+      address: this.getAddress(),
+    });
+
+    return ensName;
+  }
+
   getWalletClient(chainName: TChainName): TWalletClient {
     const chain = getChainByName(chainName);
     return createWalletClient({ chain, account: this.account as any }); // TODO: Debug why error?
