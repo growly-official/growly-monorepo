@@ -18,9 +18,8 @@ import {
   TChain,
   TChainName,
   TClient,
-  TWalletClient,
   TAddress,
-  TChainTokenData,
+  TChainTokenList,
   TMultichain,
 } from 'chainsmith/src/types';
 import {
@@ -65,9 +64,9 @@ export class PortfolioProvider {
     return ensName;
   }
 
-  async fetchMultichainPortfolio(): Promise<TMultichain<TChainTokenData>> {
+  async fetchMultichainPortfolio(): Promise<TMultichain<TChainTokenList>> {
     const cacheKey = `walletPortfolio_${this.address}`;
-    const cachedData = await this.getCachedData<TMultichain<TChainTokenData>>(cacheKey);
+    const cachedData = await this.getCachedData<TMultichain<TChainTokenList>>(cacheKey);
 
     if (cachedData) {
       elizaLogger.log(`Returning cached portfolio for wallet: ${this.address}`);
@@ -75,23 +74,23 @@ export class PortfolioProvider {
     }
 
     try {
-      const portfolio = await this.sdk.portfolio.getMultichainTokenPortfolio(
+      const tokenList = await this.sdk.portfolio.getMultichainTokenList(
         AdapterRegistry.CoinMarketcap
       )(this.address);
 
-      this.setCachedData<TMultichain<TChainTokenData>>(cacheKey, portfolio);
-      elizaLogger.log('Portfolio cached for address: ', this.address);
-      return portfolio;
+      this.setCachedData<TMultichain<TChainTokenList>>(cacheKey, tokenList);
+      elizaLogger.log('Multichain token list cached for address: ', this.address);
+      return tokenList;
     } catch (error: any) {
       console.error('Error getting address portfolio:', error);
       return null;
     }
   }
 
-  formatPortfolio(portfolio: TMultichain<TChainTokenData>): string {
+  formatPortfolio(portfolio: TMultichain<TChainTokenList>): string {
     const multichainTokenBalance = aggregateMultichainTokenBalance(portfolio);
 
-    let output = `Wallet Address: ${this.address}\n`;
+    const output = `Wallet Address: ${this.address}\n`;
 
     return 'Hello';
   }

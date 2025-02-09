@@ -1,20 +1,16 @@
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
 import type { IMarketDataAdapter, WithAdapter } from '../../types/adapter.d.ts';
-import type { TAddress, TChain, TChainTokenData, TMultichain } from '../../types/index.d.ts';
+import type { TAddress, TChain, TChainTokenList, TMultichain } from '../../types/index.d.ts';
 import { createClient } from '../../wrapper.ts';
-import { Disk, Ram, StoragePlugin } from '../storage/index.ts';
+import { StoragePlugin } from '../storage/index.ts';
 import { MultichainTokenPlugin } from '../token/index.ts';
-
-type WithRamExist<F extends string, T> = Ram[F] extends undefined ? void : T;
-type WithDiskExist<F extends keyof Disk, T> = Disk[F] extends undefined ? void : T;
-
-type TGetMultichainPortfolio = (
-  walletAddress?: WithRamExist<'walletAddress', TAddress>,
-  chains?: WithDiskExist<'chains', TChain[]>
-) => Promise<TMultichain<TChainTokenData>>;
-
-type TGetChainPortfolio = (chain: TChain, address: TAddress) => Promise<TChainTokenData>;
+import { aggregateMultichainTokenBalance } from '../../utils/portfolio.util.ts';
+import type {
+  IGetMultichainTokenPortfolio,
+  TGetChainTokenList,
+  TGetMultichainTokenList,
+} from './types.d.ts';
 
 @autoInjectable()
 export class MultichainPortfolioPlugin {
@@ -25,30 +21,40 @@ export class MultichainPortfolioPlugin {
     private storage: StoragePlugin
   ) {}
 
-  getMultichainTokenPortfolio: WithAdapter<IMarketDataAdapter, TGetMultichainPortfolio> =
-    adapter =>
-    async (
-      walletAddress?: WithRamExist<'walletAddress', TAddress>,
-      chains?: WithDiskExist<'chains', TChain[]>
-    ) => {
+  getMultichainTokenList: WithAdapter<IMarketDataAdapter, TGetMultichainTokenList> =
+    adapter => async (walletAddress?: TAddress, chains?: TChain[]) => {
       try {
-        const portfolio: TMultichain<TChainTokenData> = {};
+        const tokenList: TMultichain<TChainTokenList> = {};
         for (const chain of this.storage.readDiskOrReturn({ chains })) {
-          portfolio[chain.chainName] = await this.getChainTokenPortfolio(adapter)(
+          tokenList[chain.chainName] = await this.getChainTokenList(adapter)(
             chain,
             this.storage.readRamOrReturn({ walletAddress })
           );
         }
-        return portfolio;
+        return tokenList;
       } catch (error: any) {
         this.logger.error(`Failed to get multichain token portfolio: ${error}`);
         throw new Error(error);
       }
     };
 
-  getChainTokenPortfolio: WithAdapter<IMarketDataAdapter, TGetChainPortfolio> =
+  getMultichainTokenPortfolio: WithAdapter<IMarketDataAdapter, IGetMultichainTokenPortfolio> =
+    adapter => async (walletAddress?: TAddress, chains?: TChain[]) => {
+      try {
+        const multichainTokenList = await this.getMultichainTokenList(adapter)(
+          walletAddress,
+          chains
+        );
+        return aggregateMultichainTokenBalance(multichainTokenList);
+      } catch (error: any) {
+        this.logger.error(`Failed to get multichain token portfolio: ${error}`);
+        throw new Error(error);
+      }
+    };
+
+  getChainTokenList: WithAdapter<IMarketDataAdapter, TGetChainTokenList> =
     adapter =>
-    async (chain: TChain, address: TAddress): Promise<TChainTokenData> => {
+    async (chain: TChain, address: TAddress): Promise<TChainTokenList> => {
       try {
         const client = createClient({
           chain,

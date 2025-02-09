@@ -1,10 +1,10 @@
-import { TChainName, TChainTokenData, TMultichain } from 'chainsmith/src/types';
+import { TChainName, TChainTokenList, TMultichain } from 'chainsmith/src/types';
 import {
   aggregateMultichainTokenBalance,
   formatNumberUSD,
   getChainByName,
 } from 'chainsmith/src/utils';
-const mockResponse: TMultichain<TChainTokenData> = {
+const mockResponse: TMultichain<TChainTokenList> = {
   base: {
     tokens: [
       {
@@ -253,7 +253,7 @@ const mockResponse: TMultichain<TChainTokenData> = {
   },
 };
 
-export function formatPortfolio(portfolio: TMultichain<TChainTokenData>): string {
+export function formatPortfolio(portfolio: TMultichain<TChainTokenList>): string {
   const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
   const portfolioValue = multichainPortfolio.totalUsdValue;
   const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;
