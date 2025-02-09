@@ -3,7 +3,7 @@ import { AdapterRegistry, buildDefaultChains } from '../config/index.ts';
 import { Wallets } from 'chainsmith/src/data/index.ts';
 import { ChainsmithSdk } from 'chainsmith/src/index.ts';
 
-const chains = buildDefaultChains(['base', 'mainnet', 'zksync', 'optimism']);
+const chains = buildDefaultChains(['base', 'mainnet', 'zksync', 'optimism', 'baseSepolia']);
 const sdk = ChainsmithSdk.init(chains);
 
 function testExternalities(enabled: boolean, f: () => Promise<any>) {

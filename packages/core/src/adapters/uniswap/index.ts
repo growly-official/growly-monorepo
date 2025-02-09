@@ -12,6 +12,7 @@ import type {
   TChainId,
   TChainName,
   TChain,
+  TTokenListResponse,
 } from '../../types/index.d.ts';
 import { Files } from '../../data/index.ts';
 import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json' with { type: 'json' };
@@ -39,7 +40,11 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
   chainTokenMap: IUniswapChainTokenMap;
 
   constructor(getRpcUrl: GetChainRpcEndpoint) {
-    this.chainTokenMap = this.intoChainTokenAddressMap(Files.TokenList.UniswapTokenList);
+    // TODO: Call API EVMPlugin/getTokenMetadataList instead of using static list
+    this.chainTokenMap = this.intoChainTokenAddressMap([
+      Files.TokenList.UniswapTokenList,
+      Files.TokenList.SuperchainTokenList,
+    ]);
     this.getRpcUrl = getRpcUrl;
   }
 
@@ -99,8 +104,8 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
   }
 
   // Map token address to Uniswap token details.
-  intoChainTokenAddressMap = (m: { tokens: TUniswapTokenDetail[] }) => {
-    const tokenList = m.tokens;
+  intoChainTokenAddressMap = (m: TTokenListResponse[]) => {
+    const tokenList = m.flatMap((item: TTokenListResponse) => item.tokens);
     const chainMap: Record<TChainId, IUniswapTokenAddressMap> = {};
     for (const token of tokenList) {
       chainMap[token.chainId] = {
