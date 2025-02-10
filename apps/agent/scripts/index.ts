@@ -1,8 +1,8 @@
-import { TChainName, TChainTokenList, TMultichain } from 'chainsmith/src/types';
+import { TChainTokenList, TMultichain } from 'chainsmith/src/types';
 import {
   aggregateMultichainTokenBalance,
   formatNumberUSD,
-  getChainByName,
+  formatNumberSI,
 } from 'chainsmith/src/utils';
 const mockResponse: TMultichain<TChainTokenList> = {
   base: {
@@ -220,44 +220,12 @@ const mockResponse: TMultichain<TChainTokenList> = {
     ],
     totalUsdValue: 2.2420367473907354e-11,
   },
-  baseSepolia: {
-    tokens: [
-      {
-        name: 'Sepolia Ether',
-        symbol: 'ETH',
-        decimals: 18,
-        chainId: 84532,
-        type: 'native',
-        balance: 0.3010000029333186,
-        usdValue: 801.2431048027239,
-        marketPrice: 2661.9371993169902,
-        extra: {
-          price: 2661.9371993169902,
-          volume_24h: 15870901712.660969,
-          volume_change_24h: -45.1796,
-          percent_change_1h: 0.09795127,
-          percent_change_24h: 1.69459509,
-          percent_change_7d: -14.44117358,
-          percent_change_30d: -18.73138646,
-          percent_change_60d: -27.67891489,
-          percent_change_90d: -15.19197705,
-          market_cap: 320858734290.5502,
-          market_cap_dominance: 10.0851,
-          fully_diluted_market_cap: 320858734290.55,
-          tvl: null,
-          last_updated: '2025-02-09T07:03:00.000Z',
-        },
-      },
-    ],
-    totalUsdValue: 801.2431048027239,
-  },
 };
 
 export function formatPortfolio(portfolio: TMultichain<TChainTokenList>): string {
   const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
   const portfolioValue = multichainPortfolio.totalUsdValue;
   const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;
-  const balanceByChain = multichainPortfolio.aggregatedBalanceByChain;
 
   // Output builder
   const address = '0x...';
@@ -275,25 +243,20 @@ export function formatPortfolio(portfolio: TMultichain<TChainTokenList>): string
   } else {
     output += `\nToken value distribution:\n`;
     highValueTokens.forEach(token => {
-      output += `${token.marketData.symbol}:\t${formatNumberUSD(token.totalUsdValue)}\n`;
+      output += `${token.marketData.symbol}\n`;
+      output += `  - Holding balance:       ${formatNumberUSD(token.totalUsdValue)}\n`;
+      output += `  - Portfolio allocation:  ${((100 * token.totalUsdValue) / portfolioValue).toFixed(2)}%\n`;
+      output += `  - Market price:          ${token.marketData.marketPrice.toFixed(4)}\n`;
+      output += `  - Market cap:            ${formatNumberSI(token.marketData.extra.market_cap)}\n`;
+      output += `  - Volume 24h:            ${formatNumberSI(token.marketData.extra.volume_24h)}\n`;
+      output += `  - Price change (24h):    ${token.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
+      output += `  - Price change (7d):     ${token.marketData.extra.percent_change_7d.toFixed(2)}%\n`;
+      output += `  - Price change (30d):    ${token.marketData.extra.percent_change_30d.toFixed(2)}%\n`;
+      output += `  - Price change (60d):    ${token.marketData.extra.percent_change_60d.toFixed(2)}%\n`;
+      output += `  - Price change (90d):    ${token.marketData.extra.percent_change_90d.toFixed(2)}%\n`;
     });
   }
 
-  // Chain distribution
-  const highValueChains = Object.values(balanceByChain).filter(
-    chain => chain.totalUsdValue > 1 // exclude < 1$ chains
-  );
-  if (highValueChains.length === 0) {
-    output += 'No chain found with value >1$\n';
-  } else {
-    output += `\nChain value distribution:\n`;
-
-    highValueChains.forEach(chain => {
-      output += `${chain.chainId}:\t${formatNumberUSD(chain.totalUsdValue)}\n`;
-    });
-  }
-
-  // return JSON.stringify(multichainTokenBalance, null, 2);
   return output;
 }
 

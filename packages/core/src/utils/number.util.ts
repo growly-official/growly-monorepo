@@ -12,3 +12,8 @@ export const formatNumberUSD = (num: number) => {
     currency: 'USD',
   });
 };
+
+export const formatNumberSI = (num: number) => {
+  const formatter = Intl.NumberFormat('en', { notation: 'compact' });
+  return formatter.format(num);
+};

@@ -25,6 +25,8 @@ import {
 import {
   aggregateMultichainTokenBalance,
   buildEvmChains,
+  formatNumberSI,
+  formatNumberUSD,
   getChainByName,
 } from 'chainsmith/src/utils';
 import { createClient } from 'chainsmith/src/wrapper';
@@ -88,11 +90,40 @@ export class PortfolioProvider {
   }
 
   formatPortfolio(portfolio: TMultichain<TChainTokenList>): string {
-    const multichainTokenBalance = aggregateMultichainTokenBalance(portfolio);
+    const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
+    const portfolioValue = multichainPortfolio.totalUsdValue;
+    const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;
 
-    const output = `Wallet Address: ${this.address}\n`;
+    // Output builder
+    let output = `Wallet Address: $this.address}\n`;
 
-    return 'Hello';
+    output += `\nTotal Value: ${formatNumberUSD(portfolioValue)}\n`;
+
+    // Token distribution
+    const highValueTokens = Object.values(balanceBySymbol).filter(
+      token => token.totalUsdValue > 1 // exclude < 1$ assets
+    );
+
+    if (highValueTokens.length === 0) {
+      output += 'No tokens found with value >1$\n';
+    } else {
+      output += `\nToken value distribution:\n`;
+      highValueTokens.forEach(token => {
+        output += `${token.marketData.symbol}\n`;
+        output += `  - Holding balance:       ${formatNumberUSD(token.totalUsdValue)}\n`;
+        output += `  - Portfolio allocation:  ${((100 * token.totalUsdValue) / portfolioValue).toFixed(2)}%\n`;
+        output += `  - Market price:          ${token.marketData.marketPrice.toFixed(4)}\n`;
+        output += `  - Market cap:            ${formatNumberSI(token.marketData.extra.market_cap)}\n`;
+        output += `  - Volume 24h:            ${formatNumberSI(token.marketData.extra.volume_24h)}\n`;
+        output += `  - Percent change 24h:    ${token.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
+        output += `  - Percent change 7d:     ${token.marketData.extra.percent_change_7d.toFixed(2)}%\n`;
+        output += `  - Percent change 30d:    ${token.marketData.extra.percent_change_30d.toFixed(2)}%\n`;
+        output += `  - Percent change 60d:    ${token.marketData.extra.percent_change_60d.toFixed(2)}%\n`;
+        output += `  - Percent change 90d:    ${token.marketData.extra.percent_change_90d.toFixed(2)}%\n`;
+      });
+    }
+
+    return output;
   }
 
   async getFormattedPortfolio(): Promise<string> {
@@ -102,7 +133,7 @@ export class PortfolioProvider {
       return this.formatPortfolio(portfolio);
     } catch (error) {
       elizaLogger.error('Error generating portfolio report:', error);
-      return 'Unable to fetch wallet information. Please try again later.';
+      return 'Unable to fetch portfolio information. Please try again later.';
     }
   }
 
@@ -155,13 +186,9 @@ export const evmPortfolioProvider: Provider = {
       const chains = buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
 
       const portfolioProvider = new PortfolioProvider(runtime.cacheManager, address, chains);
-
-      const agentName = state?.agentName || 'The agent';
-      return `${agentName}'s EVM Wallet Address: ${address}`;
-
-      // return `${agentName}'s EVM Wallet Address: ${address}\nBalance: ${balance} ${chain.nativeCurrency.symbol}\nChain ID: ${chain.id}, Name: ${chain.name}`;
+      return portfolioProvider.getFormattedPortfolio();
     } catch (error) {
-      console.error('Error in EVM wallet provider:', error);
+      console.error('Error in EVM portfolio provider:', error);
       return null;
     }
   },
