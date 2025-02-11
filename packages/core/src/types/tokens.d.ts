@@ -1,4 +1,4 @@
-import type { TAddress } from './chains.d.ts';
+import type { TAddress, TChainName } from './chains.d.ts';
 
 export type TTokenSymbol = string;
 export type TTokenId = number;
@@ -21,6 +21,14 @@ export type TTokenTransferActivity = {
   to: TAddress;
   value: string | number;
   timestamp: string;
+  blockNumber: string;
+  blockHash: string;
+  timeStamp: string;
+  gas: string;
+  gasPrice: string;
+  gasPriceBid?: string;
+  cumulativeGasUsed: string;
+  gasUsed: string;
 };
 
 export type TContractTokenMetadata = TTokenMetadata & {
@@ -52,8 +60,19 @@ export type TPriceData = {
   marketPrice: number;
 };
 
-export type TMarketToken<T = any> = TToken<T> & TPriceData;
+export type TMarketToken<T = any> = TToken<T> & TPriceData & { tags: string[]; date_added: string };
 
 export type TTokenMetadataPrice<T = any> = TTokenMetadata &
   TExtraField<T> &
-  Pick<TPriceData, 'marketPrice'>;
+  Pick<TPriceData, 'marketPrice'> & { tags: string[] };
+
+export type TTokenActivityStats = {
+  sumCount: number;
+  newCount: number;
+};
+
+export type TLongestHoldingToken = {
+  chain: TChainName;
+  symbol: TTokenSymbol;
+  duration: number;
+};

@@ -5,7 +5,6 @@ export type TChainStats = {
   totalChains: string[];
   noActivityChains: string[];
   mostActiveChainName: string;
-  mostActiveChainID: string;
   countUniqueDaysActiveChain: number;
   countActiveChainTxs: number;
 };
@@ -46,8 +45,15 @@ export type TChainAggregationBalance = TMultichain<TValueByChain>;
 
 export type TTokenPortfolio = {
   totalUsdValue: number;
+  chainRecordsWithTokens: TMultichain<TChainTokenList>;
   aggregatedBalanceByToken: TTokenAggregationBalance;
   aggregatedBalanceByChain: TChainAggregationBalance;
+};
+
+export type TTokenPortfolioStats = TTokenPortfolio & {
+  sumPortfolioUSDValue: number;
+  sumMemeUSDValue: number;
+  mostValuableToken: TTokenChainData;
 };
 
 export type TNumberInPercentage = number;
