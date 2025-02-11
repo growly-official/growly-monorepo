@@ -13,9 +13,10 @@ function testExternalities(enabled: boolean, f: () => Promise<any>) {
 async function fetchMultichainTokenList() {
   const wallets = {};
   for (const wallet of [Wallets.ETH_MAINNET_WALLET_PCMINH]) {
-    const portfolio = await sdk.portfolio.getMultichainTokenList(AdapterRegistry.CoinMarketcap)(
-      wallet
-    );
+    const portfolio = await sdk.portfolio.getMultichainTokenList([
+      AdapterRegistry.CoinMarketcap,
+      AdapterRegistry.Alchemy,
+    ])(wallet);
     wallets[wallet] = portfolio;
   }
   return wallets;
@@ -36,9 +37,10 @@ async function fetchDexScreenerParis() {
 }
 
 async function fetchMultichainTokenPortfolio() {
-  const portfolio = await sdk.portfolio.getMultichainTokenPortfolio(AdapterRegistry.CoinMarketcap)(
-    Wallets.ETH_MAINNET_WALLET_PCMINH
-  );
+  const portfolio = await sdk.portfolio.getMultichainTokenPortfolio([
+    AdapterRegistry.CoinMarketcap,
+    AdapterRegistry.Alchemy,
+  ])(Wallets.ETH_MAINNET_WALLET_PCMINH);
   return portfolio;
 }
 

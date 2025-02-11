@@ -103,7 +103,7 @@ export const useMagic = () => {
       async () => {
         const multichainTxs = await new PortfolioApiService().listMultichainTokenTransferActivities(
           addressInput,
-          selectState(selectedNetworks)['evm']
+          selectState(selectedNetworks)['evm'] || []
         );
         setState(allTransactions)(multichainTxs);
 
@@ -156,7 +156,6 @@ export const useMagic = () => {
           countUniqueDaysActiveChain: uniqueActiveDays,
           countActiveChainTxs: _countActiveChainTxs,
         };
-        // console.log("Chain stats:", _chainStats);
         setState(chainStats)(_chainStats);
 
         return stats;
@@ -182,11 +181,9 @@ export const useMagic = () => {
       async () => {
         const _tokenPortfolio = await new PortfolioApiService().getWalletTokenPortfolio(
           addressInput,
-          selectState(selectedNetworks)['evm']
+          selectState(selectedNetworks)['evm'] || []
         );
-        console.log(_tokenPortfolio);
         setState(tokenPortfolio)(_tokenPortfolio);
-
         const _tokenPortfolioStats = calculateMultichainTokenPortfolio(_tokenPortfolio);
         setState(tokenPortfolioStats)(_tokenPortfolioStats);
       }
@@ -195,9 +192,12 @@ export const useMagic = () => {
 
   const letsDoSomeMagic = async (addressInput: TAddress) => {
     try {
-      await fetchMultichainTokenPortfolio(addressInput);
-      await fetchActivityStats(addressInput);
-      await delayMs(1000);
+      const networks = Object.values(selectState(selectedNetworks)).flat();
+      if (networks.length > 0) {
+        await fetchMultichainTokenPortfolio(addressInput);
+        await fetchActivityStats(addressInput);
+        await delayMs(1000);
+      }
     } catch (error) {
       console.log(error);
     }

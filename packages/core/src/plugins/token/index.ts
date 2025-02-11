@@ -10,6 +10,7 @@ import type {
   TToken,
   TTokenAddress,
   TTokenTransferActivity,
+  TChainName,
 } from '../../types/index.d.ts';
 import { EvmTokenPlugin } from './evm.ts';
 import { formatReadableToken } from '../../wrapper.ts';
@@ -18,15 +19,17 @@ import { getClientChain } from '../../utils/index.ts';
 import type {
   IMarketDataAdapter,
   IOnchainActivityAdapter,
+  IOnchainTokenAdapter,
   WithAdapter,
 } from '../../types/adapter.d.ts';
 import { StoragePlugin } from '../storage/index.ts';
 
-type TGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
 type TGetMultichainTokenActivities = (
   address?: TAddress,
   chains?: TChain[]
 ) => Promise<TMultichain<TTokenTransferActivity[]>>;
+type TGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
+type TGetOwnedTokens = (chain: TChainName, walletAddress?: TAddress) => Promise<TContractToken[]>;
 
 @autoInjectable()
 export class MultichainTokenPlugin {
@@ -92,18 +95,17 @@ export class MultichainTokenPlugin {
     }
   }
 
-  async getContractTokens(client: TClient, walletAddress?: TAddress): Promise<TContractToken[]> {
-    try {
-      const chain = getClientChain(client);
-      const tokenList = await this.evmTokenPlugin.getTokenMetadataList(chain.id);
-      return this.evmTokenPlugin.getBatchLatestTokens(
-        client,
-        tokenList,
-        this.storagePlugin.readRamOrReturn({ walletAddress })
-      );
-    } catch (error: any) {
-      this.logger.error(`Failed to get contract tokens: ${error.message}`);
-      throw new Error(error);
-    }
-  }
+  getContractTokens: WithAdapter<IOnchainTokenAdapter, TGetOwnedTokens> =
+    adapter => async (chain: TChainName, walletAddress?: TAddress) => {
+      try {
+        const contractTokens = await adapter.listAllOwnedTokens(
+          chain,
+          this.storagePlugin.readRamOrReturn({ walletAddress })
+        );
+        return contractTokens;
+      } catch (error: any) {
+        this.logger.error(`Failed to get contract tokens: ${error.message}`);
+        throw new Error(error);
+      }
+    };
 }

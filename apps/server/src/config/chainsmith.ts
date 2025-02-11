@@ -1,4 +1,5 @@
 import { rpc, adapters, ChainsmithSdk } from 'chainsmith/src/index.ts';
+import { EvmTokenPlugin } from 'chainsmith/src/plugins/token/evm.ts';
 import { alchemy } from 'chainsmith/src/rpc/index.ts';
 import { TChainName } from 'chainsmith/src/types/index.ts';
 import { buildEvmChains } from 'chainsmith/src/utils/index.ts';
@@ -15,6 +16,7 @@ export const ETHERSCAN_BASE_URL = 'https://api.etherscan.io/v2/api';
 export const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 export const AdapterRegistry = {
+  Alchemy: new adapters.AlchemyAdapter(ALCHEMY_API_KEY, new EvmTokenPlugin()),
   CoinMarketcap: new adapters.CoinMarketcapAdapter(
     COINMARKETCAP_API_BASE_URL,
     COINMARKETCAP_API_KEY

@@ -1,7 +1,6 @@
 import { selectState, setState, useMagic, useMagicContext } from '@/core';
 import { Molecules } from '@/ui';
 import { useWallets } from '@privy-io/react-auth';
-import { TAddress } from 'chainsmith/src/types';
 import React, { useEffect } from 'react';
 
 const Dashboard: React.FC<any> = () => {
@@ -13,11 +12,10 @@ const Dashboard: React.FC<any> = () => {
 
   useEffect(() => {
     if (wallets.length > 0) {
-      letsDoSomeMagic(
-        ('0x849151d7D0bF1F34b70d5caD5149D28CC2308bf1' || wallets[0].address) as TAddress
-      );
+      const _currentWallet = wallets[0].address;
+      letsDoSomeMagic('0x849151d7D0bF1F34b70d5caD5149D28CC2308bf1' as any);
     }
-  }, [wallets, selectedNetworks]);
+  }, [selectedNetworks]);
 
   return (
     <div className="py-5 px-5 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white">

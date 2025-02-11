@@ -4,6 +4,7 @@ import { Abis } from '../../data/index.ts';
 import type {
   TAddress,
   TBlockNumber,
+  TChainId,
   TClient,
   TContractToken,
   TContractTokenMetadata,
@@ -22,7 +23,7 @@ const TOKEN_LIST_URLS = {
 export class EvmTokenPlugin {
   logger = new Logger({ name: 'EvmTokenPlugin' });
 
-  getTokenMetadataList = async (chainId: number): Promise<TContractTokenMetadata[]> => {
+  getTokenMetadataList = async (chainId: TChainId): Promise<TContractTokenMetadata[]> => {
     try {
       // Extracting all EVM token list URLs from the constants
       const evmTokenListURLs = Object.values(TOKEN_LIST_URLS);
