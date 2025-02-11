@@ -6,6 +6,8 @@ import type { TEVMScanResponse, TEVMScanTokenActivity } from './types.d.ts';
 import axios from 'axios';
 import { autoInjectable } from 'tsyringe';
 
+export * from './utils.ts';
+
 type GetTokenActivityQueryOptions = {
   page: number;
   offset: number;
@@ -60,6 +62,7 @@ export class EvmscanAdapter implements IOnchainActivityAdapter {
 
     return tokenActivities.map(t => {
       return {
+        ...t,
         chainId: chain.id,
         symbol: t.tokenSymbol,
         from: t.from as TAddress,

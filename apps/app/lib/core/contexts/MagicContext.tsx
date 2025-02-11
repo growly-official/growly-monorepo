@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import {
   TActivityStats,
+  TChainName,
   TChainStats,
-  TChainTokenList,
   TMultichain,
+  TMultiEcosystem,
+  TTokenPortfolio,
   TTokenPortfolioStats,
   TTokenTransferActivity,
 } from 'chainsmith/src/types';
-import { TEVMScanTransaction } from 'chainsmith/src/adapters/evmscan/types';
 import { StateEventRegistry } from '../types';
 
 export enum BackgroundVariant {
@@ -16,7 +17,7 @@ export enum BackgroundVariant {
   Color = 'Background Color',
 }
 
-const defaultActivityStats: TActivityStats = {
+export const defaultActivityStats: TActivityStats = {
   totalTxs: 0,
   firstActiveDay: null,
   uniqueActiveDays: 0,
@@ -25,7 +26,7 @@ const defaultActivityStats: TActivityStats = {
   activityPeriod: 0,
 };
 
-const defaultTokenPortfolioStats: TTokenPortfolioStats = {
+export const defaultTokenPortfolioStats: TTokenPortfolioStats = {
   aggregatedBalanceByToken: {},
   aggregatedBalanceByChain: {},
   chainRecordsWithTokens: {},
@@ -50,7 +51,6 @@ const defaultTokenPortfolioStats: TTokenPortfolioStats = {
 const defaultChainStats: TChainStats = {
   totalChains: [],
   noActivityChains: [],
-  mostActiveChainID: '',
   mostActiveChainName: '',
   countUniqueDaysActiveChain: 0,
   countActiveChainTxs: 0,
@@ -66,25 +66,25 @@ export type UseState<T> = [T, SetState<T>];
 
 export interface IMagicContext {
   appStage: UseState<AppStage>;
-  exampleProfile: UseState<string | undefined>;
   stateEvents: StateEventRegistry;
   setStateEvents: SetState<StateEventRegistry>;
 
+  // Networks
+  selectedNetworks: UseState<TMultiEcosystem<TChainName[]>>;
+
   // Data analytics states
-  text: UseState<string>;
   inputAddress: UseState<string>;
 
   // Special name service
   oneID: UseState<string>;
 
   // Raw
-  allTransactions: UseState<TMultichain<TEVMScanTransaction[]>>;
-  tokenPortfolio: UseState<TMultichain<TChainTokenList>>;
-  tokenActivity: UseState<TMultichain<TTokenTransferActivity[]>>;
+  allTransactions: UseState<TMultichain<TTokenTransferActivity[]>>;
+  tokenPortfolio: UseState<TTokenPortfolio>;
 
   // Insights
   chainStats: UseState<TChainStats>;
-  activityStats: UseState<TActivityStats>;
+  activityStats: UseState<TMultichain<TActivityStats>>;
   tokenPortfolioStats: UseState<TTokenPortfolioStats>;
   totalGasInETH: UseState<number>;
 }
@@ -96,26 +96,26 @@ interface Props {
 }
 
 export const MagicProvider = ({ children }: Props) => {
-  const exampleProfile = useState<string | undefined>(undefined);
+  const selectedNetworks = useState<TMultiEcosystem<TChainName[]>>({});
   const [stateEvents, setStateEvents] = useState<StateEventRegistry>({});
 
   const inputAddress = useState('');
-  const text = useState('');
   const oneID = useState('');
 
   const appStage = useState<AppStage>(AppStage.DisplayProfile);
   // All transactions and activity stats
-  const allTransactions = useState<TMultichain<TEVMScanTransaction[]>>({});
-  const activityStats = useState<TActivityStats>(defaultActivityStats);
+  const allTransactions = useState<TMultichain<TTokenTransferActivity[]>>({});
+  const activityStats = useState<TMultichain<TActivityStats>>({});
   const chainStats = useState<TChainStats>(defaultChainStats);
 
   // Multi-chain token portfolio
-  const tokenPortfolio = useState<TMultichain<TChainTokenList>>({});
+  const tokenPortfolio = useState<TTokenPortfolio>({
+    aggregatedBalanceByChain: {},
+    aggregatedBalanceByToken: {},
+    chainRecordsWithTokens: {},
+    totalUsdValue: 0,
+  });
   const tokenPortfolioStats = useState<TTokenPortfolioStats>(defaultTokenPortfolioStats);
-
-  // Multi-chain token & activity
-  const tokenActivity = useState<TMultichain<TTokenTransferActivity[]>>({});
-
   const totalGasInETH = useState(0);
 
   return (
@@ -123,16 +123,14 @@ export const MagicProvider = ({ children }: Props) => {
       value={{
         appStage,
         stateEvents,
-        exampleProfile,
         setStateEvents,
+        selectedNetworks,
 
         // Raw
-        text,
         inputAddress,
         oneID,
         tokenPortfolio,
         tokenPortfolioStats,
-        tokenActivity,
         allTransactions,
 
         // Insight

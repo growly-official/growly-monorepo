@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { TAddress, TChainName, TTokenPortfolio } from 'chainsmith/src/types';
+import {
+  TAddress,
+  TChainName,
+  TMultichain,
+  TTokenPortfolio,
+  TTokenTransferActivity,
+} from 'chainsmith/src/types';
 
 const BACKEND_SERVER_URL = 'http://localhost:3000';
 
@@ -13,6 +19,24 @@ export class PortfolioApiService {
         walletAddress,
         chainNames,
       });
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async listMultichainTokenTransferActivities(
+    walletAddress: TAddress,
+    chainNames: TChainName[]
+  ): Promise<TMultichain<TTokenTransferActivity[]>> {
+    try {
+      const response = await axios.post<TMultichain<TTokenTransferActivity[]>>(
+        `${BACKEND_SERVER_URL}/activity`,
+        {
+          walletAddress,
+          chainNames,
+        }
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error);

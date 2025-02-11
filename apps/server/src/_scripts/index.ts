@@ -23,7 +23,7 @@ async function fetchMultichainTokenList() {
 
 async function fetchEvmscanTokenActivitiesWorks() {
   sdk.storage.writeToRam('walletAddress', Wallets.ETH_MAINNET_WALLET_PCMINH);
-  const tokenTransferActivities = await sdk.token.listTokenTransferActivities(
+  const tokenTransferActivities = await sdk.token.listMultichainTokenTransferActivities(
     AdapterRegistry.Evmscan
   )();
   return tokenTransferActivities;

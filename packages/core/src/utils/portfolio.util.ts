@@ -5,32 +5,31 @@ import type {
   TChainName,
   TTokenPortfolio,
   TChainAggregationBalance,
-  TMarketToken,
   TTokenPortfolioStats,
   TTokenChainData,
 } from '../types/index.d.ts';
 import _ from 'lodash';
 import { getChainIdByName } from './chain.util.ts';
-import { POPULAR_MEMES } from 'src/data/constants/tokens.ts';
+import { POPULAR_MEMES } from '../data/constants/tokens.ts';
 
 export function aggregateMultichainTokenBalance(
-  portfolio: TMultichain<TChainTokenList>
+  multichainTokenList: TMultichain<TChainTokenList>
 ): TTokenPortfolio {
   let totalPortfolioValue = 0;
 
   const tokenAggregation: TTokenAggregationBalance = {};
   const chainAggregation: TChainAggregationBalance = {};
 
-  for (const chainName in portfolio) {
+  for (const chainName in multichainTokenList) {
     chainAggregation[chainName] = {
       chainId: getChainIdByName(chainName as TChainName),
-      totalUsdValue: portfolio[chainName].totalUsdValue,
+      totalUsdValue: multichainTokenList[chainName].totalUsdValue,
     };
   }
 
   // Iterate through each chain in the multiChainData
-  for (const chainName in portfolio) {
-    const chainData = portfolio[chainName as TChainName];
+  for (const chainName in multichainTokenList) {
+    const chainData = multichainTokenList[chainName as TChainName];
 
     // Iterate through each token in the chain
     for (const token of chainData.tokens) {
@@ -69,6 +68,7 @@ export function aggregateMultichainTokenBalance(
     totalUsdValue: totalPortfolioValue,
     aggregatedBalanceByToken: tokenAggregation,
     aggregatedBalanceByChain: chainAggregation,
+    chainRecordsWithTokens: multichainTokenList,
   } as TTokenPortfolio;
 }
 
@@ -93,4 +93,9 @@ export const calculateMultichainTokenPortfolio = (
     mostValuableToken,
     ...multichainTokenPortfolio,
   };
+};
+
+export const calculateGasInETH = (gasPrice: number, gasUsed: number) => {
+  const gwei = 10 ** 9;
+  return (gasPrice / gwei) * (gasUsed / gwei);
 };

@@ -67,6 +67,8 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       usdValue,
       marketPrice: price,
       extra: tokenPriceData.quote.USD,
+      tags: tokenPriceData.tags,
+      date_added: tokenPriceData.date_added,
     };
   }
 
@@ -98,6 +100,8 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
         usdValue,
         marketPrice: usd.price,
         extra: usd,
+        tags: tokenPriceData.tags,
+        date_added: tokenPriceData.date_added,
       });
     }
     return {

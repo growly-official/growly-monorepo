@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 

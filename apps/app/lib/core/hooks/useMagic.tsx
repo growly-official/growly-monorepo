@@ -1,17 +1,6 @@
-import { calculateMultichainTokenPortfolio } from 'chainsmith/src/utils';
+import { calculateGasInETH, calculateMultichainTokenPortfolio } from 'chainsmith/src/utils';
 import { toast } from 'react-toastify';
-import { delayMs, setState } from '../utils';
-import {
-  calculateEVMStreaksAndMetrics,
-  calculateGasInETH,
-  calculateTokenActivityStats,
-  findLongestHoldingToken,
-} from '../../helpers/activity.helper';
-import {
-  getMultichainPortfolio,
-  listAllTokenActivityByChain,
-  listAllTransactionsByChain,
-} from '../api/services';
+import { delayMs, selectState, setState } from '../utils';
 import {
   BinaryState,
   StateEvent,
@@ -20,8 +9,15 @@ import {
   Toastable,
 } from '../types/state.type';
 import { useMagicContext } from './useMagicContext';
-import { TAddress, TChainStats } from 'chainsmith/src/types';
-import { TEVMScanTransaction } from 'chainsmith/src/adapters/evmscan/types';
+import {
+  TActivityStats,
+  TAddress,
+  TChainName,
+  TChainStats,
+  TMultichain,
+} from 'chainsmith/src/types';
+import { calculateEVMStreaksAndMetrics } from 'chainsmith/src/adapters';
+import { PortfolioApiService } from '../services';
 
 export const StateSubEvents = {
   [StateEvent.ActivityStats]: ThreeStageState,
@@ -38,10 +34,10 @@ export const useMagic = () => {
   const {
     stateEvents,
     setStateEvents,
+    selectedNetworks,
     // Raw
     allTransactions,
     tokenPortfolio,
-    tokenActivity,
 
     // Insights
     chainStats,
@@ -105,19 +101,16 @@ export const useMagic = () => {
         onResetEvent: StateSubEvents.ActivityStats.Idle,
       },
       async () => {
-        const data = await listAllTransactionsByChain(addressInput);
-        const _allTransactions = Object.values(data).flatMap(d => d.txs);
-        setState(allTransactions)(_allTransactions);
-        // console.log("_allTransactions", _allTransactions);
-
-        const ethNativeTransactions: TEVMScanTransaction[] = Object.entries(data)
-          .filter(([key, _]) => key !== 'vic') // exclude VIC since it's a zero-gas fee (VN proud)
-          .flatMap(([_, value]) => value.txs);
-
-        const filteredTransactions = ethNativeTransactions.filter(
-          tx => tx.from.toLowerCase() === addressInput.toLowerCase()
+        const multichainTxs = await new PortfolioApiService().listMultichainTokenTransferActivities(
+          addressInput,
+          selectState(selectedNetworks)['evm']
         );
+        setState(allTransactions)(multichainTxs);
 
+        const totalChains: TChainName[] = Object.keys(multichainTxs) as TChainName[];
+        const filteredTransactions = Object.values(multichainTxs)
+          .flat()
+          .filter(tx => tx.from.toLowerCase() === addressInput.toLowerCase());
         const _totalGasInETH = filteredTransactions.reduce(
           (acc, curr) =>
             acc + calculateGasInETH(Number.parseInt(curr.gasUsed), Number.parseInt(curr.gasPrice)),
@@ -127,35 +120,38 @@ export const useMagic = () => {
         // console.log("_totalGasInETH:", _totalGasInETH);
         setState(totalGasInETH)(_totalGasInETH);
 
-        let mostActiveChainID = Object.keys(data).reduce((a, b) =>
-          data[a].txs.length > data[b].txs.length ? a : b
+        let mostActiveChainName: TChainName = totalChains.reduce((a, b) =>
+          (multichainTxs[a]?.length || 0) > (multichainTxs[b]?.length || 0) ? a : b
         );
 
-        if (data[mostActiveChainID].txs.length === 0) {
-          mostActiveChainID = 'base'; // Default chain should be 'Base'
-        }
+        // Default chain should be 'Base'
+        if (multichainTxs[mostActiveChainName]?.length === 0) mostActiveChainName = 'base';
 
-        const mostActiveChainName = data[mostActiveChainID].chainName;
-        const _countActiveChainTxs = data[mostActiveChainID].txs.length;
+        const _countActiveChainTxs = multichainTxs[mostActiveChainName]?.length || 0;
 
         // Get Activity Stats
-        const stats = calculateEVMStreaksAndMetrics(_allTransactions, addressInput);
-        // console.log("Activity Stats:", stats);
+        const stats: TMultichain<TActivityStats> = {};
+        for (const chain of totalChains) {
+          const chainTxs = multichainTxs[chain];
+          if (chainTxs?.length || 0 > 0) {
+            stats[chain] = calculateEVMStreaksAndMetrics(chainTxs || [], addressInput);
+          }
+        }
         setState(activityStats)(stats);
 
         // Get chain stats
-        const totalChains = Object.keys(data);
-        const noActivityChains = totalChains.filter(chain => data[chain].txs.length === 0);
+        const noActivityChains = totalChains.filter(
+          chain => multichainTxs[chain]?.length || 0 === 0
+        );
         // Get unique active day, on most active chain 🫠
         const { uniqueActiveDays } = calculateEVMStreaksAndMetrics(
-          data[mostActiveChainID].txs,
+          multichainTxs[mostActiveChainName] || [],
           addressInput
         );
 
         const _chainStats: TChainStats = {
           totalChains,
           mostActiveChainName,
-          mostActiveChainID,
           noActivityChains,
           countUniqueDaysActiveChain: uniqueActiveDays,
           countActiveChainTxs: _countActiveChainTxs,
@@ -184,85 +180,23 @@ export const useMagic = () => {
         onResetEvent: StateSubEvents.GetTokenPortfolio.Idle,
       },
       async () => {
-        const tokenBalanceData = await getMultichainPortfolio(addressInput);
-
-        // Get distinct token symbol with non-zero balance
-        const distinctTokenSymbols = [
-          ...new Set(
-            tokenBalanceData.filter(token => token.tokenBalance !== 0).map(token => token.symbol)
-          ),
-        ];
-        // Get token price
-        const _marketData = await listCMCTokenDetail(distinctTokenSymbols.join(','));
-        // console.log("Price market data:", _marketData);
-        setState(marketData)(_marketData);
-        // console.log("tokenBalanceData", tokenBalanceData);
-        setState(tokenPortfolio)(tokenBalanceData);
-
-        const _tokenPortfolioStats = calculateMultichainTokenPortfolio(
-          tokenBalanceData,
-          _marketData
+        const _tokenPortfolio = await new PortfolioApiService().getWalletTokenPortfolio(
+          addressInput,
+          selectState(selectedNetworks)['evm']
         );
-        // console.log("_tokenPortfolioStats", _tokenPortfolioStats);
+        console.log(_tokenPortfolio);
+        setState(tokenPortfolio)(_tokenPortfolio);
+
+        const _tokenPortfolioStats = calculateMultichainTokenPortfolio(_tokenPortfolio);
         setState(tokenPortfolioStats)(_tokenPortfolioStats);
-        return MultiAssetsPortfolio;
-      }
-    );
-  };
-
-  const fetchMultichainTokenActivity = async (addressInput: string) => {
-    return newAsyncDispatch(
-      StateEvent.GetTokenActivity,
-      {
-        onStartEvent: StateSubEvents.GetTokenActivity.InProgress,
-        onErrorEvent: {
-          value: StateSubEvents.GetTokenActivity.Idle,
-          toast: 'Failed to fetch multichain token activities.',
-        },
-        onFinishEvent: {
-          value: StateSubEvents.GetTokenActivity.Finished,
-          toast: 'Fetched token activities.',
-        },
-        onResetEvent: StateSubEvents.GetTokenActivity.Idle,
-      },
-      async () => {
-        const tokenActivityData = await listAllTokenActivityByChain(addressInput);
-        const allTokenActivities = Object.values(tokenActivityData).flat();
-        // console.log("allTokenActivities:", allTokenActivities);
-        setState(tokenActivity)(allTokenActivities);
-
-        // Get longest holding assets
-        const longestHoldingTokenByChain = Object.entries(tokenActivityData).map(
-          ([chain, activities]) => {
-            return findLongestHoldingToken(chain, activities, addressInput);
-          }
-        );
-
-        // console.log("longestHoldingTokenByChain", longestHoldingTokenByChain);
-
-        // TODO ---- Can we reuse the market data previously fetched?
-        // Get distinct token symbol with non-zero balance
-        const distinctTokenSymbols = [...new Set(allTokenActivities.map(token => token.symbol))];
-        // console.log("distinctTokenSymbols", distinctTokenSymbols);
-
-        // Get token price
-        const marketData = await listCMCTokenDetail(distinctTokenSymbols.join(','));
-        // End of TODO --------
-
-        const _tokenActivityStats = calculateTokenActivityStats(allTokenActivities, marketData);
-
-        // TODO: set tokenActivityStats
-        setState(tokenActivityStats)(_tokenActivityStats);
-        // console.log("tokenActivityStats:", _tokenActivityStats);
       }
     );
   };
 
   const letsDoSomeMagic = async (addressInput: TAddress) => {
     try {
-      await fetchActivityStats(addressInput);
       await fetchMultichainTokenPortfolio(addressInput);
-      await fetchMultichainTokenActivity(addressInput);
+      await fetchActivityStats(addressInput);
       await delayMs(1000);
     } catch (error) {
       console.log(error);
@@ -271,10 +205,8 @@ export const useMagic = () => {
 
   return {
     query: {
-      fetchMultichainNftPortfolio,
       fetchActivityStats,
       fetchMultichainTokenPortfolio,
-      fetchMultichainTokenActivity,
       stateCheck,
     },
     mutate: {

@@ -5,7 +5,6 @@ export type TChainStats = {
   totalChains: string[];
   noActivityChains: string[];
   mostActiveChainName: string;
-  mostActiveChainID: string;
   countUniqueDaysActiveChain: number;
   countActiveChainTxs: number;
 };

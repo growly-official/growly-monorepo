@@ -24,8 +24,8 @@ import { StoragePlugin } from '../storage/index.ts';
 
 type TGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
 type TGetMultichainTokenActivities = (
-  chains?: TChain[],
-  address?: TAddress
+  address?: TAddress,
+  chains?: TChain[]
 ) => Promise<TMultichain<TTokenTransferActivity[]>>;
 
 @autoInjectable()
@@ -54,23 +54,25 @@ export class MultichainTokenPlugin {
       }
     };
 
-  listTokenTransferActivities: WithAdapter<IOnchainActivityAdapter, TGetMultichainTokenActivities> =
-    adapter => async (chains?: TChain[], walletAddress?: TAddress) => {
-      try {
-        const chainActivitiesRecord: TMultichain<TTokenTransferActivity[]> = {};
-        for (const chain of this.storagePlugin.readDiskOrReturn({ chains })) {
-          chainActivitiesRecord[chain.chainName] = await adapter.listAllTokenActivities(
-            chain.chainName,
-            this.storagePlugin.readRamOrReturn({ walletAddress }),
-            100
-          );
-        }
-        return chainActivitiesRecord;
-      } catch (error: any) {
-        this.logger.error(`Failed to get token activities: ${error.message}`);
-        throw new Error(error);
+  listMultichainTokenTransferActivities: WithAdapter<
+    IOnchainActivityAdapter,
+    TGetMultichainTokenActivities
+  > = adapter => async (walletAddress?: TAddress, chains?: TChain[]) => {
+    try {
+      const chainActivitiesRecord: TMultichain<TTokenTransferActivity[]> = {};
+      for (const chain of this.storagePlugin.readDiskOrReturn({ chains })) {
+        chainActivitiesRecord[chain.chainName] = await adapter.listAllTokenActivities(
+          chain.chainName,
+          this.storagePlugin.readRamOrReturn({ walletAddress }),
+          100
+        );
       }
-    };
+      return chainActivitiesRecord;
+    } catch (error: any) {
+      this.logger.error(`Failed to get token activities: ${error.message}`);
+      throw new Error(error);
+    }
+  };
 
   async getNativeToken(client: TClient, walletAddress?: TAddress): Promise<TNativeToken> {
     try {

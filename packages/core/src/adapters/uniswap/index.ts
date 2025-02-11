@@ -67,6 +67,8 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
       ...token,
       usdValue: token.balance * price,
       marketPrice: price,
+      tags: [],
+      date_added: '',
     };
   }
 
@@ -94,6 +96,8 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
           ...token,
           usdValue,
           marketPrice: p,
+          tags: [],
+          date_added: '',
         });
       });
     }
