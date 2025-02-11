@@ -6,19 +6,16 @@ import {
   type State,
   elizaLogger,
 } from '@elizaos/core';
-import { DeriveKeyProvider, TEEMode } from '@elizaos/plugin-tee';
 import NodeCache from 'node-cache';
 import * as path from 'node:path';
-import type { Address, PrivateKeyAccount } from 'viem';
-import { formatUnits } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
 
+import { ChainsmithSdk } from 'chainsmith/src';
 import { alchemy } from 'chainsmith/src/rpc';
 import {
+  TAddress,
   TChain,
   TChainName,
   TClient,
-  TAddress,
   TMarketTokenList,
   TMultichain,
 } from 'chainsmith/src/types';
@@ -30,7 +27,6 @@ import {
   getChainByName,
 } from 'chainsmith/src/utils';
 import { createClient } from 'chainsmith/src/wrapper';
-import { ChainsmithSdk } from 'chainsmith/src';
 import { AdapterRegistry } from '../config/chainsmith';
 
 export class PortfolioProvider {
