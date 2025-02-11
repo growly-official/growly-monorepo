@@ -5,3 +5,4 @@ export * from './uniswap/index.ts';
 export * from './alchemy/index.ts';
 export * from './birdeye/index.ts';
 export * from './privy/index.ts';
+export * from './tavily/index.ts';
