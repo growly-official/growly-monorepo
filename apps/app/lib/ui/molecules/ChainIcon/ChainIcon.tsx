@@ -24,6 +24,9 @@ const ChainIcon = ({ chainName }: { chainName: TChainName }) => {
     <img
       src={metadata?.logoUrl}
       alt={`${chainName}-logo`}
+      style={{
+        objectFit: 'contain',
+      }}
       className="inline-block h-8 w-8 rounded-full"
     />
   );
