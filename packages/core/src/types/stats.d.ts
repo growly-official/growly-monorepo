@@ -18,7 +18,7 @@ export type TActivityStats = {
   activityPeriod: number;
 };
 
-export type TChainTokenList = {
+export type TMarketTokenList = {
   totalUsdValue: number;
   tokens: TMarketToken[];
 };
@@ -45,7 +45,7 @@ export type TChainAggregationBalance = TMultichain<TValueByChain>;
 
 export type TTokenPortfolio = {
   totalUsdValue: number;
-  chainRecordsWithTokens: TMultichain<TChainTokenList>;
+  chainRecordsWithTokens: TMultichain<TMarketTokenList>;
   aggregatedBalanceByToken: TTokenAggregationBalance;
   aggregatedBalanceByChain: TChainAggregationBalance;
 };

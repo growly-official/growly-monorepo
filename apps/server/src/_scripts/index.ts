@@ -40,7 +40,7 @@ async function fetchMultichainTokenPortfolio() {
   const portfolio = await sdk.portfolio.getMultichainTokenPortfolio([
     AdapterRegistry.CoinMarketcap,
     AdapterRegistry.Alchemy,
-  ])(Wallets.ETH_MAINNET_WALLET_PCMINH);
+  ])(Wallets.ETH_MAINNET_WALLET_JESSE);
   return portfolio;
 }
 

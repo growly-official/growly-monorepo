@@ -43,7 +43,9 @@ export class AlchemyAdapter implements IOnchainTokenAdapter {
     const tokenBalances = alchemyRes.result.tokenBalances || [];
     const tokenMetadatas = await this.evmPlugin.getTokenMetadataList(chain.id);
     const parsedTokenBalance = tokenBalances.map<TContractToken>(token => {
-      const metadata = tokenMetadatas.find(metadata => metadata.address === token.contractAddress);
+      const metadata = tokenMetadatas.find(
+        metadata => metadata.address.toLowerCase() === token.contractAddress.toLowerCase()
+      );
       if (metadata) {
         return {
           chainId: chain.id,
