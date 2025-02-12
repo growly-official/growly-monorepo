@@ -8,9 +8,9 @@ export const chainsmithEnvSchema = z
   .and(
     z.object({
       ALCHEMY_API_KEY: z.string().min(1, 'Alchemy URL is required'),
-      CMC_API_KEY: z.string().min(1, 'Coinmarketcap API key is required'),
+      COINMARKETCAP_API_KEY: z.string().min(1, 'Coinmarketcap API key is required'),
       ETHERSCAN_API_KEY: z.string().min(1, 'Etherscan API key is required'),
-      TAVILY_API: z.string().min(1, 'Etherscan API key is required'),
+      TAVILY_API_KEY: z.string().min(1, 'Tavily API key is required'),
     })
   );
 
@@ -21,9 +21,10 @@ export async function validateChainmsithConfig(runtime: IAgentRuntime): Promise<
     const config = {
       EVM_PRIVATE_KEY: runtime.getSetting('EVM_PRIVATE_KEY') || process.env.EVM_PRIVATE_KEY,
       ALCHEMY_API_KEY: runtime.getSetting('ALCHEMY_API_KEY') || process.env.ALCHEMY_API_KEY,
-      CMC_API_KEY: runtime.getSetting('CMC_API_KEY') || process.env.CMC_API_KEY,
+      COINMARKETCAP_API_KEY:
+        runtime.getSetting('COINMARKETCAP_API_KEY') || process.env.COINMARKETCAP_API_KEY,
       ETHERSCAN_API_KEY: runtime.getSetting('ETHERSCAN_API_KEY') || process.env.ETHERSCAN_API_KEY,
-      TAVILY_API: runtime.getSetting('TAVILY_API') || process.env.TAVILY_API,
+      TAVILY_API_KEY: runtime.getSetting('TAVILY_API_KEY') || process.env.TAVILY_API_KEY,
     };
 
     return chainsmithEnvSchema.parse(config);

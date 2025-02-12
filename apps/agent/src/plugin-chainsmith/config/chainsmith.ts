@@ -1,10 +1,7 @@
 import { adapters, rpc } from 'chainsmith/src/index.ts';
-import { EvmTokenPlugin } from 'chainsmith/src/plugins/token/evm/index.ts';
+import { EvmTokenPlugin } from 'chainsmith/src/plugins/evm/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
-
-export const SIMPLE_HASH_API_BASE_URL = process.env.SIMPLE_HASH_API_BASE_URL;
-export const SIMPLE_HASH_API_KEY = process.env.SIMPLE_HASH_API_KEY;
 
 export const COINMARKETCAP_API_BASE_URL = 'https://pro-api.coinmarketcap.com';
 export const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || '';

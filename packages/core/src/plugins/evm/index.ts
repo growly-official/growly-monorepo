@@ -9,6 +9,7 @@ import type {
   TClient,
   TContractToken,
   TContractTokenMetadata,
+  TTokenAddress,
   TTokenListResponse,
   TTokenSymbol,
 } from '../../types/index.d.ts';
@@ -111,6 +112,16 @@ export class EvmTokenPlugin {
     const tokenMetadatas = await this.getMultichainTokenMetadataList();
     const metadata = tokenMetadatas.find(
       metadata => metadata.symbol.toLowerCase() === tokenSymbol.toLowerCase()
+    );
+    return metadata;
+  }
+
+  async getTokenMetadataByAddress(
+    tokenAddress: TTokenAddress
+  ): Promise<TContractTokenMetadata | undefined> {
+    const tokenMetadatas = await this.getMultichainTokenMetadataList();
+    const metadata = tokenMetadatas.find(
+      metadata => metadata.address.toLowerCase() === tokenAddress.toLowerCase()
     );
     return metadata;
   }
