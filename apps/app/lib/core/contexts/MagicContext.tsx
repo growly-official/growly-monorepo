@@ -96,7 +96,9 @@ interface Props {
 }
 
 export const MagicProvider = ({ children }: Props) => {
-  const selectedNetworks = useState<TMultiEcosystem<TChainName[]>>({});
+  const selectedNetworks = useState<TMultiEcosystem<TChainName[]>>({
+    evm: ['base', 'mainnet'],
+  });
   const [stateEvents, setStateEvents] = useState<StateEventRegistry>({});
 
   const inputAddress = useState('');

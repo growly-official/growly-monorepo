@@ -76,9 +76,10 @@ export class PortfolioProvider {
     }
 
     try {
-      const tokenList = await this.sdk.portfolio.getMultichainTokenList(
-        AdapterRegistry.CoinMarketcap
-      )(this.address);
+      const tokenList = await this.sdk.portfolio.getMultichainTokenList([
+        AdapterRegistry.CoinMarketcap,
+        AdapterRegistry.Alchemy,
+      ])(this.address);
 
       this.setCachedData<TMultichain<TChainTokenList>>(cacheKey, tokenList);
       elizaLogger.log('Multichain token list cached for address: ', this.address);

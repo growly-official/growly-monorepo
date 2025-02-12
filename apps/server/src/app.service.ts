@@ -15,10 +15,10 @@ export class AppService {
     chainNames: TChainName[]
   ): Promise<TTokenPortfolio> {
     const sdk = initChainsmithSdk(chainNames);
-    return sdk.portfolio.getMultichainTokenPortfolio(AdapterRegistry.CoinMarketcap)(
-      walletAddress,
-      sdk.storage.readDisk('chains')
-    );
+    return sdk.portfolio.getMultichainTokenPortfolio([
+      AdapterRegistry.CoinMarketcap,
+      AdapterRegistry.Alchemy,
+    ])(walletAddress, sdk.storage.readDisk('chains'));
   }
 
   async listMultichainTokenTransferActivities(

@@ -1,18 +1,13 @@
 import { Logger } from 'tslog';
-import type {
-  IUniswapChainTokenMap,
-  IUniswapTokenAddressMap,
-  TUniswapGetConstantParameters,
-  TUniswapQuoteConfig,
-  TUniswapTokenDetail,
-} from './types.d.ts';
+import type { TUniswapGetConstantParameters, TUniswapQuoteConfig } from './types.d.ts';
 import type {
   TContractToken,
   TMarketToken,
   TChainId,
   TChainName,
   TChain,
-  TTokenListResponse,
+  TTokenAddress,
+  TContractTokenMetadata,
 } from '../../types/index.d.ts';
 import { Files } from '../../data/index.ts';
 import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json' with { type: 'json' };
@@ -25,8 +20,9 @@ import { getChainByName, getChainIdByName } from '../../utils/chain.util.ts';
 import { createClient, formatUnits, getContract, http } from 'viem';
 import { UniswapV3PoolAbi } from '../../data/abis/index.ts';
 import { autoInjectable } from 'tsyringe';
+import { intoChainTokenAddressMap } from '../../utils/token.util.ts';
 
-const wrapUniswapTokenType = (token: TContractToken | TUniswapTokenDetail) => {
+const wrapUniswapTokenType = (token: TContractToken) => {
   if (token.symbol === 'ETH') return WETH9[token.chainId];
   return new Token(token.chainId, token.address, token.decimals, token.symbol, token.name);
 };
@@ -37,13 +33,13 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
   logger = new Logger({ name: this.name });
 
   getRpcUrl: GetChainRpcEndpoint;
-  chainTokenMap: IUniswapChainTokenMap;
+  chainTokenMap: Record<TChainId, Record<TTokenAddress, TContractTokenMetadata>>;
 
   constructor(getRpcUrl: GetChainRpcEndpoint) {
     // TODO: Call API EVMPlugin/getTokenMetadataList instead of using static list
-    this.chainTokenMap = this.intoChainTokenAddressMap([
-      Files.TokenList.UniswapTokenList,
-      Files.TokenList.SuperchainTokenList,
+    this.chainTokenMap = intoChainTokenAddressMap([
+      Files.TokenList.UniswapTokenList as any,
+      Files.TokenList.SuperchainTokenList as any,
     ]);
     this.getRpcUrl = getRpcUrl;
   }
@@ -107,28 +103,15 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
     };
   }
 
-  // Map token address to Uniswap token details.
-  intoChainTokenAddressMap = (m: TTokenListResponse[]) => {
-    const tokenList = m.flatMap((item: TTokenListResponse) => item.tokens);
-    const chainMap: Record<TChainId, IUniswapTokenAddressMap> = {};
-    for (const token of tokenList) {
-      chainMap[token.chainId] = {
-        ...chainMap[token.chainId],
-        [token.symbol]: token,
-      };
-    }
-    return chainMap;
-  };
-
   getTokenAddressMap = (
     chainName: TChainName,
     tokens: TContractToken[]
-  ): IUniswapTokenAddressMap => {
+  ): Record<TTokenAddress, TContractTokenMetadata> => {
     try {
       const tokenAddresses = tokens.map(token => token.address);
       const chainId = getChainIdByName(chainName);
 
-      const result: IUniswapTokenAddressMap = {};
+      const result: Record<TTokenAddress, TContractTokenMetadata> = {};
       for (const tokenAddress of tokenAddresses) {
         const tokenDetail = this.chainTokenMap[chainId][tokenAddress];
         if (!tokenDetail) continue;

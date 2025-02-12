@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { Files } from '../../data/index.ts';
+import { Logger } from 'tslog';
+import { autoInjectable } from 'tsyringe';
+import { intoChainTokenAddressMap } from '../../utils/token.util.ts';
 import type {
+  TChainId,
   TChainName,
+  TContractTokenMetadata,
   TMarketToken,
   TToken,
   TTokenId,
@@ -14,9 +19,8 @@ import type {
   TCMCTokenIDDetail,
   TCMCUSDPrice,
 } from './types.d.ts';
-import { Logger } from 'tslog';
-import { autoInjectable } from 'tsyringe';
 import type { IMarketDataAdapter } from '../../types/adapter.d.ts';
+import { getChainByName } from '../../utils/chain.util.ts';
 
 // Some tokens have a conflict symbol with others, like Ethereum and The Inifinite Garden.
 const NATIVE_TOKEN_MAP = {
@@ -41,17 +45,24 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
   apiUrl: string;
   apiKey: string;
   tokenSymbolMap: Record<TTokenSymbol, TCMCTokenIDDetail>;
+  chainTokenMap: Record<TChainId, Record<TTokenSymbol, TContractTokenMetadata>>;
 
   constructor(apiUrl: string, apiKey: string) {
     this.apiUrl = apiUrl;
     this.apiKey = apiKey;
     this.tokenSymbolMap = this.intoTokenSymbolMap(Files.TokenList.CoinMarketcapTokenList as any);
+    this.chainTokenMap = intoChainTokenAddressMap([
+      Files.TokenList.UniswapTokenList as any,
+      Files.TokenList.SuperchainTokenList as any,
+    ]);
   }
 
   async fetchTokenWithPrice(
-    _chain: TChainName,
+    chainName: TChainName,
     token: TToken
   ): Promise<TMarketToken<TCMCUSDPrice> | undefined> {
+    this.logger.info(`fetchTokenWithPrice: ${chainName}, ${token}`);
+    const chain = getChainByName(chainName);
     const tokenSymbolMap = this.getTokenSymbolMap([token]);
     const prices = await this.getTokenPriceMap(
       Object.values(tokenSymbolMap).map(value => value.id)
@@ -62,7 +73,7 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     const tokenPriceData = prices[cmcTokenDetail.id];
     const price = tokenPriceData.quote.USD.price;
     const usdValue = price * token.balance;
-    return {
+    const tokenData = {
       ...token,
       usdValue,
       marketPrice: price,
@@ -70,13 +81,21 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       tags: tokenPriceData.tags,
       date_added: tokenPriceData.date_added,
     };
+
+    if ('address' in token) {
+      tokenData.logoURI = this.chainTokenMap[chain.id]?.[token.address]?.logoURI;
+    }
+
+    return tokenData;
   }
 
+  // Get token USD values from CoinMarketcap adapter.
   fetchTokensWithPrice = async (
-    _chainName: TChainName,
+    chainName: TChainName,
     tokens: TToken[]
   ): Promise<{ tokens: TMarketToken<TCMCUSDPrice>[]; totalUsdValue: number }> => {
-    // Get token USD values from CoinMarketcap adapter.
+    this.logger.info(`fetchTokensWithPrice: ${chainName}, ${tokens.join(',')}`);
+    const chain = getChainByName(chainName);
     const tokenSymbolMap = this.getTokenSymbolMap(tokens);
     const prices = await this.getTokenPriceMap(
       Object.values(tokenSymbolMap).map(value => value.id)
@@ -95,14 +114,21 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       const usd = tokenPriceData.quote.USD;
       const usdValue = usd.price * token.balance;
       totalUsdValue += usdValue;
-      marketTokens.push({
+
+      const tokenData = {
         ...token,
         usdValue,
         marketPrice: usd.price,
-        extra: usd,
+        extra: tokenPriceData.quote.USD,
         tags: tokenPriceData.tags,
         date_added: tokenPriceData.date_added,
-      });
+      };
+
+      if ('address' in token) {
+        tokenData.logoURI = this.chainTokenMap[chain.id]?.[token.address]?.logoURI;
+      }
+
+      marketTokens.push(tokenData);
     }
     return {
       tokens: marketTokens,
@@ -142,6 +168,7 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
   };
 
   getTokenPriceMap = async (tokenIds: TTokenId[]): Promise<Record<TTokenId, TCMCTokenDetail>> => {
+    this.logger.info(`getTokenPriceMap: ${tokenIds.join(',')}`);
     try {
       if (tokenIds.length == 0) return {};
       const query = `id=${tokenIds.join(',')}&aux=tags,date_added`;

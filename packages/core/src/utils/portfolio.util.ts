@@ -1,6 +1,6 @@
 import type {
   TMultichain,
-  TChainTokenList,
+  TMarketTokenList,
   TTokenAggregationBalance,
   TChainName,
   TTokenPortfolio,
@@ -13,7 +13,7 @@ import { getChainIdByName } from './chain.util.ts';
 import { POPULAR_MEMES } from '../data/constants/tokens.ts';
 
 export function aggregateMultichainTokenBalance(
-  multichainTokenList: TMultichain<TChainTokenList>
+  multichainTokenList: TMultichain<TMarketTokenList>
 ): TTokenPortfolio {
   let totalPortfolioValue = 0;
 

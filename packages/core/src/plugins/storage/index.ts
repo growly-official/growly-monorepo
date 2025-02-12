@@ -28,12 +28,12 @@ export class StoragePlugin<R extends Ram = any> {
 
   readDiskOrReturn<F extends keyof Disk>(obj: Record<F, any>): Disk[F] {
     const [key, value]: [F, Disk[F]] = Object.entries(obj)[0] as any;
-    return value || this.storage.getState().disk[key];
+    return value || this.writeToDisk(key, this.storage.getState().disk[key]);
   }
 
-  readRamOrReturn<F extends keyof R>(obj: Record<F, any>): R[F] {
-    const [key, value]: [F, R[F]] = Object.entries(obj)[0] as any;
-    return value || (this.storage.getState().ram as R)[key];
+  readRamOrReturn<F extends keyof Ram>(obj: Record<F, any>): Ram[F] {
+    const [key, value]: [F, Ram[F]] = Object.entries(obj)[0] as any;
+    return value || this.writeToRam(key, (this.storage.getState().ram as R)[key]);
   }
 
   readDisk<F extends keyof Disk>(key: F): Disk[F] {
@@ -44,23 +44,25 @@ export class StoragePlugin<R extends Ram = any> {
     return this.storage.getState().ram[key];
   }
 
-  writeToDisk(key: keyof Disk, value: any) {
+  writeToDisk<F extends keyof Disk>(key: F, value: any): Disk[F] {
     const diskState = this.storage.getState().disk;
-    return this.storage.setState({
+    this.storage.setState({
       disk: {
         ...diskState,
         [key]: value,
       },
     });
+    return value;
   }
 
-  writeToRam(key: string, value: any) {
+  writeToRam<F extends keyof Ram>(key: string, value: any): Ram[F] {
     const ramState = this.storage.getState().ram;
-    return this.storage.setState({
+    this.storage.setState({
       ram: {
         ...ramState,
         [key]: value,
       },
     });
+    return value;
   }
 }

@@ -1,7 +1,11 @@
 import { Logger } from 'tslog';
 import { autoInjectable } from 'tsyringe';
-import type { IMarketDataAdapter, WithAdapter } from '../../types/adapter.d.ts';
-import type { TAddress, TChain, TChainTokenList, TMultichain } from '../../types/index.d.ts';
+import type {
+  IMarketDataAdapter,
+  IOnchainTokenAdapter,
+  WithAdapter,
+} from '../../types/adapter.d.ts';
+import type { TAddress, TChain, TMarketTokenList, TMultichain } from '../../types/index.d.ts';
 import { createClient } from '../../wrapper.ts';
 import { StoragePlugin } from '../storage/index.ts';
 import { MultichainTokenPlugin } from '../token/index.ts';
@@ -21,49 +25,58 @@ export class MultichainPortfolioPlugin {
     private storage: StoragePlugin
   ) {}
 
-  getMultichainTokenList: WithAdapter<IMarketDataAdapter, TGetMultichainTokenList> =
-    adapter => async (walletAddress?: TAddress, chains?: TChain[]) => {
-      try {
-        const tokenList: TMultichain<TChainTokenList> = {};
-        for (const chain of this.storage.readDiskOrReturn({ chains })) {
-          tokenList[chain.chainName] = await this.getChainTokenList(adapter)(
-            chain,
-            this.storage.readRamOrReturn({ walletAddress })
-          );
-        }
-        return tokenList;
-      } catch (error: any) {
-        this.logger.error(`Failed to get multichain token portfolio: ${error}`);
-        throw new Error(error);
+  getMultichainTokenList: WithAdapter<
+    [IMarketDataAdapter, IOnchainTokenAdapter],
+    TGetMultichainTokenList
+  > = adapters => async (walletAddress?: TAddress, chains?: TChain[]) => {
+    try {
+      const tokenList: TMultichain<TMarketTokenList> = {};
+      const _walletAddress = this.storage.readRamOrReturn({ walletAddress });
+      const _chains = this.storage.readDiskOrReturn({ chains });
+      for (const chain of _chains) {
+        tokenList[chain.chainName] = await this.getMarketTokenList(adapters)(chain, _walletAddress);
       }
-    };
+      return tokenList;
+    } catch (error: any) {
+      this.logger.error(`Failed to get multichain token portfolio: ${error}`);
+      throw new Error(error);
+    }
+  };
 
-  getMultichainTokenPortfolio: WithAdapter<IMarketDataAdapter, IGetMultichainTokenPortfolio> =
-    adapter => async (walletAddress?: TAddress, chains?: TChain[]) => {
-      try {
-        const multichainTokenList = await this.getMultichainTokenList(adapter)(
-          walletAddress,
-          chains
-        );
-        return aggregateMultichainTokenBalance(multichainTokenList);
-      } catch (error: any) {
-        this.logger.error(`Failed to get multichain token portfolio: ${error}`);
-        throw new Error(error);
-      }
-    };
+  getMultichainTokenPortfolio: WithAdapter<
+    [IMarketDataAdapter, IOnchainTokenAdapter],
+    IGetMultichainTokenPortfolio
+  > = adapters => async (walletAddress?: TAddress, chains?: TChain[]) => {
+    try {
+      const _walletAddress = this.storage.readRamOrReturn({ walletAddress });
+      const _chains = this.storage.readDiskOrReturn({ chains });
+      const multichainTokenList = await this.getMultichainTokenList(adapters)(
+        _walletAddress,
+        _chains
+      );
+      return aggregateMultichainTokenBalance(multichainTokenList);
+    } catch (error: any) {
+      this.logger.error(`Failed to get multichain token portfolio: ${error}`);
+      throw new Error(error);
+    }
+  };
 
-  getChainTokenList: WithAdapter<IMarketDataAdapter, TGetChainTokenList> =
-    adapter =>
-    async (chain: TChain, address: TAddress): Promise<TChainTokenList> => {
+  getMarketTokenList: WithAdapter<[IMarketDataAdapter, IOnchainTokenAdapter], TGetChainTokenList> =
+    ([marketDataAdapter, onchainTokenAdapter]) =>
+    async (chain: TChain, walletAddress?: TAddress): Promise<TMarketTokenList> => {
       try {
         const client = createClient({
           chain,
         });
-        if (!adapter) throw new Error('No adapter found');
-        const nativeToken = await this.tokenPlugin.getNativeToken(client, address);
-        const contractTokens = await this.tokenPlugin.getContractTokens(client, address);
+        if (!marketDataAdapter || !onchainTokenAdapter) throw new Error('No adapter found');
+        const _walletAddress = this.storage.readRamOrReturn({ walletAddress });
+        const nativeToken = await this.tokenPlugin.getNativeToken(client, _walletAddress);
+        const contractTokens = await this.tokenPlugin.getContractTokens(onchainTokenAdapter)(
+          chain.chainName,
+          _walletAddress
+        );
         const tokens = [nativeToken, ...contractTokens];
-        const marketData = await adapter.fetchTokensWithPrice(chain.chainName, tokens);
+        const marketData = await marketDataAdapter.fetchTokensWithPrice(chain.chainName, tokens);
         return {
           tokens: marketData.tokens,
           totalUsdValue: marketData.totalUsdValue,

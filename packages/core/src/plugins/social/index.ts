@@ -4,8 +4,4 @@ import { Logger } from 'tslog';
 @autoInjectable()
 export class MultiPlatformSocialPlugin {
   logger = new Logger({ name: 'MultiPlatformSocialPlugin' });
-
-  constructor() {
-    console.log('Place holder');
-  }
 }

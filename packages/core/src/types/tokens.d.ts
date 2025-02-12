@@ -1,11 +1,11 @@
-import type { TAddress, TChainName } from './chains.d.ts';
+import type { TAddress, TChainId, TChainName } from './chains.d.ts';
 
-export type TTokenSymbol = string;
-export type TTokenId = number;
 export type TTokenAddress = TAddress;
+export type TTokenId = number;
+export type TTokenSymbol = string;
 
 export type TTokenMetadata = {
-  chainId: number;
+  chainId: TChainId;
   name: string;
   symbol: string;
   decimals: number;
@@ -33,7 +33,7 @@ export type TTokenTransferActivity = {
 
 export type TContractTokenMetadata = TTokenMetadata & {
   address: TTokenAddress;
-  type: 'contract';
+  type: undefined;
 };
 
 export type TNativeTokenMetadata = TTokenMetadata & {
@@ -42,7 +42,7 @@ export type TNativeTokenMetadata = TTokenMetadata & {
 export type TTokenListResponse = {
   name: string;
   timestamp: string;
-  tokens: TokenMetadata[];
+  tokens: TContractTokenMetadata[];
 };
 
 export type TNativeToken = TNativeTokenMetadata & {
