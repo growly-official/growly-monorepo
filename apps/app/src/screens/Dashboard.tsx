@@ -22,40 +22,44 @@ const Dashboard: React.FC<any> = () => {
   }, [selectState(selectedNetworks), wallets]);
 
   return (
-    <div className="py-5 px-5 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white">
-      <div className="flex justify-between items-center">
-        <Molecules.ConnectWalletWithPrivybutton />
-        <Molecules.SelectNetworkButton
-          selectedNetworks={selectState(selectedNetworks)}
-          onNetworkSelected={(ecosystem, chains) => {
-            setState(selectedNetworks)({
-              ...selectState(selectedNetworks),
-              [ecosystem]: chains,
-            });
-          }}
-        />
-      </div>
-      <Atoms.Loadable
-        isLoading={stateCheck('GetTokenPortfolio', ThreeStageState.InProgress)}
-        loadComponent={
-          <Lottie
-            options={{
-              loop: true,
-              autoplay: true,
-              animationData: animationData,
-              rendererSettings: {
-                preserveAspectRatio: 'xMidYMid slice',
-              },
+    <div className="py-3 px-4 rounded-xl flex flex-col max-w-[90rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
+      <div className="py-5 px-5 rounded-xl flex flex-col shadow-xl w-full h-[100vh] bg-white">
+        <div className="flex justify-between items-center">
+          <Molecules.ConnectWalletWithPrivybutton />
+          <Molecules.SelectNetworkButton
+            selectedNetworks={selectState(selectedNetworks)}
+            onNetworkSelected={(ecosystem, chains) => {
+              setState(selectedNetworks)({
+                ...selectState(selectedNetworks),
+                [ecosystem]: chains,
+              });
             }}
-            speed={2}
-            height={400}
-            width={400}
           />
-        }>
-        <Molecules.TokenPortfolioTable
-          multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
-        />
-      </Atoms.Loadable>
+        </div>
+        <div className="mt-5">
+          <Atoms.Loadable
+            isLoading={stateCheck('GetTokenPortfolio', ThreeStageState.InProgress)}
+            loadComponent={
+              <Lottie
+                options={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: animationData,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice',
+                  },
+                }}
+                speed={2}
+                height={400}
+                width={400}
+              />
+            }>
+            <Molecules.TokenPortfolioTable
+              multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
+            />
+          </Atoms.Loadable>
+        </div>
+      </div>
     </div>
   );
 };
