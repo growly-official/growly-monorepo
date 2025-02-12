@@ -73,13 +73,14 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     const tokenPriceData = prices[cmcTokenDetail.id];
     const price = tokenPriceData.quote.USD.price;
     const usdValue = price * token.balance;
-    const tokenData = {
+    const tokenData: TMarketToken<TCMCUSDPrice> = {
       ...token,
       usdValue,
       marketPrice: price,
       extra: tokenPriceData.quote.USD,
       tags: tokenPriceData.tags,
       date_added: tokenPriceData.date_added,
+      marketRank: tokenPriceData.cmc_rank,
     };
 
     if ('address' in token) {
@@ -117,13 +118,14 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       const usdValue = usd.price * token.balance;
       totalUsdValue += usdValue;
 
-      const tokenData = {
+      const tokenData: TMarketToken<TCMCUSDPrice> = {
         ...token,
         usdValue,
         marketPrice: usd.price,
         extra: tokenPriceData.quote.USD,
         tags: tokenPriceData.tags,
         date_added: tokenPriceData.date_added,
+        marketRank: tokenPriceData.cmc_rank,
       };
 
       if ('address' in token) {
@@ -174,7 +176,7 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     this.logger.info(`getTokenPriceMap: ${tokenIds.join(',')}`);
     try {
       if (tokenIds.length == 0) return {};
-      const query = `id=${tokenIds.join(',')}&aux=tags,date_added`;
+      const query = `id=${tokenIds.join(',')}&aux=tags,date_added,cmc_rank`;
       const res = await axios.get<TCMCDetailMap>(
         `${this.apiUrl}/v1/cryptocurrency/quotes/latest?${query}`,
         {

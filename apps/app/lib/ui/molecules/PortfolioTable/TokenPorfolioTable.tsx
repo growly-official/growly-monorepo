@@ -3,6 +3,7 @@ import { Table } from '@radix-ui/themes';
 import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith/src/types';
 import React from 'react';
 import ChainIcon from '../ChainIcon/ChainIcon';
+import TokenRisktBadge from '../TokenRiskBadge/TokenRisktBadge';
 
 type Props = {
   multichainTokenData: TMultichain<TMarketTokenList>;
@@ -14,6 +15,7 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Token</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Risk</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>USD Value</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Chain</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Market Price</Table.ColumnHeaderCell>
@@ -32,6 +34,9 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                     className="mr-3 inline-block h-8 w-8 rounded-full"
                   />
                   {token.name}
+                </Table.Cell>
+                <Table.Cell>
+                  <TokenRisktBadge risk={token.marketRank || 0} />
                 </Table.Cell>
                 <Table.Cell>{formatNumberUSD(token.usdValue)}</Table.Cell>
                 <Table.Cell>

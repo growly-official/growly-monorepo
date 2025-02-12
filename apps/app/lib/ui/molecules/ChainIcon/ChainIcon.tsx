@@ -3,7 +3,7 @@ import { TChainMetadataListResponse, TChainName } from 'chainsmith/src/types';
 import { getChainByName } from 'chainsmith/src/utils';
 import { useState, useEffect } from 'react';
 
-const ChainIcon = ({ chainName }: { chainName: TChainName }) => {
+const ChainIcon = ({ chainName, size }: { chainName: TChainName; size?: number }) => {
   const [metadata, setMetadata] = useState<TChainMetadataListResponse | undefined>();
 
   useEffect(() => {
@@ -26,8 +26,10 @@ const ChainIcon = ({ chainName }: { chainName: TChainName }) => {
       alt={`${chainName}-logo`}
       style={{
         objectFit: 'contain',
+        width: size || 30,
+        height: size || 30,
       }}
-      className="inline-block h-8 w-8 rounded-full"
+      className="inline-block rounded-full"
     />
   );
 };

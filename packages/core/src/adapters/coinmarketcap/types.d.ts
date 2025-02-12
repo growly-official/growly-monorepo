@@ -10,6 +10,7 @@ export type TCMCTokenDetail = {
   self_reported_market_cap: number;
   tvl_ratio: any;
   last_updated: string;
+  cmc_rank: number;
   quote: { USD: TCMCUSDPrice };
 };
 

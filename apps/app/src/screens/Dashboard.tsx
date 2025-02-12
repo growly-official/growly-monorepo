@@ -1,4 +1,4 @@
-import { selectState, setState, useMagic, useMagicContext } from '@/core';
+import { formatNumberUSD, selectState, setState, useMagic, useMagicContext } from '@/core';
 import { Atoms, Molecules } from '@/ui';
 import { ThreeStageState } from '@/core';
 import { useWallets } from '@privy-io/react-auth';
@@ -22,8 +22,8 @@ const Dashboard: React.FC<any> = () => {
   }, [selectState(selectedNetworks), wallets]);
 
   return (
-    <div className="py-3 px-4 rounded-xl flex flex-col max-w-[90rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
-      <div className="py-5 px-5 rounded-xl flex flex-col shadow-xl w-full h-[100vh] bg-white">
+    <div className="py-3 px-4 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
+      <div className="py-5 px-7 rounded-xl flex flex-col shadow-xl w-full h-[100vh] bg-white">
         <div className="flex justify-between items-center">
           <Molecules.ConnectWalletWithPrivybutton />
           <Molecules.SelectNetworkButton
@@ -54,9 +54,18 @@ const Dashboard: React.FC<any> = () => {
                 width={400}
               />
             }>
-            <Molecules.TokenPortfolioTable
-              multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
-            />
+            <div>
+              <div className="mb-5">
+                <h1 className="text-3xl font-bold">
+                  {formatNumberUSD(selectState(tokenPortfolio).totalUsdValue)}
+                </h1>
+              </div>
+              <div>
+                <Molecules.TokenPortfolioTable
+                  multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
+                />
+              </div>
+            </div>
           </Atoms.Loadable>
         </div>
       </div>

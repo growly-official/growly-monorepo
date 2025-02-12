@@ -58,6 +58,7 @@ export type TToken<T = any> = (TNativeToken | TContractToken) & TExtraField<T>;
 export type TPriceData = {
   usdValue: number;
   marketPrice: number;
+  marketRank?: number;
 };
 
 export type TMarketToken<T = any> = TToken<T> & TPriceData & { tags: string[]; date_added: string };
