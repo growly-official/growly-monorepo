@@ -35,7 +35,9 @@ export class EvmTokenPlugin {
       const responses = await Promise.all(promises);
 
       // Extracting JSON data from the responses
-      const data: any[] = await Promise.all(responses.map(response => response.json()));
+      const data: TTokenListResponse[] = await Promise.all(
+        responses.map(response => response.json())
+      );
 
       // Flattening the tokens arrays from all responses into a single array
       const allTokens = data.flatMap((item: TTokenListResponse) => item.tokens);
@@ -142,7 +144,7 @@ export class EvmTokenPlugin {
         name,
         symbol,
         decimals,
-        type: 'contract',
+        type: undefined,
       };
     } catch (error: any) {
       this.logger.error(`Failed to get token contract metadata: ${error.message}`);

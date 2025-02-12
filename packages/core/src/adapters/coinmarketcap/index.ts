@@ -52,8 +52,8 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     this.apiKey = apiKey;
     this.tokenSymbolMap = this.intoTokenSymbolMap(Files.TokenList.CoinMarketcapTokenList as any);
     this.chainTokenMap = intoChainTokenAddressMap([
-      Files.TokenList.UniswapTokenList,
-      Files.TokenList.SuperchainTokenList,
+      Files.TokenList.UniswapTokenList as any,
+      Files.TokenList.SuperchainTokenList as any,
     ]);
   }
 

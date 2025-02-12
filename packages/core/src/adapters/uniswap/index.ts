@@ -38,8 +38,8 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
   constructor(getRpcUrl: GetChainRpcEndpoint) {
     // TODO: Call API EVMPlugin/getTokenMetadataList instead of using static list
     this.chainTokenMap = intoChainTokenAddressMap([
-      Files.TokenList.UniswapTokenList,
-      Files.TokenList.SuperchainTokenList,
+      Files.TokenList.UniswapTokenList as any,
+      Files.TokenList.SuperchainTokenList as any,
     ]);
     this.getRpcUrl = getRpcUrl;
   }
