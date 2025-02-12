@@ -29,7 +29,10 @@ export const AdapterRegistry = {
 export const buildDefaultChains = (chainNames: TChainName[]) =>
   buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
 
-export const initChainsmithSdk = (chainNames: TChainName[]) => {
-  const chains = buildDefaultChains(chainNames);
+export const initChainsmithSdk = (chainNames: TChainName[] = []) => {
+  let chains = [];
+  if (chainNames.length > 0) {
+    chains = buildDefaultChains(chainNames);
+  }
   return ChainsmithSdk.init(chains);
 };

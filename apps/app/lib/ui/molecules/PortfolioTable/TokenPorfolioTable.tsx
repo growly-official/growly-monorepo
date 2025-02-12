@@ -1,7 +1,8 @@
 import { formatNumberUSD } from '@/core';
 import { Table } from '@radix-ui/themes';
-import { TMultichain, TMarketTokenList } from 'chainsmith/src/types';
+import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith/src/types';
 import React from 'react';
+import ChainIcon from '../ChainIcon/ChainIcon';
 
 type Props = {
   multichainTokenData: TMultichain<TMarketTokenList>;
@@ -33,7 +34,9 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                   {token.name}
                 </Table.Cell>
                 <Table.Cell>{formatNumberUSD(token.usdValue)}</Table.Cell>
-                <Table.Cell>{chainName}</Table.Cell>
+                <Table.Cell>
+                  <ChainIcon chainName={chainName as TChainName} />
+                </Table.Cell>
                 <Table.Cell>{formatNumberUSD(token.marketPrice)}</Table.Cell>
                 <Table.Cell>{token.balance.toFixed(Math.min(token.decimals, 5))}</Table.Cell>
               </Table.Row>

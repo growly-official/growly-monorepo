@@ -1,6 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service.ts';
-import type { TAddress, TChainName, TMultichain } from 'chainsmith/src/types/chains.d.ts';
+import type {
+  TAddress,
+  TChainMetadataListResponse,
+  TChainName,
+  TMultichain,
+} from 'chainsmith/src/types/chains.d.ts';
 import type { TTokenPortfolio } from 'chainsmith/src/types/stats.d.ts';
 import { TTokenTransferActivity } from 'chainsmith/src/types/tokens';
 
@@ -25,5 +30,12 @@ export class AppController {
       payload.walletAddress,
       payload.chainNames
     );
+  }
+
+  @Get('/chainlist/:id')
+  async getChainMetadata(
+    @Param() params: { id: number }
+  ): Promise<TChainMetadataListResponse | undefined> {
+    return this.appService.getChainMetadata(params.id);
   }
 }

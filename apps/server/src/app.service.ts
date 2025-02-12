@@ -3,6 +3,7 @@ import {
   TAddress,
   TChainName,
   TMultichain,
+  TChainId,
   TTokenPortfolio,
   TTokenTransferActivity,
 } from 'chainsmith/src/types/index.ts';
@@ -30,5 +31,15 @@ export class AppService {
       walletAddress,
       sdk.storage.readDisk('chains')
     );
+  }
+
+  getChainMetadata(chainId: TChainId) {
+    const sdk = initChainsmithSdk();
+    return sdk.evmChain.getChainMetadata(chainId);
+  }
+
+  getAllChainMetadata() {
+    const sdk = initChainsmithSdk();
+    return sdk.evmChain.getAllChainMetadata();
   }
 }

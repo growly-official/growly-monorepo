@@ -44,7 +44,13 @@ async function fetchMultichainTokenPortfolio() {
   return portfolio;
 }
 
-testExternalities(true, fetchMultichainTokenPortfolio);
+async function fetchChainlistMetadata() {
+  const metadataList = await sdk.evmChain.getAllChainMetadata();
+  return metadataList;
+}
+
+testExternalities(false, fetchMultichainTokenPortfolio);
 testExternalities(false, fetchMultichainTokenList);
 testExternalities(false, fetchEvmscanTokenActivitiesWorks);
 testExternalities(false, fetchDexScreenerParis);
+testExternalities(true, fetchChainlistMetadata);

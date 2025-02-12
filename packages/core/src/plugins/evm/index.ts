@@ -1,6 +1,6 @@
 import { formatUnits, getContract } from 'viem';
 import { stoi } from '../../utils/index.ts';
-import { Abis } from '../../data/index.ts';
+import { Abis, Files } from '../../data/index.ts';
 import type {
   TAddress,
   TBlockNumber,
@@ -9,15 +9,17 @@ import type {
   TClient,
   TContractToken,
   TContractTokenMetadata,
+  TMultichain,
   TTokenListResponse,
   TTokenSymbol,
 } from '../../types/index.d.ts';
 import { autoInjectable } from 'tsyringe';
 import { Logger } from 'tslog';
+import axios from 'axios';
 
 const TOKEN_LIST_URLS = {
   // Multi-EVM (popular tokens only)
-  uniswap: 'https://ipfs.io/ipns/tokens.uniswap.org', // TODO: Cannot access ipfs directly with axios
+  uniswap: 'https://ipfs.io/ipns/tokens.uniswap.org',
   superchain: 'https://static.optimism.io/optimism.tokenlist.json',
 };
 
@@ -31,6 +33,19 @@ export class EvmChainPlugin {
   logger = new Logger({ name: 'EvmChainPlugin' });
 
   getChainMetadata = async (chainId: TChainId): Promise<TChainMetadataListResponse | undefined> => {
+    const metadata = Files.ChainList.ChainMetadataMap[chainId];
+    const res = await axios.get(
+      `https://raw.githubusercontent.com/ethereum-lists/chains/refs/heads/master/_data/icons/${metadata.icon}.json`
+    );
+    const data = res.data as [{ url: string }];
+    return {
+      ...metadata,
+      icon: data[0],
+      logoUrl: `https://ipfs.io/${data[0].url?.replace('://', '/')}`,
+    };
+  };
+
+  getAllChainMetadata = async (): Promise<TMultichain<TChainMetadataListResponse>> => {
     try {
       // Extracting all EVM chain list URLs from the constants
       const evmChainListURLs = Object.values(CHAIN_LIST_URLS);
@@ -42,7 +57,12 @@ export class EvmChainPlugin {
       const data: TChainMetadataListResponse[] = await Promise.all(
         responses.map(response => response.json())
       );
-      return data.flat().find(chain => chain.chainId === chainId);
+      const multichainMetadata: TMultichain<TChainMetadataListResponse> = {};
+      const chainMetadataList = data.flat();
+      for (const chainMetadata of chainMetadataList) {
+        multichainMetadata[chainMetadata.chainId] = chainMetadata;
+      }
+      return multichainMetadata;
     } catch (error: any) {
       this.logger.error(`Failed to get chain metadata list: ${error.message}`);
       return undefined;

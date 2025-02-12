@@ -1,13 +1,13 @@
 import { singleton } from 'tsyringe';
 import { createStore, StoreApi } from 'zustand';
-import { mainnet } from 'viem/chains';
-import type { TChain } from '../../types/index.d.ts';
+import type { TChain, TClient } from '../../types/index.d.ts';
 import { TPlugin } from '../index.ts';
 
 export type Disk = ChainsmithStorage['disk'];
 export type Ram = ChainsmithStorage['ram'];
 export type ChainsmithStorage = {
   disk: {
+    client: TClient | undefined;
     chains: TChain[];
     plugins: TPlugin[];
   };
@@ -16,6 +16,7 @@ export type ChainsmithStorage = {
 
 const defaultState: ChainsmithStorage = {
   disk: {
+    client: undefined,
     chains: [],
     plugins: [],
   },

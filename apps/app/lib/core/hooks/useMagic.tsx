@@ -17,7 +17,7 @@ import {
   TMultichain,
 } from 'chainsmith/src/types';
 import { calculateEVMStreaksAndMetrics } from 'chainsmith/src/adapters';
-import { PortfolioApiService } from '../services';
+import { ChainsmithApiService } from '../services';
 
 export const StateSubEvents = {
   [StateEvent.ActivityStats]: ThreeStageState,
@@ -101,10 +101,11 @@ export const useMagic = () => {
         onResetEvent: StateSubEvents.ActivityStats.Idle,
       },
       async () => {
-        const multichainTxs = await new PortfolioApiService().listMultichainTokenTransferActivities(
-          addressInput,
-          selectState(selectedNetworks)['evm'] || []
-        );
+        const multichainTxs =
+          await new ChainsmithApiService().listMultichainTokenTransferActivities(
+            addressInput,
+            selectState(selectedNetworks)['evm'] || []
+          );
         setState(allTransactions)(multichainTxs);
 
         const totalChains: TChainName[] = Object.keys(multichainTxs) as TChainName[];
@@ -179,7 +180,7 @@ export const useMagic = () => {
         onResetEvent: StateSubEvents.GetTokenPortfolio.Idle,
       },
       async () => {
-        const _tokenPortfolio = await new PortfolioApiService().getWalletTokenPortfolio(
+        const _tokenPortfolio = await new ChainsmithApiService().getWalletTokenPortfolio(
           addressInput,
           selectState(selectedNetworks)['evm'] || []
         );

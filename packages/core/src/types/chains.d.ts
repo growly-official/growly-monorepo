@@ -14,6 +14,8 @@ export type TChainMetadata = {
 };
 export type TChainName = keyof typeof EvmChainList;
 export type TChainMetadataListResponse = {
+  icon: string;
+  logoUrl?: string;
   name: string;
   chain: string;
   rpc: string[];
