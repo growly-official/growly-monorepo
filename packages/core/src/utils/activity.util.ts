@@ -113,7 +113,7 @@ export const formatDuration = (seconds: number): string => {
   const months = Math.floor((seconds % (3600 * 24 * 365)) / (3600 * 24 * 30));
   const days = Math.floor((seconds % (3600 * 24 * 30)) / (3600 * 24));
 
-  const parts = [];
+  const parts: string[] = [];
   if (years > 0) {
     parts.push(`${years} year${years > 1 ? 's' : ''}`);
   }

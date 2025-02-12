@@ -12,7 +12,6 @@ type Story = StoryObj<typeof Modal>;
 
 export const Defaul: Story = {
   args: {
-    title: 'Example modal',
     children: 'Hello world',
     open: true,
   },

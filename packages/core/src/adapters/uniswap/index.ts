@@ -7,6 +7,7 @@ import type {
   TChainName,
   TChain,
   TTokenAddress,
+  TTokenSymbol,
   TContractTokenMetadata,
 } from '../../types/index.d.ts';
 import { Files } from '../../data/index.ts';
@@ -20,9 +21,9 @@ import { getChainByName, getChainIdByName } from '../../utils/chain.util.ts';
 import { createClient, formatUnits, getContract, http } from 'viem';
 import { UniswapV3PoolAbi } from '../../data/abis/index.ts';
 import { autoInjectable } from 'tsyringe';
-import { intoChainTokenAddressMap } from '../../utils/token.util.ts';
+import { intoChainTokenAddressMap, intoChainTokenSymbolMap } from '../../utils/token.util.ts';
 
-const wrapUniswapTokenType = (token: TContractToken) => {
+const wrapUniswapTokenType = (token: TContractTokenMetadata) => {
   if (token.symbol === 'ETH') return WETH9[token.chainId];
   return new Token(token.chainId, token.address, token.decimals, token.symbol, token.name);
 };
@@ -33,14 +34,17 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
   logger = new Logger({ name: this.name });
 
   getRpcUrl: GetChainRpcEndpoint;
-  chainTokenMap: Record<TChainId, Record<TTokenAddress, TContractTokenMetadata>>;
+  chainTokenAddressMap: Record<TChainId, Record<TTokenAddress, TContractTokenMetadata>>;
+  chainTokenSymbolMap: Record<TChainId, Record<TTokenSymbol, TContractTokenMetadata>>;
 
   constructor(getRpcUrl: GetChainRpcEndpoint) {
     // TODO: Call API EVMPlugin/getTokenMetadataList instead of using static list
-    this.chainTokenMap = intoChainTokenAddressMap([
+    const tokenList = [
       Files.TokenList.UniswapTokenList as any,
       Files.TokenList.SuperchainTokenList as any,
-    ]);
+    ];
+    this.chainTokenAddressMap = intoChainTokenAddressMap(tokenList);
+    this.chainTokenSymbolMap = intoChainTokenSymbolMap(tokenList);
     this.getRpcUrl = getRpcUrl;
   }
 
@@ -52,7 +56,9 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
     if (!chain) throw new Error('No chain found');
     const rpc = this.getRpcUrl(chain);
 
-    const USDC = this.chainTokenMap[chain.id]['USDC'];
+    const USDC = this.chainTokenSymbolMap[chain.id]['USDC'];
+    if (!USDC) return undefined;
+
     const price = await this.quote(chain, rpc, {
       amountIn: 1,
       in: wrapUniswapTokenType(USDC),
@@ -77,7 +83,7 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
     const rpc = this.getRpcUrl(chain);
 
     let totalUsdValue = 0;
-    const USDC = this.chainTokenMap[chain.id]['USDC'];
+    const USDC = this.chainTokenSymbolMap[chain.id]['USDC'];
     const marketTokens: TMarketToken[] = [];
     for (const token of tokens) {
       this.quote(chain, rpc, {
@@ -113,7 +119,7 @@ export class UniswapSdkAdapter implements IMarketDataAdapter {
 
       const result: Record<TTokenAddress, TContractTokenMetadata> = {};
       for (const tokenAddress of tokenAddresses) {
-        const tokenDetail = this.chainTokenMap[chainId][tokenAddress];
+        const tokenDetail = this.chainTokenAddressMap[chainId][tokenAddress];
         if (!tokenDetail) continue;
         result[tokenAddress] = tokenDetail;
       }

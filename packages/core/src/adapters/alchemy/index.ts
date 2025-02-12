@@ -42,12 +42,14 @@ export class AlchemyAdapter implements IOnchainTokenAdapter {
     const alchemyRes: TAlchemyResponse = await res.data;
     const tokenBalances = alchemyRes.result.tokenBalances || [];
     const tokenMetadatas = await this.evmPlugin.getTokenMetadataList(chain.id);
-    const parsedTokenBalance = tokenBalances.map<TContractToken>(token => {
+
+    const parsedTokenBalance: TContractToken[] = [];
+    for (const token of tokenBalances) {
       const metadata = tokenMetadatas.find(
         metadata => metadata.address.toLowerCase() === token.contractAddress.toLowerCase()
       );
       if (metadata) {
-        return {
+        parsedTokenBalance.push({
           chainId: chain.id,
           name: metadata.name,
           symbol: metadata.symbol,
@@ -56,12 +58,9 @@ export class AlchemyAdapter implements IOnchainTokenAdapter {
           balance: Number.parseInt(token.tokenBalance, 16) / 10 ** metadata.decimals,
           address: token.contractAddress as any,
           type: undefined,
-        };
+        });
       }
-      return null;
-    });
-
-    // Only get token with metadata
-    return parsedTokenBalance.filter(token => token !== null);
+    }
+    return parsedTokenBalance;
   }
 }

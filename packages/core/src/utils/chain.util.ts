@@ -4,7 +4,7 @@ import type { TBaseChain, TChain, TChainEcosystem, TChainName, TClient } from '.
 import { ChainTypeBuilder } from '../wrapper.ts';
 
 export function getChainEcosystem(name: TChainName): TChainEcosystem {
-  if (EvmChainList[name]) return 'evm';
+  if ((EvmChainList as any)[name]) return 'evm';
   return 'other';
 }
 
@@ -24,6 +24,8 @@ export function getClientChain(client: TClient): TBaseChain {
   if (!chain) throw new Error('No chain initialized.');
   return chain;
 }
+
+export const getChainDefultRpcUrl = (chain: TBaseChain) => chain.rpcUrls.default.http[0];
 
 export function buildEvmChains(chains: TChainName[], chainRpcUrl: GetChainRpcEndpoint) {
   return buildChains(chains, 'evm', chainRpcUrl);

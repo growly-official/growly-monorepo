@@ -12,7 +12,7 @@ const Dashboard: React.FC<any> = () => {
 
   useEffect(() => {
     if (wallets.length > 0) {
-      const _currentWallet = wallets[0].address;
+      // const _currentWallet = wallets[0].address;
       letsDoSomeMagic('0x849151d7D0bF1F34b70d5caD5149D28CC2308bf1' as any);
     }
   }, [selectedNetworks]);

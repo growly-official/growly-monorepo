@@ -13,7 +13,7 @@ type Story = StoryObj<typeof ChainList>;
 export const Default: Story = {
   args: {
     searchQuery: {
-      chainName: 'Ethereum',
+      chainName: 'mainnet',
     },
     ecosystem: 'evm',
   },

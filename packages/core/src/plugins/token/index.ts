@@ -31,7 +31,10 @@ type TGetMultichainOwnedTokens = (
   address?: TAddress,
   chains?: TChain[]
 ) => Promise<TMultichain<TContractToken[]>>;
-type TGetTokenPrice = (client?: TClient, tokenAddress?: TTokenAddress) => Promise<TMarketToken>;
+type TGetTokenPrice = (
+  client?: TClient,
+  tokenAddress?: TTokenAddress
+) => Promise<TMarketToken | undefined>;
 type TGetOwnedTokens = (chain: TChainName, walletAddress?: TAddress) => Promise<TContractToken[]>;
 
 @autoInjectable()

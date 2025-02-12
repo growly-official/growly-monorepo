@@ -21,15 +21,16 @@ export function aggregateMultichainTokenBalance(
   const chainAggregation: TChainAggregationBalance = {};
 
   for (const chainName in multichainTokenList) {
-    chainAggregation[chainName] = {
+    chainAggregation[chainName as TChainName] = {
       chainId: getChainIdByName(chainName as TChainName),
-      totalUsdValue: multichainTokenList[chainName].totalUsdValue,
+      totalUsdValue: multichainTokenList[chainName as TChainName]!.totalUsdValue,
     };
   }
 
   // Iterate through each chain in the multiChainData
   for (const chainName in multichainTokenList) {
     const chainData = multichainTokenList[chainName as TChainName];
+    if (!chainData) continue;
 
     // Iterate through each token in the chain
     for (const token of chainData.tokens) {
@@ -53,10 +54,10 @@ export function aggregateMultichainTokenBalance(
       tokenAggregation[symbol].totalBalance += token.balance;
 
       // Update the allocation for the current chain
-      tokenAggregation[symbol].allocations[chainName] = {
+      tokenAggregation[symbol].allocations[chainName as TChainName] = {
         chainId: getChainIdByName(chainName as TChainName),
         balance: token.balance,
-        usdValue: token.usdValue,
+        totalUsdValue: token.usdValue,
       };
 
       // Global: Update totalPortfolioValue
@@ -90,7 +91,7 @@ export const calculateMultichainTokenPortfolio = (
   return {
     sumPortfolioUSDValue: multichainTokenPortfolio.totalUsdValue,
     sumMemeUSDValue,
-    mostValuableToken,
+    mostValuableToken: mostValuableToken as any,
     ...multichainTokenPortfolio,
   };
 };

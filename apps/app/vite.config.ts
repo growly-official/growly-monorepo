@@ -15,10 +15,11 @@ export default defineConfig(async () => ({
   build: {
     lib: {
       entry: {
-        ui: resolve(__dirname, 'lib/ui/main.ts'),
+        ui: resolve(__dirname, 'lib/ui/index.ts'),
+        core: resolve(__dirname, 'lib/core/index.ts'),
       },
-      name: 'chainsmith',
-      fileName: 'chainsmith',
+      name: 'growly',
+      fileName: 'growly',
     },
   },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
