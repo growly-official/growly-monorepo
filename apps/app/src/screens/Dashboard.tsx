@@ -36,7 +36,7 @@ const Dashboard: React.FC<any> = () => {
             }}
           />
         </div>
-        <div className="mt-5">
+        <div className="mt-7">
           <Atoms.Loadable
             isLoading={stateCheck('GetTokenPortfolio', ThreeStageState.InProgress)}
             loadComponent={
@@ -54,13 +54,13 @@ const Dashboard: React.FC<any> = () => {
                 width={400}
               />
             }>
-            <div>
+            <div className="px-5">
               <div className="mb-5">
                 <h1 className="text-3xl font-bold">
                   {formatNumberUSD(selectState(tokenPortfolio).totalUsdValue)}
                 </h1>
               </div>
-              <div>
+              <div className="mt-10">
                 <Molecules.TokenPortfolioTable
                   multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
                 />

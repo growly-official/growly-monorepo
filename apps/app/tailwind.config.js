@@ -24,10 +24,10 @@ module.exports = {
         '3xl': '2048px',
       },
       fontFamily: {
-        display: ['Coinbase Regular', ...defaultTheme.fontFamily.sans],
-        sans: ['Coinbase Regular', ...defaultTheme.fontFamily.sans],
-        mono: ['Coinbase Regular', ...defaultTheme.fontFamily.sans],
-        britney: ['Coinbase Regular', ...defaultTheme.fontFamily.sans],
+        display: ['var(--font-coinbase-display)', ...defaultTheme.fontFamily.sans],
+        sans: ['var(--font-coinbase-sans)', ...defaultTheme.fontFamily.sans],
+        mono: ['var(--font-coinbase-mono)', ...defaultTheme.fontFamily.sans],
+        britney: ['var(--font-britney)', ...defaultTheme.fontFamily.sans],
       },
       spacing: {
         80: '20rem',
