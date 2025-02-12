@@ -1,4 +1,4 @@
-name: Template Lint
+name: Growly Lint
 on:
   push:
     branches: ['main']

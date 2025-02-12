@@ -1,5 +1,5 @@
 import { rpc, adapters, ChainsmithSdk } from 'chainsmith/src/index.ts';
-import { EvmTokenPlugin } from 'chainsmith/src/plugins/token/evm.ts';
+import { EvmTokenPlugin } from 'chainsmith/src/plugins/evm/index.ts';
 import { alchemy } from 'chainsmith/src/rpc/index.ts';
 import { TChainName } from 'chainsmith/src/types/index.ts';
 import { buildEvmChains } from 'chainsmith/src/utils/index.ts';

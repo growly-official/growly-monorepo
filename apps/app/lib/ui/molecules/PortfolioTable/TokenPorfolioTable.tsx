@@ -9,7 +9,7 @@ type Props = {
 
 const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
   return (
-    <Table.Root className="shadow-xl rounded-xl border border-palette-line/20">
+    <Table.Root className="rounded-xl border border-palette-line/10">
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Token</Table.ColumnHeaderCell>
@@ -28,7 +28,7 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                   <img
                     src={token.logoURI}
                     alt={`${token.name} logo`}
-                    className="mr-1 inline-block h-6 w-6 rounded-full"
+                    className="mr-3 inline-block h-8 w-8 rounded-full"
                   />
                   {token.name}
                 </Table.Cell>

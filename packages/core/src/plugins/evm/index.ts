@@ -5,6 +5,7 @@ import type {
   TAddress,
   TBlockNumber,
   TChainId,
+  TChainMetadataListResponse,
   TClient,
   TContractToken,
   TContractTokenMetadata,
@@ -19,6 +20,35 @@ const TOKEN_LIST_URLS = {
   uniswap: 'https://ipfs.io/ipns/tokens.uniswap.org', // TODO: Cannot access ipfs directly with axios
   superchain: 'https://static.optimism.io/optimism.tokenlist.json',
 };
+
+const CHAIN_LIST_URLS = {
+  // Multi-EVM networks
+  chainlist: 'https://chainid.network/chains.json',
+};
+
+@autoInjectable()
+export class EvmChainPlugin {
+  logger = new Logger({ name: 'EvmChainPlugin' });
+
+  getChainMetadata = async (chainId: TChainId): Promise<TChainMetadataListResponse | undefined> => {
+    try {
+      // Extracting all EVM chain list URLs from the constants
+      const evmChainListURLs = Object.values(CHAIN_LIST_URLS);
+      // Fetching all chain lists simultaneously
+      const promises = evmChainListURLs.map(url => fetch(url));
+      // Waiting for all fetch promises to resolve
+      const responses = await Promise.all(promises);
+      // Extracting JSON data from the responses
+      const data: TChainMetadataListResponse[] = await Promise.all(
+        responses.map(response => response.json())
+      );
+      return data.flat().find(chain => chain.chainId === chainId);
+    } catch (error: any) {
+      this.logger.error(`Failed to get chain metadata list: ${error.message}`);
+      return undefined;
+    }
+  };
+}
 
 @autoInjectable()
 export class EvmTokenPlugin {

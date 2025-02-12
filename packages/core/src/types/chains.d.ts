@@ -13,6 +13,16 @@ export type TChainMetadata = {
   ecosystem: TChainEcosystem;
 };
 export type TChainName = keyof typeof EvmChainList;
+export type TChainMetadataListResponse = {
+  name: string;
+  chain: string;
+  rpc: string[];
+  faucets: string[];
+  infoURL: string;
+  shortName: string;
+  chainId: TChainId;
+  networkId: number;
+};
 export type IEcosystemChainRegistry = TMultiEcosystem<{ chains: TChainName[] }>;
 export type IEcosystemRegistry = TMultiEcosystem<{
   name: string;

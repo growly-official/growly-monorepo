@@ -1,4 +1,4 @@
-name: Template Build
+name: Growly Build
 on:
   push:
     branches: ['main']

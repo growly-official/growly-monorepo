@@ -4,6 +4,8 @@ import {
   MultichainTokenPlugin,
   MultiPlatformSocialPlugin,
   StoragePlugin,
+  EvmTokenPlugin,
+  EvmChainPlugin,
 } from './plugins/index.ts';
 import type { TChain } from './types/index.d.ts';
 
@@ -13,7 +15,9 @@ export default class ChainsmithSdk {
     public portfolio: MultichainPortfolioPlugin,
     public token: MultichainTokenPlugin,
     public social: MultiPlatformSocialPlugin,
-    public storage: StoragePlugin
+    public storage: StoragePlugin,
+    public evmToken: EvmTokenPlugin,
+    public evmChain: EvmChainPlugin
   ) {}
 
   public static init(chains?: TChain[]) {

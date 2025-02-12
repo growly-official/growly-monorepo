@@ -1,4 +1,4 @@
-name: Salus Security Scan
+name: Growly Security Scan
 
 on: [pull_request, push]
 

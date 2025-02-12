@@ -1,5 +1,5 @@
 import { adapters, rpc } from 'chainsmith/src/index.ts';
-import { EvmTokenPlugin } from 'chainsmith/src/plugins/token/evm.ts';
+import { EvmTokenPlugin } from 'chainsmith/src/plugins/token/evm/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
 

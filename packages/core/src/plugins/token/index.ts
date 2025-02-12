@@ -22,7 +22,7 @@ import type {
   WithAdapter,
 } from '../../types/adapter.d.ts';
 import { StoragePlugin } from '../storage/index.ts';
-import { EvmTokenPlugin } from './evm.ts';
+import { EvmTokenPlugin } from '../evm/index.ts';
 
 type TGetMultichainTokenActivities = (
   address?: TAddress,

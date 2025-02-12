@@ -1,4 +1,4 @@
-name: Template Check
+name: Growly Check
 on:
   push:
     branches: ['main']
