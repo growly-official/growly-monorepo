@@ -22,6 +22,7 @@ import type {
   WithAdapter,
 } from '../../types/adapter.d.ts';
 import { StoragePlugin } from '../storage/index.ts';
+import { EvmTokenPlugin } from './evm.ts';
 
 type TGetMultichainTokenActivities = (
   address?: TAddress,
@@ -42,6 +43,7 @@ export class MultichainTokenPlugin {
   logger = new Logger({ name: 'MultichainTokenPlugin' });
 
   constructor(
+    private evmPlugin: EvmTokenPlugin,
     private storagePlugin: StoragePlugin<{
       client: TClient;
       walletAddress: TAddress;
@@ -116,11 +118,13 @@ export class MultichainTokenPlugin {
   async getNativeToken(client: TClient, walletAddress?: TAddress): Promise<TNativeToken> {
     try {
       const chain = getClientChain(client);
+      const metadata = await this.evmPlugin.getTokenMetadataBySymbol(chain.nativeCurrency.symbol);
       const balance = await client.getBalance({
         address: this.storagePlugin.readRamOrReturn({ walletAddress }),
       });
       return {
         ...chain.nativeCurrency,
+        logoURI: metadata?.logoURI,
         chainId: chain.id,
         type: 'native',
         balance: formatReadableToken(chain, balance),

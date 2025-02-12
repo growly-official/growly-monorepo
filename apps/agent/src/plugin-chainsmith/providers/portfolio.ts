@@ -19,7 +19,7 @@ import {
   TChainName,
   TClient,
   TAddress,
-  TChainTokenList,
+  TMarketTokenList,
   TMultichain,
 } from 'chainsmith/src/types';
 import {
@@ -66,9 +66,9 @@ export class PortfolioProvider {
     return ensName;
   }
 
-  async fetchMultichainPortfolio(): Promise<TMultichain<TChainTokenList>> {
+  async fetchMultichainPortfolio(): Promise<TMultichain<TMarketTokenList>> {
     const cacheKey = `walletPortfolio_${this.address}`;
-    const cachedData = await this.getCachedData<TMultichain<TChainTokenList>>(cacheKey);
+    const cachedData = await this.getCachedData<TMultichain<TMarketTokenList>>(cacheKey);
 
     if (cachedData) {
       elizaLogger.log(`Returning cached portfolio for wallet: ${this.address}`);
@@ -81,7 +81,7 @@ export class PortfolioProvider {
         AdapterRegistry.Alchemy,
       ])(this.address);
 
-      this.setCachedData<TMultichain<TChainTokenList>>(cacheKey, tokenList);
+      this.setCachedData<TMultichain<TMarketTokenList>>(cacheKey, tokenList);
       elizaLogger.log('Multichain token list cached for address: ', this.address);
       return tokenList;
     } catch (error: any) {
@@ -90,7 +90,7 @@ export class PortfolioProvider {
     }
   }
 
-  formatPortfolio(portfolio: TMultichain<TChainTokenList>): string {
+  formatPortfolio(portfolio: TMultichain<TMarketTokenList>): string {
     const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
     const portfolioValue = multichainPortfolio.totalUsdValue;
     const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;

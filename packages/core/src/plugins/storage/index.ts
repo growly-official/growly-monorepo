@@ -14,14 +14,18 @@ export type ChainsmithStorage = {
   ram: Record<string, any>;
 };
 
+const defaultState: ChainsmithStorage = {
+  disk: {
+    chains: [],
+    plugins: [],
+  },
+  ram: {},
+};
+
 @singleton()
 export class StoragePlugin<R extends Ram = any> {
   private storage: StoreApi<ChainsmithStorage> = createStore<ChainsmithStorage>(set => ({
-    disk: {
-      chains: [{ ...mainnet, ecosystem: 'evm', chainName: 'mainnet' }],
-      plugins: [],
-    },
-    ram: {},
+    ...defaultState,
     writeToDisk: (data: Disk) => set({ disk: data }),
     writeToRam: (data: Ram) => set({ ram: data }),
   }));
@@ -64,5 +68,9 @@ export class StoragePlugin<R extends Ram = any> {
       },
     });
     return value;
+  }
+
+  reset() {
+    this.storage.setState(defaultState);
   }
 }

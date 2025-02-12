@@ -25,24 +25,6 @@ export class MultichainPortfolioPlugin {
     private storage: StoragePlugin
   ) {}
 
-  getMultichainTokenList: WithAdapter<
-    [IMarketDataAdapter, IOnchainTokenAdapter],
-    TGetMultichainTokenList
-  > = adapters => async (walletAddress?: TAddress, chains?: TChain[]) => {
-    try {
-      const tokenList: TMultichain<TMarketTokenList> = {};
-      const _walletAddress = this.storage.readRamOrReturn({ walletAddress });
-      const _chains = this.storage.readDiskOrReturn({ chains });
-      for (const chain of _chains) {
-        tokenList[chain.chainName] = await this.getMarketTokenList(adapters)(chain, _walletAddress);
-      }
-      return tokenList;
-    } catch (error: any) {
-      this.logger.error(`Failed to get multichain token portfolio: ${error}`);
-      throw new Error(error);
-    }
-  };
-
   getMultichainTokenPortfolio: WithAdapter<
     [IMarketDataAdapter, IOnchainTokenAdapter],
     IGetMultichainTokenPortfolio
@@ -55,6 +37,24 @@ export class MultichainPortfolioPlugin {
         _chains
       );
       return aggregateMultichainTokenBalance(multichainTokenList);
+    } catch (error: any) {
+      this.logger.error(`Failed to get multichain token portfolio: ${error}`);
+      throw new Error(error);
+    }
+  };
+
+  getMultichainTokenList: WithAdapter<
+    [IMarketDataAdapter, IOnchainTokenAdapter],
+    TGetMultichainTokenList
+  > = adapters => async (walletAddress?: TAddress, chains?: TChain[]) => {
+    try {
+      const tokenList: TMultichain<TMarketTokenList> = {};
+      const _walletAddress = this.storage.readRamOrReturn({ walletAddress });
+      const _chains = this.storage.readDiskOrReturn({ chains });
+      for (const chain of _chains) {
+        tokenList[chain.chainName] = await this.getMarketTokenList(adapters)(chain, _walletAddress);
+      }
+      return tokenList;
     } catch (error: any) {
       this.logger.error(`Failed to get multichain token portfolio: ${error}`);
       throw new Error(error);

@@ -94,7 +94,9 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
     chainName: TChainName,
     tokens: TToken[]
   ): Promise<{ tokens: TMarketToken<TCMCUSDPrice>[]; totalUsdValue: number }> => {
-    this.logger.info(`fetchTokensWithPrice: ${chainName}, ${tokens.join(',')}`);
+    this.logger.info(
+      `fetchTokensWithPrice: ${chainName}, ${tokens.map(token => token.symbol).join(',')}`
+    );
     const chain = getChainByName(chainName);
     const tokenSymbolMap = this.getTokenSymbolMap(tokens);
     const prices = await this.getTokenPriceMap(
@@ -125,7 +127,8 @@ export class CoinMarketcapAdapter implements IMarketDataAdapter {
       };
 
       if ('address' in token) {
-        tokenData.logoURI = this.chainTokenMap[chain.id]?.[token.address]?.logoURI;
+        const logo = this.chainTokenMap[chain.id]?.[token.address]?.logoURI;
+        if (logo) tokenData.logoURI = logo;
       }
 
       marketTokens.push(tokenData);

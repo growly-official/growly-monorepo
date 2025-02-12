@@ -18,6 +18,7 @@ export default class ChainsmithSdk {
 
   public static init(chains?: TChain[]) {
     const sdk = container.resolve(ChainsmithSdk);
+    sdk.storage.reset();
     if (chains) sdk.storage.writeToDisk('chains', chains);
     return sdk;
   }
