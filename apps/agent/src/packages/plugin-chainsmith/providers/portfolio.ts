@@ -6,32 +6,29 @@ import {
   type State,
   elizaLogger,
 } from '@elizaos/core';
-import { DeriveKeyProvider, TEEMode } from '@elizaos/plugin-tee';
 import NodeCache from 'node-cache';
 import * as path from 'node:path';
-import type { Address, PrivateKeyAccount } from 'viem';
-import { formatUnits } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
 
-import { alchemy } from 'chainsmith/src/rpc';
+import { ChainsmithSdk } from 'chainsmith/src/index.ts';
+import { alchemy } from 'chainsmith/src/rpc/index.ts';
 import {
+  TAddress,
   TChain,
   TChainName,
   TClient,
-  TAddress,
   TMarketTokenList,
   TMultichain,
-} from 'chainsmith/src/types';
+  TTokenChainData,
+} from 'chainsmith/src/types/index.ts';
 import {
   aggregateMultichainTokenBalance,
   buildEvmChains,
   formatNumberSI,
   formatNumberUSD,
   getChainByName,
-} from 'chainsmith/src/utils';
-import { createClient } from 'chainsmith/src/wrapper';
-import { ChainsmithSdk } from 'chainsmith/src';
-import { AdapterRegistry } from '../config/chainsmith';
+} from 'chainsmith/src/utils/index.ts';
+import { createClient } from 'chainsmith/src/wrapper.ts';
+import { AdapterRegistry } from '../config/chainsmith.ts';
 
 export class PortfolioProvider {
   private sdk: ChainsmithSdk;
@@ -96,7 +93,7 @@ export class PortfolioProvider {
     const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;
 
     // Output builder
-    let output = `Wallet Address: $this.address}\n`;
+    let output = `Wallet Address: ${this.address}\n`;
 
     output += `\nTotal Value: ${formatNumberUSD(portfolioValue)}\n`;
 
@@ -113,7 +110,7 @@ export class PortfolioProvider {
         output += `${token.marketData.symbol}\n`;
         output += `  - Holding balance:       ${formatNumberUSD(token.totalUsdValue)}\n`;
         output += `  - Portfolio allocation:  ${((100 * token.totalUsdValue) / portfolioValue).toFixed(2)}%\n`;
-        output += `  - Market price:          ${token.marketData.marketPrice.toFixed(4)}\n`;
+        output += `  - Market price:          ${formatNumberUSD(token.marketData.marketPrice)}\n`;
         output += `  - Market cap:            ${formatNumberSI(token.marketData.extra.market_cap)}\n`;
         output += `  - Volume 24h:            ${formatNumberSI(token.marketData.extra.volume_24h)}\n`;
         output += `  - Percent change 24h:    ${token.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
@@ -135,6 +132,24 @@ export class PortfolioProvider {
     } catch (error) {
       elizaLogger.error('Error generating portfolio report:', error);
       return 'Unable to fetch portfolio information. Please try again later.';
+    }
+  }
+
+  async fetchTokenInPortfolio(symbol: string): Promise<TTokenChainData | null> {
+    try {
+      const portfolio = await this.fetchMultichainPortfolio();
+      const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
+
+      const balanceBySymbol = multichainPortfolio.aggregatedBalanceByToken;
+
+      if (symbol in balanceBySymbol) {
+        return balanceBySymbol[symbol];
+      }
+
+      return null;
+    } catch (error) {
+      elizaLogger.error('Error generating portfolio report:', error);
+      return null;
     }
   }
 
@@ -182,7 +197,7 @@ export const evmPortfolioProvider: Provider = {
     try {
       const chainNames = (runtime.character.settings.chains?.evm as TChainName[]) || ['mainnet'];
       const ALCHEMY_API_KEY = runtime.getSetting('ALCHEMY_API_KEY');
-      const address = state?.address as TAddress;
+      const address = state?.walletAddress as TAddress;
 
       const chains = buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
 
