@@ -102,7 +102,7 @@ export class EvmTokenPlugin {
     }
   };
 
-  getMultichainTokenMetadataList = async (): Promise<TContractTokenMetadata[]> => {
+  getMultichainTokenMetadataList = async (): Promise<TMultichain<TContractTokenMetadata[]>> => {
     try {
       // Extracting all EVM token list URLs from the constants
       const evmTokenListURLs = Object.values(TOKEN_LIST_URLS);
@@ -116,31 +116,36 @@ export class EvmTokenPlugin {
       );
       // Flattening the tokens arrays from all responses into a single array
       const allTokens = data.flatMap((item: TTokenListResponse) => item.tokens);
-      const distinctTokens = Array.from(
-        new Map(allTokens.map(token => [token.address, token])).values()
-      );
-      return distinctTokens;
+
+      const chainRecords: TMultichain<TContractTokenMetadata[]> = {};
+      for (const token of allTokens) {
+        if (!chainRecords[token.chainId]) chainRecords[token.chainId] = [];
+        chainRecords[token.chainId].push(token);
+      }
+      return chainRecords;
     } catch (error: any) {
       this.logger.error(`Failed to get token metadata list: ${error.message}`);
-      return [];
+      return {};
     }
   };
 
   async getTokenMetadataBySymbol(
+    chainId: TChainId,
     tokenSymbol: TTokenSymbol
   ): Promise<TContractTokenMetadata | undefined> {
     const tokenMetadatas = await this.getMultichainTokenMetadataList();
-    const metadata = tokenMetadatas.find(
+    const metadata = tokenMetadatas[chainId]?.find(
       metadata => metadata.symbol.toLowerCase() === tokenSymbol.toLowerCase()
     );
     return metadata;
   }
 
   async getTokenMetadataByAddress(
+    chainId: TChainId,
     tokenAddress: TTokenAddress
   ): Promise<TContractTokenMetadata | undefined> {
     const tokenMetadatas = await this.getMultichainTokenMetadataList();
-    const metadata = tokenMetadatas.find(
+    const metadata = tokenMetadatas[chainId]?.find(
       metadata => metadata.address.toLowerCase() === tokenAddress.toLowerCase()
     );
     return metadata;

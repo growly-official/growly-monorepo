@@ -23,7 +23,20 @@ export default class ChainsmithSdk {
   public static init(chains?: TChain[]) {
     const sdk = container.resolve(ChainsmithSdk);
     sdk.storage.reset();
-    if (chains) sdk.storage.writeToDisk('chains', chains);
+    if (chains) {
+      sdk.storage.writeToDisk('chains', chains);
+
+      let rpcUrls = {};
+      for (const chain of chains) {
+        if (!chain.rpcUrls.default.http[0])
+          throw new Error(`No RPC URL found for ${chain.chainName}`);
+        rpcUrls = {
+          ...rpcUrls,
+          [chain.id]: chain.rpcUrls.default.http[0],
+        };
+      }
+      sdk.storage.writeToDisk('chainRpcUrls', rpcUrls);
+    }
     return sdk;
   }
 }
