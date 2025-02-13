@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import { createStore, StoreApi } from 'zustand';
-import type { TChain, TClient } from '../../types/index.d.ts';
+import type { TChain, TClient, TMultichainId } from '../../types/index.d.ts';
 import { TPlugin } from '../index.ts';
 
 export type Disk = ChainsmithStorage['disk'];
@@ -9,6 +9,7 @@ export type ChainsmithStorage = {
   disk: {
     client: TClient | undefined;
     chains: TChain[];
+    chainRpcUrls: TMultichainId<string>;
     plugins: TPlugin[];
   };
   ram: Record<string, any>;
@@ -17,6 +18,7 @@ export type ChainsmithStorage = {
 const defaultState: ChainsmithStorage = {
   disk: {
     client: undefined,
+    chainRpcUrls: {},
     chains: [],
     plugins: [],
   },

@@ -58,7 +58,7 @@ export class TokenProvider {
     }
 
     try {
-      const tokenMetadata = await this.sdk.evmToken.getTokenMetadataBySymbol(symbol);
+      const tokenMetadata = await this.sdk.evmToken.getTokenMetadataBySymbol(1, symbol);
       if (!tokenMetadata) {
         console.error('Cannot find token in supported list!');
         return null;

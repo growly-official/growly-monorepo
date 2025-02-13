@@ -32,6 +32,7 @@ export type IEcosystemRegistry = TMultiEcosystem<{
 }>;
 export type THexString = `0x${string}`;
 export type TMultichain<T> = Partial<Record<TChainName, T>>;
+export type TMultichainId<T> = Partial<Record<TChainId, T>>;
 export type TMultiEcosystem<T> = Partial<Record<TChainEcosystem, T>>;
 export type TPortfolio = {
   address: TAddress;

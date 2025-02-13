@@ -118,7 +118,10 @@ export class MultichainTokenPlugin {
   async getNativeToken(client: TClient, walletAddress?: TAddress): Promise<TNativeToken> {
     try {
       const chain = getClientChain(client);
-      const metadata = await this.evmPlugin.getTokenMetadataBySymbol(chain.nativeCurrency.symbol);
+      const metadata = await this.evmPlugin.getTokenMetadataBySymbol(
+        chain.id,
+        chain.nativeCurrency.symbol
+      );
       const balance = await client.getBalance({
         address: this.storagePlugin.readRamOrReturn({ walletAddress }),
       });
