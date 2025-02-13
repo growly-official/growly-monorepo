@@ -1,5 +1,5 @@
 import { selectState, setState, useMagic, useMagicContext } from '@/core';
-import { Molecules } from '@/ui';
+import { Molecules, ChatPage } from '@/ui';
 import { useWallets } from '@privy-io/react-auth';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
@@ -26,23 +26,20 @@ const Chat: React.FC<any> = () => {
 
   return (
     <div className="py-3 px-4 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
-      <div className="py-5 px-7 rounded-xl flex flex-col shadow-xl w-full h-[100vh] bg-white">
-        <div className="flex justify-between items-center">
-          <Molecules.ConnectWalletWithPrivybutton />
-          <Molecules.SelectNetworkButton
-            selectedNetworks={selectState(selectedNetworks)}
-            onNetworkSelected={(ecosystem, chains) => {
-              setState(selectedNetworks)({
-                ...selectState(selectedNetworks),
-                [ecosystem]: chains,
-              });
-            }}
-          />
-        </div>
-        <div className="mt-7">
-          <div>Hello</div>
-        </div>
+      <div className="flex justify-between items-center ">
+        <Molecules.ConnectWalletWithPrivybutton />
+        <Molecules.SelectNetworkButton
+          selectedNetworks={selectState(selectedNetworks)}
+          onNetworkSelected={(ecosystem, chains) => {
+            setState(selectedNetworks)({
+              ...selectState(selectedNetworks),
+              [ecosystem]: chains,
+            });
+          }}
+        />
       </div>
+
+      <ChatPage agentId={agentId} />
     </div>
   );
 };

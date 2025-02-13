@@ -19,16 +19,14 @@ import { isAddress } from 'viem';
 
 const PortfolioSchema = z.object({
   walletAddress: z.string().optional().nullable(),
-  chain: z.string().optional().nullable(),
 });
 
 export interface PortfolioContent extends Content {
   walletAddress?: string;
-  chain?: string;
 }
 
 const validatedSchema = z.object({
-  walletAddress: z.string().refine(isAddress, { message: 'Invalid token address' }),
+  walletAddress: z.string().refine(isAddress, { message: 'Invalid wallet address' }),
 });
 
 const analyzePortfolioTemplate = `Respond with a JSON markdown block containing only the extracted values. Use null for any values that cannot be determined.
