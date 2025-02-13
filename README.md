@@ -9,9 +9,11 @@ Targetted Tracks:
 
 ## Architecture
 
+![architecture](./docs/images/architecture.png)
+
 - app: web app, desktop ui
 - core: chainsmith core
-- eliza-agent: agent code built on top of ElizaOS framework
+- agent: agent code built on top of ElizaOS framework
 
 ## Feature List
 
@@ -19,6 +21,12 @@ Targetted Tracks:
 
 - Node 23. Please check `nvm use 23` to avoid startup error
 - `bun install` at root
-- Go to each package and setup the enviroment variables file (.env)
+- Go to each package and setup the environment variables file (.env)
+
+```
+cp .env.example .env
+```
+
+- To start server: `bun start:server`
 - To start front-end app: `bun start:app`
 - To start agent: `bun start:agent`

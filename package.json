@@ -14,7 +14,7 @@
     "check": "bunx prettier --config .prettierrc.cjs '**/*.{js,jsx,ts,tsx}' --check && eslint '**/*.{js,jsx,ts,tsx}'",
     "build": "bun run --filter '*' build",
     "start:app": "cd apps/app && bun dev",
-    "start:server": "cd apps/app && bun dev",
+    "start:server": "cd apps/server && bun start",
     "start:agent": "cd apps/agent && bun start"
   },
   "precommit.silent": true,
