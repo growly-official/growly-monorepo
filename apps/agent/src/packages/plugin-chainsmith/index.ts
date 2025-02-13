@@ -1,5 +1,6 @@
 import type { Plugin } from '@elizaos/core';
 import { analyzePortfolio } from './actions/analyzePortfolio.ts';
+import { WebSearchService } from './services/tavily/index.ts';
 
 // Export the plugin configuration
 export const chainsmithPlugin: Plugin = {
@@ -8,6 +9,7 @@ export const chainsmithPlugin: Plugin = {
   actions: [analyzePortfolio],
   evaluators: [],
   providers: [],
+  services: [new WebSearchService()],
 };
 
 export default chainsmithPlugin;

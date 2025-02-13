@@ -1,15 +1,16 @@
 import { Character, ModelProviderName } from '@elizaos/core';
-import chainsmithPlugin from './plugin-chainsmith/index.ts';
+import chainsmithPlugin from './packages/plugin-chainsmith/index.ts';
+import consoleKitPlugin from './packages/plugin-console-kit/index.ts';
 
 export const character: Character = {
   name: 'Growly',
-  plugins: [chainsmithPlugin],
+  plugins: [chainsmithPlugin, consoleKitPlugin],
   clients: [],
   modelProvider: ModelProviderName.OLLAMA,
   settings: {
     secrets: {},
     chains: {
-      evm: ['mainnet', 'base', 'optimism'],
+      evm: ['mainnet', 'base', 'abstract', 'sonic', 'zksync', 'arbitrum'],
     },
   },
   system:
@@ -95,6 +96,7 @@ export const character: Character = {
         },
       },
     ],
+    // ConsoleKit Send Transaction
   ],
   postExamples: [],
   adjectives: [
