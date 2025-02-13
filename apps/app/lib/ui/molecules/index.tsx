@@ -5,13 +5,17 @@ import WalletAddress from './WalletAddress/WalletAddress';
 import ConnectWalletWithPrivybutton from './ConnectWalletWithPrivyButton/ConnectWalletWithPrivyButton';
 import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
 import TokenPortfolioTable from './PortfolioTable/TokenPorfolioTable';
+import TokenRiskBadge from './TokenRiskBadge/TokenRisktBadge';
+import ChainIcon from './ChainIcon/ChainIcon';
 
 export {
   ChainListModal,
   ChainListItem,
   ChainList,
+  ChainIcon,
   WalletAddress,
   ConnectWalletWithPrivybutton,
   SelectNetworkButton,
   TokenPortfolioTable,
+  TokenRiskBadge,
 };

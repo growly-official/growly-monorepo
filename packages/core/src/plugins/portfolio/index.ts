@@ -4,6 +4,7 @@ import type {
   IMarketDataAdapter,
   IOnchainTokenAdapter,
   WithAdapter,
+  WithManyAdapters,
 } from '../../types/adapter.d.ts';
 import type { TAddress, TChain, TMarketTokenList, TMultichain } from '../../types/index.d.ts';
 import { createClient } from '../../wrapper.ts';
@@ -43,7 +44,7 @@ export class MultichainPortfolioPlugin {
     }
   };
 
-  getMultichainTokenList: WithAdapter<
+  getMultichainTokenList: WithManyAdapters<
     [IMarketDataAdapter, IOnchainTokenAdapter],
     TGetMultichainTokenList
   > = adapters => async (walletAddress?: TAddress, chains?: TChain[]) => {

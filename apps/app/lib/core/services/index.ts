@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   TAddress,
+  TChainMetadataListResponse,
   TChainName,
   TMultichain,
   TTokenPortfolio,
@@ -9,7 +10,7 @@ import {
 
 const BACKEND_SERVER_URL = 'http://localhost:3000';
 
-export class PortfolioApiService {
+export class ChainsmithApiService {
   async getWalletTokenPortfolio(
     walletAddress: TAddress,
     chainNames: TChainName[]
@@ -36,6 +37,17 @@ export class PortfolioApiService {
           walletAddress,
           chainNames,
         }
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async getChainMetadataById(chainId: number): Promise<TChainMetadataListResponse> {
+    try {
+      const response = await axios.get<TChainMetadataListResponse>(
+        `${BACKEND_SERVER_URL}/chainlist/${chainId}`
       );
       return response.data;
     } catch (error: any) {

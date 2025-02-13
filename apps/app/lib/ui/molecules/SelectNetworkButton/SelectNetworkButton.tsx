@@ -3,6 +3,7 @@ import { TChainEcosystem, TChainName, TMultiEcosystem } from 'chainsmith/src/typ
 import React, { useState } from 'react';
 import { Atoms, Molecules } from '@/ui';
 import pluralize from 'pluralize';
+import ChainIcon from '../ChainIcon/ChainIcon';
 
 type Props = {
   selectedNetworks: TMultiEcosystem<TChainName[]>;
@@ -21,11 +22,14 @@ const SelectNetworkButton = ({ selectedNetworks, onNetworkSelected }: Props) => 
   return (
     <React.Fragment>
       {countExistentialObject(selectedNetworks) > 0 ? (
-        <div>
+        <div className="flex gap-2 items-center">
           {iterateObject(selectedNetworks, (network, chains) => (
             <Atoms.Button onClick={() => setOpenChainList(true)}>
               {network.toUpperCase()}: {chains.length} {pluralize('chain', chains.length)} selected
             </Atoms.Button>
+          ))}
+          {(selectedNetworks['evm'] || []).map(chainName => (
+            <ChainIcon size={20} chainName={chainName} />
           ))}
         </div>
       ) : (
