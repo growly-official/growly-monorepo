@@ -65,7 +65,7 @@ export type TMarketToken<T = any> = TToken<T> & TPriceData & { tags: string[]; d
 
 export type TTokenMetadataPrice<T = any> = TTokenMetadata &
   TExtraField<T> &
-  Pick<TPriceData, 'marketPrice'> & { tags: string[] };
+  Pick<TPriceData, 'marketPrice', 'marketRank'> & { tags: string[] };
 
 export type TTokenActivityStats = {
   sumCount: number;

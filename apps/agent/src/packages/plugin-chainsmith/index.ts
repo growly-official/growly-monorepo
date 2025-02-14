@@ -1,5 +1,5 @@
 import type { Plugin } from '@elizaos/core';
-import { analyzePortfolio } from './actions/analyzePortfolio.ts';
+import { analyzePortfolio } from './actions/portfolio/analyzePortfolio.ts';
 import { WebSearchService } from './services/tavily/index.ts';
 
 // Export the plugin configuration

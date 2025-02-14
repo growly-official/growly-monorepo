@@ -110,7 +110,7 @@ export class PortfolioProvider {
         output += `${token.marketData.symbol}\n`;
         output += `  - Holding balance:       ${formatNumberUSD(token.totalUsdValue)}\n`;
         output += `  - Portfolio allocation:  ${((100 * token.totalUsdValue) / portfolioValue).toFixed(2)}%\n`;
-        output += `  - Market price:          ${formatNumberUSD(token.marketData.marketPrice)}\n`;
+        output += `  - Market rank:           ${token.marketData.marketRank}\n`;
         output += `  - Market cap:            ${formatNumberSI(token.marketData.extra.market_cap)}\n`;
         output += `  - Volume 24h:            ${formatNumberSI(token.marketData.extra.volume_24h)}\n`;
         output += `  - Percent change 24h:    ${token.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
@@ -195,7 +195,10 @@ export class PortfolioProvider {
 export const evmPortfolioProvider: Provider = {
   async get(runtime: IAgentRuntime, _message: Memory, state?: State): Promise<string | null> {
     try {
-      const chainNames = (runtime.character.settings.chains?.evm as TChainName[]) || ['mainnet'];
+      const chainNames = (runtime.character.settings.chains?.evm as TChainName[]) || [
+        'mainnet',
+        'base',
+      ];
       const ALCHEMY_API_KEY = runtime.getSetting('ALCHEMY_API_KEY');
       const address = state?.walletAddress as TAddress;
 
