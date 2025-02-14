@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode;
 };
 
-const customStyles: Record<string, CSSProperties> = {
+const customStyles: ReactModal.Styles = {
   content: {
     top: '50%',
     left: '50%',

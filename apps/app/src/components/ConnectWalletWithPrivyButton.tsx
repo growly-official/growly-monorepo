@@ -15,11 +15,10 @@ export const ConnectWalletWithPrivyButton = () => {
   const { ready: readyWallets } = useWallets();
   const { userWallet, agentWallet } = useMagicContext();
   const loginDisabled = useMemo(() => !ready || (ready && authenticated), [authenticated, ready]);
-
   return (
     <div>
       <Loadable
-        isLoading={!readyWallets || (!selectState(userWallet) && !selectState(agentWallet))}
+        isLoading={!readyWallets || !selectState(userWallet) || !selectState(agentWallet)}
         loadComponent={
           <Atoms.Button loading={!ready || !readyWallets} disabled={loginDisabled} onClick={login}>
             Connect your wallet <Wallet size={18} />
@@ -30,28 +29,28 @@ export const ConnectWalletWithPrivyButton = () => {
             <Modal open={popoverOpen} handleOpen={open => setPopoverOpen(open)}>
               <div>
                 <Card className="bg-white rounded-xl">
-                  <div className="flex items-center gap-4 mb-4">
-                    <WalletAddress
-                      className="my-1"
-                      address={selectState(userWallet)?.address as TAddress}
-                      truncated
-                      truncatedLength={15}
-                    />
-                    <Badge className="px-3 py-2 rounded-2xl" color="green">
-                      Your wallet <WalletIcon size={15} className="ml-3" />
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-4 mb-4">
-                    <WalletAddress
-                      className="my-1"
-                      address={selectState(agentWallet)?.address as TAddress}
-                      truncated
-                      truncatedLength={15}
-                    />
-                    <Badge className="px-3 py-2 rounded-2xl" color="blue">
-                      Agent wallet 🤖
-                    </Badge>
-                  </div>
+                  {selectState(userWallet) && (
+                    <div className="flex items-center gap-4 mb-4">
+                      <WalletAddress
+                        className="my-1"
+                        address={selectState(userWallet)?.address as TAddress}
+                      />
+                      <Badge className="px-3 py-2 rounded-2xl" color="green">
+                        Your wallet <WalletIcon size={15} className="ml-3" />
+                      </Badge>
+                    </div>
+                  )}
+                  {selectState(agentWallet) && (
+                    <div className="flex items-center gap-4 mb-4">
+                      <WalletAddress
+                        className="my-1"
+                        address={selectState(agentWallet)?.address as TAddress}
+                      />
+                      <Badge className="px-3 py-2 rounded-2xl" color="blue">
+                        Agent wallet 🤖
+                      </Badge>
+                    </div>
+                  )}
                   <Button
                     className="w-full rounded-xl"
                     color="red"

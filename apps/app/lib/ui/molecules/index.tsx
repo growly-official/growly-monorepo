@@ -8,8 +8,10 @@ import TokenRiskBadge from './TokenRiskBadge/TokenRisktBadge';
 import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
 import SwapWidgetModal from './SwapWidgetModal/SwapWidgetModal';
 import SwapButton from './SwapButton/SwapButton';
+import AiChatModal from './AiChatModal/AiChatModal';
 
 export {
+  AiChatModal,
   ChainListModal,
   ChainListItem,
   ChainList,

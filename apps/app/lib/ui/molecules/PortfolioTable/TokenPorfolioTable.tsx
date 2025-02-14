@@ -34,47 +34,55 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                 <Table.ColumnHeaderCell>USD Value</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Market Price</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Total Balance</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Percentage</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {tokens.map(token => (
-                <Table.Row key={token.symbol}>
-                  <Table.Cell>
-                    <img
-                      src={token.logoURI}
-                      alt={`${token.name} logo`}
-                      className="mr-3 inline-block h-8 w-8 rounded-full"
-                    />
-                    {token.name}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <TokenRisktBadge risk={token.marketRank || 0} />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Countup end={token.usdValue} duration={4} formattingFn={formatNumberUSD} />
-                  </Table.Cell>
-                  <Table.Cell>{formatNumberUSD(token.marketPrice)}</Table.Cell>
-                  <Table.Cell>{token.balance.toFixed(Math.min(token.decimals, 5))}</Table.Cell>
-                  <Table.Cell>
-                    <div className="flex gap-2">
-                      <SwapButton
-                        token={token}
-                        supportedChains={Object.keys(multichainTokenData).map(chainName =>
-                          getChainIdByName(chainName as any)
-                        )}
+              {tokens
+                .sort((tokenA, tokenB) => (tokenA.usdValue > tokenB.usdValue ? -1 : 1))
+                .map(token => (
+                  <Table.Row key={token.symbol}>
+                    <Table.Cell>
+                      <img
+                        src={token.logoURI}
+                        alt={`${token.name} logo`}
+                        className="mr-3 inline-block h-8 w-8 rounded-full"
                       />
-                      <TooltipContainer
-                        tooltipId={`${token.chainId}-${token.name}-analyze`}
-                        tooltipContent={'Analyze'}>
-                        <Button size={'2'} color="teal">
-                          <ScanSearchIcon size={10} />
-                        </Button>
-                      </TooltipContainer>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                      {token.name}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <TokenRisktBadge risk={token.marketRank || 0} />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Countup end={token.usdValue} duration={4} formattingFn={formatNumberUSD} />
+                    </Table.Cell>
+                    <Table.Cell>{formatNumberUSD(token.marketPrice)}</Table.Cell>
+                    <Table.Cell>{token.balance.toFixed(Math.min(token.decimals, 5))}</Table.Cell>
+                    <Table.ColumnHeaderCell>
+                      <div className="text-teal-500">
+                        {((token.usdValue / totalUsdValue) * 100).toFixed(2)} %
+                      </div>
+                    </Table.ColumnHeaderCell>
+                    <Table.Cell>
+                      <div className="flex gap-2">
+                        <SwapButton
+                          token={token}
+                          supportedChains={Object.keys(multichainTokenData).map(chainName =>
+                            getChainIdByName(chainName as any)
+                          )}
+                        />
+                        <TooltipContainer
+                          tooltipId={`${token.chainId}-${token.name}-analyze`}
+                          tooltipContent={'Analyze'}>
+                          <Button size={'2'} color="teal">
+                            <ScanSearchIcon size={10} />
+                          </Button>
+                        </TooltipContainer>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
             </Table.Body>
           </Table.Root>
         </div>
