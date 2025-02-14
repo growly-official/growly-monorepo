@@ -1,4 +1,4 @@
-import { adapters, rpc } from 'chainsmith/src/index.ts';
+import { adapters } from 'chainsmith/src/index.ts';
 import { EvmTokenPlugin } from 'chainsmith/src/plugins/evm/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
@@ -15,7 +15,6 @@ export const AdapterRegistry = {
     COINMARKETCAP_API_BASE_URL,
     COINMARKETCAP_API_KEY
   ),
-  Uniswap: new adapters.UniswapSdkAdapter(rpc.alchemy(ALCHEMY_API_KEY)),
   Evmscan: new adapters.EvmscanAdapter(ETHERSCAN_BASE_URL, ETHERSCAN_API_KEY),
   DexScreener: new adapters.DexScreenerAdapter(),
 };

@@ -16,7 +16,7 @@ import { fromReadableAmount } from './utils.ts';
 import type { IMarketDataAdapter } from '../../types/adapter.d.ts';
 import { CHAIN_TO_ADDRESSES_MAP, Token, WETH9 } from '@uniswap/sdk-core';
 import { computePoolAddress, FeeAmount } from '@uniswap/v3-sdk';
-import { GetChainRpcEndpoint } from '../../rpc/index.ts';
+import { type GetChainRpcEndpoint } from '../../rpc/index.ts';
 import { getChainByName, getChainIdByName } from '../../utils/chain.util.ts';
 import { createClient, formatUnits, getContract, http } from 'viem';
 import { UniswapV3PoolAbi } from '../../data/abis/index.ts';

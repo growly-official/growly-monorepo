@@ -8,6 +8,7 @@ const ALCHEMY_CHAIN_ENDPOINT = {
   [EvmChainList.polygon.id]: alchemyRpcUrl('polygon-mainnet'),
   [EvmChainList.optimism.id]: alchemyRpcUrl('opt-mainnet'),
   [EvmChainList.baseSepolia.id]: alchemyRpcUrl('base-sepolia'),
+  [EvmChainList.arbitrum.id]: alchemyRpcUrl('arb-mainnet'),
 };
 
 export type GetChainRpcEndpoint = (chain: TBaseChain) => string;
