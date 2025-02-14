@@ -1,5 +1,4 @@
-import { ChainId, CoinKey, EVM, createConfig, getQuote, getRoutes } from '@lifi/sdk';
-import type { TClient } from '../../types/client.d.ts';
+import { createConfig, getQuote } from '@lifi/sdk';
 import type { TAddress, TChainName } from '../../types/chains.d.ts';
 import type { TTokenSymbol } from '../../types/tokens.d.ts';
 import { getChainByName } from '../../utils/chain.util.ts';
@@ -7,7 +6,7 @@ import { EvmTokenPlugin, StoragePlugin } from '../../plugins/index.ts';
 
 export class LifiAdapter {
   apiKey: string | undefined;
-  apiUrl: string = 'https://li.quest/v1';
+  apiUrl = 'https://li.quest/v1';
 
   constructor(
     apiKey: string | undefined,
@@ -46,5 +45,6 @@ export class LifiAdapter {
       toToken: toTokenMetadata.address,
       fromAmount: fromAmount.toString(),
     });
+    return quote;
   }
 }
