@@ -1,4 +1,4 @@
-# Unknown Project
+# Growly - Smart AI Portfolio
 
 Submitted to Safe Agentathon 2025.
 
