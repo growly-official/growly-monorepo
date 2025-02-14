@@ -10,7 +10,7 @@ export const character: Character = {
   settings: {
     secrets: {},
     chains: {
-      evm: ['mainnet', 'base', 'abstract', 'sonic', 'zksync', 'arbitrum'],
+      evm: ['mainnet', 'base'],
     },
   },
   system:

@@ -2,7 +2,7 @@ import { IEcosystemChainRegistry } from 'chainsmith/src/types';
 
 export const LocalEcosystemRegistry: IEcosystemChainRegistry = {
   evm: {
-    chains: ['base', 'mainnet', 'abstract', 'sonic', 'zksync'],
+    chains: ['mainnet', 'base'],
   },
   svm: {
     chains: [],
