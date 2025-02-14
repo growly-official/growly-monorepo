@@ -18,6 +18,7 @@ import {
 } from 'chainsmith/src/types';
 import { calculateEVMStreaksAndMetrics } from 'chainsmith/src/adapters';
 import { ChainsmithApiService } from '../services';
+import { buildCachePayload, getRevalidatedJsonData } from '../helpers';
 
 export const StateSubEvents = {
   [StateEvent.ActivityStats]: ThreeStageState,
@@ -180,13 +181,21 @@ export const useMagic = () => {
         onResetEvent: StateSubEvents.GetTokenPortfolio.Idle,
       },
       async () => {
-        const _tokenPortfolio = await new ChainsmithApiService().getWalletTokenPortfolio(
-          addressInput,
-          selectState(selectedNetworks)['evm'] || []
+        const cachedTokenPortfolio = await getRevalidatedJsonData(
+          `${addressInput}.tokenPortfolio`,
+          async () => {
+            const tokenPortfolio = await new ChainsmithApiService().getWalletTokenPortfolio(
+              addressInput,
+              selectState(selectedNetworks)['evm'] || []
+            );
+            return buildCachePayload(tokenPortfolio, 1000 * 60 * 60 * 5);
+          }
         );
-        setState(tokenPortfolio)(_tokenPortfolio);
-        const _tokenPortfolioStats = calculateMultichainTokenPortfolio(_tokenPortfolio);
-        setState(tokenPortfolioStats)(_tokenPortfolioStats);
+        if (cachedTokenPortfolio) {
+          setState(tokenPortfolio)(cachedTokenPortfolio);
+          const _tokenPortfolioStats = calculateMultichainTokenPortfolio(cachedTokenPortfolio);
+          setState(tokenPortfolioStats)(_tokenPortfolioStats);
+        }
       }
     );
   };
