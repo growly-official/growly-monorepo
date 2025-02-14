@@ -4,8 +4,11 @@ import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith/src/types'
 import React from 'react';
 import ChainIcon from '../ChainIcon/ChainIcon';
 import TokenRisktBadge from '../TokenRiskBadge/TokenRisktBadge';
-import { getChainByName } from 'chainsmith/src/utils';
+import { getChainByName, getChainIdByName } from 'chainsmith/src/utils';
 import Countup from 'react-countup';
+import { Button, TooltipContainer } from '../../atoms';
+import { ScanSearchIcon } from 'lucide-react';
+import SwapButton from '../SwapButton/SwapButton';
 
 type Props = {
   multichainTokenData: TMultichain<TMarketTokenList>;
@@ -31,6 +34,7 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                 <Table.ColumnHeaderCell>USD Value</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Market Price</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Total Balance</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -52,6 +56,23 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                   </Table.Cell>
                   <Table.Cell>{formatNumberUSD(token.marketPrice)}</Table.Cell>
                   <Table.Cell>{token.balance.toFixed(Math.min(token.decimals, 5))}</Table.Cell>
+                  <Table.Cell>
+                    <div className="flex gap-2">
+                      <SwapButton
+                        token={token}
+                        supportedChains={Object.keys(multichainTokenData).map(chainName =>
+                          getChainIdByName(chainName as any)
+                        )}
+                      />
+                      <TooltipContainer
+                        tooltipId={`${token.chainId}-${token.name}-analyze`}
+                        tooltipContent={'Analyze'}>
+                        <Button size={'2'} color="teal">
+                          <ScanSearchIcon size={10} />
+                        </Button>
+                      </TooltipContainer>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

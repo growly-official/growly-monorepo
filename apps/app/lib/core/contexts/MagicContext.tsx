@@ -11,6 +11,8 @@ import {
   TTokenTransferActivity,
 } from 'chainsmith/src/types';
 import { StateEventRegistry } from '../types';
+import { ConnectedWallet } from '@privy-io/react-auth';
+import { LocalEvmSupportedChains } from '../chainsmith';
 
 export enum BackgroundVariant {
   Image = 'Background Image',
@@ -69,11 +71,11 @@ export interface IMagicContext {
   stateEvents: StateEventRegistry;
   setStateEvents: SetState<StateEventRegistry>;
 
+  userWallet: UseState<ConnectedWallet | undefined>;
+  agentWallet: UseState<ConnectedWallet | undefined>;
+
   // Networks
   selectedNetworks: UseState<TMultiEcosystem<TChainName[]>>;
-
-  // Data analytics states
-  inputAddress: UseState<string>;
 
   // Special name service
   oneID: UseState<string>;
@@ -97,11 +99,12 @@ interface Props {
 
 export const MagicProvider = ({ children }: Props) => {
   const selectedNetworks = useState<TMultiEcosystem<TChainName[]>>({
-    evm: ['base', 'mainnet'],
+    evm: LocalEvmSupportedChains,
   });
   const [stateEvents, setStateEvents] = useState<StateEventRegistry>({});
 
-  const inputAddress = useState('');
+  const userWallet = useState<ConnectedWallet | undefined>(undefined);
+  const agentWallet = useState<ConnectedWallet | undefined>(undefined);
   const oneID = useState('');
 
   const appStage = useState<AppStage>(AppStage.DisplayProfile);
@@ -128,8 +131,9 @@ export const MagicProvider = ({ children }: Props) => {
         setStateEvents,
         selectedNetworks,
 
+        userWallet,
+        agentWallet,
         // Raw
-        inputAddress,
         oneID,
         tokenPortfolio,
         tokenPortfolioStats,

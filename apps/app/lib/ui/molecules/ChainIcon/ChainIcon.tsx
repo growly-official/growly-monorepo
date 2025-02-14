@@ -2,6 +2,7 @@ import { ChainsmithApiService } from '@/core';
 import { TChainMetadataListResponse, TChainName } from 'chainsmith/src/types';
 import { getChainByName } from 'chainsmith/src/utils';
 import { useState, useEffect } from 'react';
+import { Avatar } from '@radix-ui/themes';
 
 const ChainIcon = ({ chainName, size }: { chainName: TChainName; size?: number }) => {
   const [metadata, setMetadata] = useState<TChainMetadataListResponse | undefined>();
@@ -21,15 +22,16 @@ const ChainIcon = ({ chainName, size }: { chainName: TChainName; size?: number }
   }, [chainName]);
 
   return (
-    <img
-      src={metadata?.logoUrl}
-      alt={`${chainName}-logo`}
+    <Avatar
+      src={metadata?.logoUrl || ''}
+      alt={`${chainName.slice(1)}`}
       style={{
         objectFit: 'contain',
         width: size || 30,
         height: size || 30,
       }}
-      className="inline-block rounded-full"
+      fallback={chainName.slice(0, 2)}
+      className="inline-block rounded-full overflow-hidden"
     />
   );
 };

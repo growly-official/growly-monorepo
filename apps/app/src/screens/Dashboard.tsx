@@ -1,32 +1,33 @@
-import { formatNumberUSD, selectState, setState, useMagic, useMagicContext } from '@/core';
+import {
+  formatNumberUSD,
+  selectState,
+  setState,
+  useMagicContext,
+  useMagic,
+  useMagicInit,
+} from '@/core';
 import { Atoms, Molecules } from '@/ui';
 import { ThreeStageState } from '@/core';
-import { useWallets } from '@privy-io/react-auth';
-import React, { useEffect } from 'react';
+import React from 'react';
 import animationData from '../assets/animation/pink-loading.json';
 import Lottie from 'react-lottie';
 import Countup from 'react-countup';
+import { ConnectWalletWithPrivyButton } from '../components';
 
 const Dashboard: React.FC<any> = () => {
-  const { wallets } = useWallets();
+  useMagicInit();
   const {
     query: { stateCheck },
-    mutate: { letsDoSomeMagic },
   } = useMagic();
   const { tokenPortfolio, selectedNetworks } = useMagicContext();
-
-  useEffect(() => {
-    if (wallets.length > 0) {
-      // const _currentWallet = wallets[0].address;
-      letsDoSomeMagic('0x849151d7D0bF1F34b70d5caD5149D28CC2308bf1' as any);
-    }
-  }, [selectState(selectedNetworks), wallets]);
 
   return (
     <div className="py-3 px-4 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
       <div className="py-5 px-7 rounded-xl flex flex-col shadow-xl w-full h-[100vh] bg-white">
         <div className="flex justify-between items-center">
-          <Molecules.ConnectWalletWithPrivybutton />
+          <div className="flex items-center">
+            <ConnectWalletWithPrivyButton />
+          </div>
           <Molecules.SelectNetworkButton
             selectedNetworks={selectState(selectedNetworks)}
             onNetworkSelected={(ecosystem, chains) => {

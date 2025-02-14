@@ -200,10 +200,10 @@ export const useMagic = () => {
     );
   };
 
-  const letsDoSomeMagic = async (addressInput: TAddress) => {
+  const letsDoSomeMagic = async (addressInput: TAddress | undefined) => {
     try {
       const networks = Object.values(selectState(selectedNetworks)).flat();
-      if (networks.length > 0) {
+      if (networks.length > 0 && addressInput) {
         await fetchMultichainTokenPortfolio(addressInput);
         await fetchActivityStats(addressInput);
         await delayMs(1000);

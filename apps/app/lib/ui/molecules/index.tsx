@@ -1,12 +1,13 @@
 import ChainListModal from './ChainListModal/ChainListModal';
 import ChainListItem from './ChainListItem/ChainListItem';
 import ChainList from './ChainList/ChainList';
+import ChainIcon from './ChainIcon/ChainIcon';
 import WalletAddress from './WalletAddress/WalletAddress';
-import ConnectWalletWithPrivybutton from './ConnectWalletWithPrivyButton/ConnectWalletWithPrivyButton';
-import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
 import TokenPortfolioTable from './PortfolioTable/TokenPorfolioTable';
 import TokenRiskBadge from './TokenRiskBadge/TokenRisktBadge';
-import ChainIcon from './ChainIcon/ChainIcon';
+import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
+import SwapWidgetModal from './SwapWidgetModal/SwapWidgetModal';
+import SwapButton from './SwapButton/SwapButton';
 
 export {
   ChainListModal,
@@ -14,8 +15,9 @@ export {
   ChainList,
   ChainIcon,
   WalletAddress,
-  ConnectWalletWithPrivybutton,
   SelectNetworkButton,
   TokenPortfolioTable,
   TokenRiskBadge,
+  SwapWidgetModal,
+  SwapButton,
 };

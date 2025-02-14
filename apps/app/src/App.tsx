@@ -12,7 +12,7 @@ function App() {
   return (
     <Providers>
       <Theme grayColor="gray" radius="large">
-        <main className="w-full py-5 px-3 max-h-[100vh] overflow-hidden">
+        <main className="w-full py-5 px-3 max-h-[100vh] overflow-scroll">
           <AnimatedBackground />
           <div className="h-full relative flex flex-col items-center">
             <BrowserRouter>
