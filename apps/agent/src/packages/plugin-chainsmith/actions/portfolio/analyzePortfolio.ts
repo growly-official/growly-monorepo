@@ -196,24 +196,24 @@ export const analyzePortfolio: Action = {
       {
         user: '{{user1}}',
         content: {
-          text: '"Analyze portfolio of wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective.',
+          text: 'Analyze portfolio of investor with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective. Wallet address: 0x...',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Evaluating portfolio 0x6c34C667632dC1aAF04F362516e6F44D006A58fa.',
+          text: 'Evaluating portfolio.',
           action: 'ANALYZE_PORTFOLIO',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Portfolio of wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa has a great mixture allocation between stablecoins and large cap like $ETH.',
+          text: 'Portfolio of wallet 0x... has a great mixture allocation between stablecoins and large cap like $ETH.',
           content: {
             score: 70,
             summary:
-              'Portfolio of wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa has a great mixture allocation between stablecoins and large cap like $ETH.',
+              'Portfolio of wallet 0x... has a great mixture allocation between stablecoins and large cap like $ETH.',
             successActions: [
               'Swap more meme or lowcap coin but always less than 10% allocation',
               'Retain stablecoin allocation above 20%',
