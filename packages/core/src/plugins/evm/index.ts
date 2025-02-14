@@ -66,7 +66,7 @@ export class EvmChainPlugin {
       return multichainMetadata;
     } catch (error: any) {
       this.logger.error(`Failed to get chain metadata list: ${error.message}`);
-      return undefined;
+      return {};
     }
   };
 }
