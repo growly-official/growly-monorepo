@@ -5,6 +5,7 @@ import { useWallets } from '@privy-io/react-auth';
 import React, { useEffect } from 'react';
 import animationData from '../assets/animation/pink-loading.json';
 import Lottie from 'react-lottie';
+import Countup from 'react-countup';
 
 const Dashboard: React.FC<any> = () => {
   const { wallets } = useWallets();
@@ -57,7 +58,11 @@ const Dashboard: React.FC<any> = () => {
             <div className="px-5">
               <div className="mb-5">
                 <h1 className="text-3xl font-bold">
-                  {formatNumberUSD(selectState(tokenPortfolio).totalUsdValue)}
+                  <Countup
+                    end={selectState(tokenPortfolio).totalUsdValue}
+                    duration={3}
+                    formattingFn={formatNumberUSD}
+                  />
                 </h1>
               </div>
               <div className="mt-10">
