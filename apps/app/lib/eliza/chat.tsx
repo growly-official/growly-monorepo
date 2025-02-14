@@ -13,7 +13,7 @@ import { Avatar, AvatarImage } from './components/avatar';
 import CopyButton from './copyButton';
 import ChatTtsButton from './chat/chat-tts-button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './components/tooltip';
-import { useToast } from '@/core';
+import { useToast } from './useToast';
 import AIWriter from 'react-aiwriter';
 import { AudioRecorder } from './audio-recorder';
 import { Badge } from './components/badge';
@@ -254,7 +254,7 @@ export default function ChatPage({ agentId }: { agentId: UUID }) {
             className="min-h-12 resize-none rounded-md bg-card border-0 p-3 shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center p-3 pt-0">
-            {/* <Tooltip>
+            <Tooltip>
               <TooltipTrigger asChild>
                 <div>
                   <Button
@@ -280,8 +280,8 @@ export default function ChatPage({ agentId }: { agentId: UUID }) {
               <TooltipContent side="left">
                 <p>Attach file</p>
               </TooltipContent>
-            </Tooltip> */}
-            {/* <AudioRecorder agentId={agentId} onChange={(newInput: string) => setInput(newInput)} /> */}
+            </Tooltip>
+            <AudioRecorder agentId={agentId} onChange={(newInput: string) => setInput(newInput)} />
             <Button
               disabled={!input || sendMessageMutation?.isPending}
               type="submit"
