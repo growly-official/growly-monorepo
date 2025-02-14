@@ -4,10 +4,11 @@ import SwapWidgetModal from '../SwapWidgetModal/SwapWidgetModal';
 import { useState } from 'react';
 import { ToAddress } from '@lifi/widget';
 import { ButtonProps } from '@radix-ui/themes';
+import { makeid } from '@/core';
 
 type Props = {
   type: 'TRANSFER' | 'SWAP';
-  token: TMarketToken;
+  token?: TMarketToken;
   supportedChains: TChainId[];
   tooltipContent: string;
   children: React.ReactNode;
@@ -27,7 +28,7 @@ const SwapButton = ({
   const [openSwapModal, setOpenSwapModal] = useState<boolean>(false);
   return (
     <TooltipContainer
-      tooltipId={`${token.chainId}-${token.name}-swap`}
+      tooltipId={`${token?.chainId || makeid(3)}-${token?.name || makeid(3)}-swap`}
       tooltipContent={tooltipContent}>
       <Button {...buttonProps} onClick={() => setOpenSwapModal(true)} size={'2'} color="green">
         {children}

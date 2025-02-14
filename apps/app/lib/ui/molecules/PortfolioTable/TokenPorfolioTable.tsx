@@ -71,7 +71,7 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                         <SwapButton
                           type="SWAP"
                           token={token}
-                          tooltipContent="Swap"
+                          tooltipContent="Rebalance Token"
                           supportedChains={Object.keys(multichainTokenData).map(chainName =>
                             getChainIdByName(chainName as any)
                           )}>

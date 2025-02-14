@@ -4,7 +4,7 @@ import { TChainId, TMarketToken } from 'chainsmith/src/types';
 
 type Props = {
   type: 'TRANSFER' | 'SWAP';
-  token: TMarketToken;
+  token?: TMarketToken;
   supportedChains: TChainId[];
   open: boolean;
   toAddress?: ToAddress;
@@ -27,12 +27,17 @@ const SwapWidgetModal = ({ type, open, handleOpen, token, toAddress, supportedCh
     <Modal open={open} handleOpen={handleOpen}>
       <LiFiWidget
         integrator="Growly"
+        hiddenUI={['poweredBy', 'language']}
         config={{
           ...widgetConfig,
-          fromChain: token.chainId,
-          fromToken: token.symbol,
-          toChain: type === 'TRANSFER' ? token.chainId : undefined,
-          toToken: type === 'TRANSFER' ? token.symbol : undefined,
+          ...(token
+            ? {
+                fromChain: token.chainId,
+                fromToken: token.symbol,
+                toChain: type === 'TRANSFER' ? token.chainId : undefined,
+                toToken: type === 'TRANSFER' ? token.symbol : undefined,
+              }
+            : {}),
           toAddress,
           chains: {
             from: { allow: supportedChains },

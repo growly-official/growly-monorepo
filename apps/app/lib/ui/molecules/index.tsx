@@ -9,6 +9,8 @@ import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
 import SwapWidgetModal from './SwapWidgetModal/SwapWidgetModal';
 import SwapButton from './SwapButton/SwapButton';
 import AiChatModal from './AiChatModal/AiChatModal';
+import StakeKitWidgetModal from './StakeKitWidgetModal/StakeKitWidgetModal';
+import StakeKitWidgetButton from './StakeKitWidgetButton/StakeKitWidgetButton';
 
 export {
   AiChatModal,
@@ -22,4 +24,6 @@ export {
   TokenRiskBadge,
   SwapWidgetModal,
   SwapButton,
+  StakeKitWidgetModal,
+  StakeKitWidgetButton,
 };

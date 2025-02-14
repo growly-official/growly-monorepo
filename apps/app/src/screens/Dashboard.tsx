@@ -8,6 +8,7 @@ import Countup from 'react-countup';
 import { ConnectWalletWithPrivyButton } from '../components';
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { ArrowRightLeftIcon } from 'lucide-react';
 
 const Dashboard: React.FC<any> = () => {
   const {
@@ -77,6 +78,17 @@ const Dashboard: React.FC<any> = () => {
                     Send Message
                   </Atoms.Button>
                 </div>
+              </div>
+              <div className="flex gap-3">
+                <Molecules.StakeKitWidgetButton tooltipContent="Maximize profits with yield farming">
+                  👩‍🌾 Yield Farming
+                </Molecules.StakeKitWidgetButton>
+                <Molecules.SwapButton
+                  type="SWAP"
+                  tooltipContent="Cross-chain swapping tokens"
+                  supportedChains={Object.keys(selectedNetworks) as any}>
+                  <ArrowRightLeftIcon size={10} /> Rebalance Portfolio
+                </Molecules.SwapButton>
               </div>
               <div className="mt-10 overflow-scroll max-h-[700px] pb-[15rem]">
                 {Object.keys(selectState(tokenPortfolio).chainRecordsWithTokens).length > 0 ? (

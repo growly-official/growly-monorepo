@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { Theme } from '@radix-ui/themes';
+import './stakekit.css';
 import '@radix-ui/themes/styles.css';
 
 import { BrowserRouter, Route, Routes } from 'react-router';
