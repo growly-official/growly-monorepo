@@ -27,10 +27,10 @@ export interface IOnchainTokenAdapter extends IAdapter {
   listAllOwnedTokens(chain: TChainName, address: TAddress): Promise<TContractToken[]>;
 }
 
-export type ILocalSwapAdapter = IAdapter
+export type ILocalSwapAdapter = IAdapter;
 
-export type ICrosschainSwapAdapter = IAdapter
+export type ICrosschainSwapAdapter = IAdapter;
 
-export type ICrosschainTransfer = IAdapter
+export type ICrosschainTransfer = IAdapter;
 
 export type ISmartWalletAdapter = IAdapter;
