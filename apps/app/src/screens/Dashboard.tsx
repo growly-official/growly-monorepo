@@ -9,6 +9,8 @@ import { ConnectWalletWithPrivyButton } from '../components';
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { ArrowRightLeftIcon } from 'lucide-react';
+import { SKApp, lightTheme } from '@stakekit/widget';
+import '@stakekit/widget/style.css';
 
 const Dashboard: React.FC<any> = () => {
   const {
@@ -104,6 +106,8 @@ const Dashboard: React.FC<any> = () => {
               </div>
             </div>
           </Atoms.Loadable>
+
+          {/* <SKApp apiKey={import.meta.env.VITE_STAKEKIT_API_KEY} theme={lightTheme} /> */}
         </div>
       </div>
     </div>
