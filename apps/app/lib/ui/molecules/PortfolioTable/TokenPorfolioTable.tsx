@@ -1,4 +1,4 @@
-import { formatNumberUSD } from '@/core';
+import { formatNumberUSD, selectState, useMagicContext } from '@/core';
 import { Table } from '@radix-ui/themes';
 import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith/src/types';
 import React from 'react';
@@ -7,14 +7,16 @@ import TokenRisktBadge from '../TokenRiskBadge/TokenRisktBadge';
 import { getChainByName, getChainIdByName } from 'chainsmith/src/utils';
 import Countup from 'react-countup';
 import { Button, TooltipContainer } from '../../atoms';
-import { ScanSearchIcon } from 'lucide-react';
+import { ArrowRightLeftIcon, ScanSearchIcon } from 'lucide-react';
 import SwapButton from '../SwapButton/SwapButton';
+import { ChainType } from '@lifi/widget';
 
 type Props = {
   multichainTokenData: TMultichain<TMarketTokenList>;
 };
 
 const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
+  const { agentWallet } = useMagicContext();
   return (
     <React.Fragment>
       {Object.entries(multichainTokenData).map(([chainName, { tokens, totalUsdValue }]) => (
@@ -67,11 +69,14 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                     <Table.Cell>
                       <div className="flex gap-2">
                         <SwapButton
+                          type="SWAP"
                           token={token}
+                          tooltipContent="Swap"
                           supportedChains={Object.keys(multichainTokenData).map(chainName =>
                             getChainIdByName(chainName as any)
-                          )}
-                        />
+                          )}>
+                          <ArrowRightLeftIcon size={10} />
+                        </SwapButton>
                         <TooltipContainer
                           tooltipId={`${token.chainId}-${token.name}-analyze`}
                           tooltipContent={'Analyze'}>
@@ -79,6 +84,22 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                             <ScanSearchIcon size={10} />
                           </Button>
                         </TooltipContainer>
+                        <SwapButton
+                          type="TRANSFER"
+                          token={token}
+                          toAddress={{
+                            address: selectState(agentWallet)?.address || '',
+                            chainType: ChainType.EVM,
+                          }}
+                          buttonProps={{
+                            className: 'bg-purple-100',
+                          }}
+                          tooltipContent="Deposit to Agent"
+                          supportedChains={Object.keys(multichainTokenData).map(chainName =>
+                            getChainIdByName(chainName as any)
+                          )}>
+                          🤖
+                        </SwapButton>
                       </div>
                     </Table.Cell>
                   </Table.Row>

@@ -11,7 +11,6 @@ export const useMagicInit = () => {
   } = useMagic();
   const { selectedNetworks, userWallet, agentWallet } = useMagicContext();
 
-  console.log(wallets);
   useEffect(() => {
     if (wallets.length > 0) {
       const _userWallet = wallets.find(wallet => wallet.walletClientType !== 'privy');

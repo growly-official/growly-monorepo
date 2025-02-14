@@ -4,7 +4,7 @@ import '@radix-ui/themes/styles.css';
 
 import { BrowserRouter, Route, Routes } from 'react-router';
 import Providers from './Providers';
-import { Dashboard, Chat } from './screens';
+import { GettingStarted, Chat } from './screens';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import './index.css';
 
@@ -28,7 +28,7 @@ function App() {
           <div className="h-full relative flex flex-col items-center">
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/" element={<GettingStarted />} />
                 <Route path="chat/:agentId" element={<Chat />} />
               </Routes>
             </BrowserRouter>

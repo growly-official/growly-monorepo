@@ -22,15 +22,17 @@ const SelectNetworkButton = ({ selectedNetworks, onNetworkSelected }: Props) => 
   return (
     <React.Fragment>
       {countExistentialObject(selectedNetworks) > 0 ? (
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-col items-center">
           {iterateObject(selectedNetworks, (network, chains) => (
-            <Atoms.Button onClick={() => setOpenChainList(true)}>
+            <Atoms.Button className="rounded-3xl shadow-md" onClick={() => setOpenChainList(true)}>
               {network.toUpperCase()}: {chains.length} {pluralize('chain', chains.length)} selected
             </Atoms.Button>
           ))}
-          {(selectedNetworks['evm'] || []).map(chainName => (
-            <ChainIcon size={20} chainName={chainName} />
-          ))}
+          <div className="flex gap-2 justify-even mt-3">
+            {(selectedNetworks['evm'] || []).map(chainName => (
+              <ChainIcon size={20} chainName={chainName} />
+            ))}
+          </div>
         </div>
       ) : (
         <Atoms.Button onClick={() => setOpenChainList(true)}>Select your network</Atoms.Button>

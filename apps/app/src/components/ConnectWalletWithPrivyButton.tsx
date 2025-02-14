@@ -1,7 +1,5 @@
-import { Atoms } from '../../lib/ui';
+import { Atoms, Molecules } from '@/ui';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
-import { Button, Loadable, Modal } from '../../lib/ui/atoms';
-import WalletAddress from '../../lib/ui/molecules/WalletAddress/WalletAddress';
 import { useMemo } from 'react';
 import { TAddress } from 'chainsmith/src/types';
 import { Badge, Card } from '@radix-ui/themes';
@@ -17,21 +15,25 @@ export const ConnectWalletWithPrivyButton = () => {
   const loginDisabled = useMemo(() => !ready || (ready && authenticated), [authenticated, ready]);
   return (
     <div>
-      <Loadable
+      <Atoms.Loadable
         isLoading={!readyWallets || !selectState(userWallet) || !selectState(agentWallet)}
         loadComponent={
-          <Atoms.Button loading={!ready || !readyWallets} disabled={loginDisabled} onClick={login}>
+          <Atoms.Button
+            className="rounded-3xl shadow-md bg-green text-white font-bold"
+            loading={!ready || !readyWallets}
+            disabled={loginDisabled}
+            onClick={login}>
             Connect your wallet <Wallet size={18} />
           </Atoms.Button>
         }>
         {!!selectState(userWallet) && !!selectState(agentWallet) && (
           <div>
-            <Modal open={popoverOpen} handleOpen={open => setPopoverOpen(open)}>
+            <Atoms.Modal open={popoverOpen} handleOpen={open => setPopoverOpen(open)}>
               <div>
                 <Card className="bg-white rounded-xl">
                   {selectState(userWallet) && (
                     <div className="flex items-center gap-4 mb-4">
-                      <WalletAddress
+                      <Molecules.WalletAddress
                         className="my-1"
                         address={selectState(userWallet)?.address as TAddress}
                       />
@@ -42,7 +44,7 @@ export const ConnectWalletWithPrivyButton = () => {
                   )}
                   {selectState(agentWallet) && (
                     <div className="flex items-center gap-4 mb-4">
-                      <WalletAddress
+                      <Molecules.WalletAddress
                         className="my-1"
                         address={selectState(agentWallet)?.address as TAddress}
                       />
@@ -51,7 +53,7 @@ export const ConnectWalletWithPrivyButton = () => {
                       </Badge>
                     </div>
                   )}
-                  <Button
+                  <Atoms.Button
                     className="w-full rounded-xl"
                     color="red"
                     onClick={() => {
@@ -60,11 +62,11 @@ export const ConnectWalletWithPrivyButton = () => {
                       setState(agentWallet)(undefined);
                     }}>
                     👋 Disconnect wallet
-                  </Button>
+                  </Atoms.Button>
                 </Card>
               </div>
-            </Modal>
-            <WalletAddress
+            </Atoms.Modal>
+            <Molecules.WalletAddress
               onClick={() => setPopoverOpen(true)}
               truncated
               className="py-7 relative"
@@ -73,7 +75,7 @@ export const ConnectWalletWithPrivyButton = () => {
             />
           </div>
         )}
-      </Loadable>
+      </Atoms.Loadable>
     </div>
   );
 };

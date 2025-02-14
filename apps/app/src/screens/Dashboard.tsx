@@ -1,11 +1,4 @@
-import {
-  formatNumberUSD,
-  selectState,
-  setState,
-  useMagicContext,
-  useMagic,
-  useMagicInit,
-} from '@/core';
+import { formatNumberUSD, selectState, setState, useMagicContext, useMagic } from '@/core';
 import { Atoms, Molecules } from '@/ui';
 import { ThreeStageState } from '@/core';
 import React, { useState } from 'react';
@@ -15,10 +8,8 @@ import Countup from 'react-countup';
 import { ConnectWalletWithPrivyButton } from '../components';
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Button } from '../../lib/ui/atoms';
 
 const Dashboard: React.FC<any> = () => {
-  useMagicInit();
   const {
     query: { stateCheck },
   } = useMagic();
@@ -82,15 +73,22 @@ const Dashboard: React.FC<any> = () => {
                       <MagnifyingGlassIcon height="16" width="16" />
                     </TextField.Slot>
                   </TextField.Root>
-                  <Button color="green" className="rounded-2xl" size="2">
+                  <Atoms.Button color="green" className="rounded-2xl" size="2">
                     Send Message
-                  </Button>
+                  </Atoms.Button>
                 </div>
               </div>
-              <div className="mt-10 overflow-scroll max-h-[700px] pb-[100px]">
-                <Molecules.TokenPortfolioTable
-                  multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
-                />
+              <div className="mt-10 overflow-scroll max-h-[700px] pb-[15rem]">
+                {Object.keys(selectState(tokenPortfolio).chainRecordsWithTokens).length > 0 ? (
+                  <Molecules.TokenPortfolioTable
+                    multichainTokenData={selectState(tokenPortfolio).chainRecordsWithTokens}
+                  />
+                ) : (
+                  <Atoms.Empty
+                    title="No tokens found"
+                    subtitle="Send tokens to this address to manage your portfolio"
+                  />
+                )}
               </div>
             </div>
           </Atoms.Loadable>
