@@ -26,12 +26,11 @@ export class WebSearchService extends Service implements IWebSearchService {
   async search(query: string, options?: SearchOptions): Promise<SearchResponse> {
     try {
       const response = await this.tavilyClient.search(query, {
-        includeAnswer: options?.includeAnswer || true,
-        maxResults: options?.limit || 5,
-        topic: options?.type || 'news',
-        searchDepth: options?.searchDepth || 'basic',
-        includeImages: options?.includeImages || false,
-        days: options?.days || 60, // 1 months
+        includeAnswer: true,
+        maxResults: 5,
+        topic: 'news',
+        searchDepth: 'basic',
+        days: 60, // 1 months
       });
 
       return response;

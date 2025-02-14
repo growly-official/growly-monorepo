@@ -26,11 +26,11 @@ import {
   buildEvmChains,
   formatNumberSI,
   formatNumberUSD,
-} from 'chainsmith/src/utils';
-import { AdapterRegistry } from '../config/chainsmith';
-import { WebSearchService } from '../services/tavily';
-import { SearchResponse } from '../services/tavily/types';
-import { PortfolioProvider } from './portfolio';
+} from 'chainsmith/src/utils/index.ts';
+import { AdapterRegistry } from '../config/chainsmith.ts';
+import { WebSearchService } from '../services/tavily/index.ts';
+import { SearchResponse } from '../services/tavily/types.ts';
+import { PortfolioProvider } from './portfolio.ts';
 
 export class TokenProvider {
   private sdk: ChainsmithSdk;
@@ -102,56 +102,56 @@ export class TokenProvider {
   }
 
   formatTokenReport(
-    marketToken: TMarketToken<TCMCUSDPrice>,
-    tokenNews: SearchResponse,
+    symbol: string,
+    // marketToken: TMarketToken<TCMCUSDPrice>,
+    // tokenNews: SearchResponse,
     tokenPortfolio: TTokenPortfolio
   ): string {
     // Output builder
-    let output = `Token Report for symbol: ${marketToken.symbol}\n`;
+    let output = `Token Report for symbol: ${symbol}\n`;
 
-    output += '\n**Market sentiment and news:**\n';
-    output += `${tokenNews.answer}`;
+    // output += '\n**Market sentiment and news:**\n';
+    // output += `${tokenNews.answer}`;
 
-    output += '\n**Market Report**\n';
-    output += `  - Market price:          ${marketToken.marketPrice.toFixed(4)}\n`;
-    output += `  - Market cap:            ${formatNumberSI(marketToken.extra.market_cap)}\n`;
-    output += `  - Volume 24h:            ${formatNumberSI(marketToken.extra.volume_24h)}\n`;
-    output += `  - Percent change 24h:    ${marketToken.extra.percent_change_24h.toFixed(2)}%\n`;
-    output += `  - Percent change 7d:     ${marketToken.extra.percent_change_7d.toFixed(2)}%\n`;
-    output += `  - Percent change 30d:    ${marketToken.extra.percent_change_30d.toFixed(2)}%\n`;
-    output += `  - Percent change 60d:    ${marketToken.extra.percent_change_60d.toFixed(2)}%\n`;
-    output += `  - Percent change 90d:    ${marketToken.extra.percent_change_90d.toFixed(2)}%\n`;
-
+    const portfolioValue = tokenPortfolio.totalUsdValue;
     // Token distribution
     const balanceBySymbol = tokenPortfolio.aggregatedBalanceByToken;
 
-    const tokenInPortfolio = Object.values(balanceBySymbol).filter(
-      token => token.marketData.symbol === marketToken.symbol
-    )[0];
+    // Token distribution
+    const highValueTokens = Object.values(balanceBySymbol).filter(
+      token => token.totalUsdValue > 1 // exclude < 1$ assets
+    );
 
-    output += `**Market price and holding report for symbol ${tokenInPortfolio.marketData.symbol}**\n`;
-    output += `  - Holding balance:       ${formatNumberUSD(tokenInPortfolio.totalUsdValue)}\n`;
-    output += `  - Portfolio allocation:  ${((100 * tokenInPortfolio.totalUsdValue) / tokenPortfolio.totalUsdValue).toFixed(2)}%\n`;
-    output += `  - Market price:          ${tokenInPortfolio.marketData.marketPrice.toFixed(4)}\n`;
-    output += `  - Market cap:            ${formatNumberSI(tokenInPortfolio.marketData.extra.market_cap)}\n`;
-    output += `  - Volume 24h:            ${formatNumberSI(tokenInPortfolio.marketData.extra.volume_24h)}\n`;
-    output += `  - Percent change 24h:    ${tokenInPortfolio.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
-    output += `  - Percent change 7d:     ${tokenInPortfolio.marketData.extra.percent_change_7d.toFixed(2)}%\n`;
-    output += `  - Percent change 30d:    ${tokenInPortfolio.marketData.extra.percent_change_30d.toFixed(2)}%\n`;
-    output += `  - Percent change 60d:    ${tokenInPortfolio.marketData.extra.percent_change_60d.toFixed(2)}%\n`;
-    output += `  - Percent change 90d:    ${tokenInPortfolio.marketData.extra.percent_change_90d.toFixed(2)}%\n`;
+    if (highValueTokens.length === 0) {
+      output += 'No tokens found with value >1$\n';
+    } else {
+      output += `\nToken value distribution:\n`;
+      highValueTokens.forEach(token => {
+        output += `${token.marketData.symbol}\n`;
+        output += `  - Holding balance:       ${formatNumberUSD(token.totalUsdValue)}\n`;
+        output += `  - Portfolio allocation:  ${((100 * token.totalUsdValue) / portfolioValue).toFixed(2)}%\n`;
+        output += `  - Market rank:           ${token.marketData.marketRank}\n`;
+        output += `  - Market cap:            ${formatNumberSI(token.marketData.extra.market_cap)}\n`;
+        output += `  - Volume 24h:            ${formatNumberSI(token.marketData.extra.volume_24h)}\n`;
+        output += `  - Percent change 24h:    ${token.marketData.extra.percent_change_24h.toFixed(2)}%\n`;
+        output += `  - Percent change 7d:     ${token.marketData.extra.percent_change_7d.toFixed(2)}%\n`;
+        output += `  - Percent change 30d:    ${token.marketData.extra.percent_change_30d.toFixed(2)}%\n`;
+        output += `  - Percent change 60d:    ${token.marketData.extra.percent_change_60d.toFixed(2)}%\n`;
+        output += `  - Percent change 90d:    ${token.marketData.extra.percent_change_90d.toFixed(2)}%\n`;
+      });
+    }
 
     return output;
   }
 
   async getFormattedTokenReport(symbol: string): Promise<string> {
     try {
-      const marketToken = await this.fetchMarketReport(symbol);
-      const tokenNews = await this.fetchTokenNews(symbol);
+      // const marketToken = await this.fetchMarketReport(symbol);
+      // const tokenNews = await this.fetchTokenNews(symbol);
       const portfolio = await this.portfolioProvider.fetchMultichainPortfolio();
       const multichainPortfolio = aggregateMultichainTokenBalance(portfolio);
 
-      return this.formatTokenReport(marketToken, tokenNews, multichainPortfolio);
+      return this.formatTokenReport(symbol, multichainPortfolio);
     } catch (error) {
       elizaLogger.error('Error generating portfolio report:', error);
       return 'Unable to fetch portfolio information. Please try again later.';
@@ -204,8 +204,8 @@ export const evmTokenProvider: Provider = {
       const ALCHEMY_API_KEY = runtime.getSetting('ALCHEMY_API_KEY');
 
       // Get from state
-      const address = state?.address as TAddress;
-      const symbol = state?.tokenSymbol as TTokenSymbol;
+      const address = state?.walletAddress as TAddress;
+      const symbol = state?.symbol as TTokenSymbol;
 
       const chains = buildEvmChains(chainNames, alchemy(ALCHEMY_API_KEY));
       const portfolioProvider = new PortfolioProvider(runtime.cacheManager, address, chains);
@@ -222,7 +222,7 @@ export const evmTokenProvider: Provider = {
 
       return tokenProvider.getFormattedTokenReport(symbol);
     } catch (error) {
-      console.error('Error in EVM portfolio provider:', error);
+      console.error('Error in EVM token provider:', error);
       return null;
     }
   },

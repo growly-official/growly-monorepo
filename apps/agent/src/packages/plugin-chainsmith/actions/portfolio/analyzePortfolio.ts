@@ -159,7 +159,6 @@ export const analyzePortfolio: Action = {
         })
       ).object as PortfolioAnalysis;
 
-      elizaLogger.info('portfolioAnalysis', portfolioAnalysis);
       // Validate transfer content
       if (!portfolioAnalysis.score || !portfolioAnalysis.summary) {
         elizaLogger.error('Invalid output for ANALYZE_PORTFOLIO action.');
@@ -197,7 +196,7 @@ export const analyzePortfolio: Action = {
       {
         user: '{{user1}}',
         content: {
-          text: 'Evaluate portfolio 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with ',
+          text: '"Analyze portfolio of wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective.',
         },
       },
       {

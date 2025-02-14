@@ -1,10 +1,9 @@
 import { Character, ModelProviderName } from '@elizaos/core';
 import chainsmithPlugin from './packages/plugin-chainsmith/index.ts';
-import consoleKitPlugin from './packages/plugin-console-kit/index.ts';
 
 export const character: Character = {
   name: 'Growly',
-  plugins: [chainsmithPlugin, consoleKitPlugin],
+  plugins: [chainsmithPlugin],
   clients: [],
   modelProvider: ModelProviderName.OLLAMA,
   settings: {
@@ -45,57 +44,92 @@ export const character: Character = {
   //   'When Growly asks for the parameters, he also provides the user with a clear explanation of what the parameters mean.',
   // ],
   messageExamples: [
+    // Portfolio
     [
       {
-        user: '{{user1}}',
+        user: '{{user}}',
         content: {
-          text: 'Evaluate my wallet portfolio 0x6c34C667632dC1aAF04F362516e6F44D006A58fa',
+          text: 'Analyze portfolio of wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective.',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Let me check multichain portfolio with wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa.',
+          text: 'Evaluating portfolio 0x6c34C667632dC1aAF04F362516e6F44D006A58fa.',
           action: 'ANALYZE_PORTFOLIO',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Wallet Address: 0x6c34C667632dC1aAF04F362516e6F44D006A58fa\nTotal Value: $1,219.21\nToken value distribution:\nETH\n- Holding balance:       $592.12\n- Portfolio allocation:  48.57%\n...',
+          text: 'Your portfolio has a great mixture allocation between stablecoins and large cap like $ETH.',
+          content: {
+            score: 70,
+            summary:
+              'Your portfolio has a great mixture allocation between stablecoins and large cap like $ETH.',
+            successActions: [
+              'Swap more meme or lowcap coin but always less than 10% allocation',
+              'Retain stablecoin allocation above 20%',
+            ],
+          },
+        },
+      },
+    ],
+    // Token
+    [
+      {
+        user: '{{user}}',
+        content: {
+          text: 'Recommend action for $ETH for wallet address 0x.. with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective',
+        },
+      },
+      {
+        user: '{{agent}}',
+        content: {
+          text: 'Analyzing $ETH for 0x...',
+          action: 'RECOMMEND_TOKEN_ACTION',
+        },
+      },
+      {
+        user: '{{agent}}',
+        content: {
+          text: '$ETH has been under-performed for the last 1 weeks and is on it way to be down more. Consider lower the allocation.',
+          content: {
+            action: 'REBALANCE',
+            reason:
+              '$ETH has been under-performed for the last 1 weeks and is on it way to be down more. Consider lower the allocation.',
+            actionPayload: {
+              tokenIn: 'USDC',
+              amountOut: 100,
+            },
+          },
         },
       },
     ],
     [
       {
-        user: '{{user1}}',
+        user: '{{user}}',
         content: {
-          text: 'Evaluate my wallet portfolio',
+          text: 'Recommend action for $MORPHO for wallet address 0x.. with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Please provide me your the wallet address',
-        },
-      },
-      {
-        user: '{{user1}}',
-        content: {
-          text: '0x6c34C667632dC1aAF04F362516e6F44D006A58fa',
+          text: 'Analyzing $MORPHO for 0x...',
+          action: 'RECOMMEND_TOKEN_ACTION',
         },
       },
       {
         user: '{{agent}}',
         content: {
-          text: 'Let me check multichain portfolio with wallet 0x6c34C667632dC1aAF04F362516e6F44D006A58fa.',
-          action: 'ANALYZE_PORTFOLIO',
-        },
-      },
-      {
-        user: '{{agent}}',
-        content: {
-          text: 'Wallet Address: 0x6c34C667632dC1aAF04F362516e6F44D006A58fa\nTotal Value: $1,219.21\nToken value distribution:\nETH\n- Holding balance:       $592.12\n- Portfolio allocation:  48.57%\n...',
+          text: '$MORPHO has been under-performed for the last 1 weeks, but still have strong long-term potential. Keep holding it.',
+          content: {
+            action: 'HOLD',
+            reason:
+              '$MORPHO has been under-performed for the last 1 weeks, but still have strong long-term potential. Keep holding it.',
+            actionPayload: null,
+          },
         },
       },
     ],
