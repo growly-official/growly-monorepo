@@ -1,12 +1,10 @@
 # Growly - Smart AI Portfolio
 
-Submitted to Safe Agentathon 2025.
+![Growly  Coverpage v2](https://github.com/user-attachments/assets/bce6918c-ab5d-4929-94d7-25dd397fff1e)
 
-Targetted Tracks:
+Introducing Growly – Your Personalized Crypto Portfolio Management Assistant
 
-- DeFAI
-- Treasury
-- AI Toolings
+Growly is an AI-powered portfolio manager designed to optimize crypto investments based on your risk profile and portfolio data. Unlike traditional financial services, Growly builds long-term memory to understand your investment behavior better, ensuring tailored strategies that evolve with your needs.
 
 ## Architecture
 
@@ -16,7 +14,17 @@ Targetted Tracks:
 - core: chainsmith core
 - agent: agent code built on top of ElizaOS framework
 
-## Feature List
+## ✨ Key Features of Growly:
+
+Personalized AI Assistant: 
+- Analyzes historical portfolio data (across multiple wallets), P/L, and user risk appetite surveys to refine investment strategies.
+- Intelligent Portfolio Management: Dynamically allocates, rebalances, and optimizes assets across staking, lending, and liquidity pools.
+- Secure & Controlled Execution: Trades are only executed with the portfolio owner's approval via Safe’s threshold signatures.
+- Data-Enriched Decision Making: Powered by pre-aggregated data from the Chainsmith SDK, Growly efficiently handles Web3-specific data lookups for smarter investment decisions.
+- Seamless Integration: Well-integrated with the ElizaOS architecture for enhanced AI performance.
+
+Future Enhancements: 
+-Weekly portfolio performance reports delivered via email or Telegram for better tracking and insights.
 
 ## Local Setup
 
