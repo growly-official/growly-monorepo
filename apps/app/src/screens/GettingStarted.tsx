@@ -6,10 +6,10 @@ import { Molecules } from '@/ui';
 
 const GettingStarted = () => {
   useMagicInit();
-  const { userWallet, selectedNetworks } = useMagicContext();
+  const { agentWallet, selectedNetworks } = useMagicContext();
   return (
     <React.Fragment>
-      {!selectState(userWallet) ? (
+      {!selectState(agentWallet) ? (
         <div className="py-3 px-4 rounded-[50px] flex flex-col max-w-[500px] shadow-xl w-full bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
           <div className="py-7 px-7 rounded-[50px] flex flex-col justify-center items-center gap-4 shadow-xl w-full min-h-[400px] bg-white">
             <img src="/logo.png" width={100} className="rounded-[20px] shadow-xl" />
