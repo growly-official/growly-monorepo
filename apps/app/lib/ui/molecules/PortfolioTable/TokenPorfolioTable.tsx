@@ -6,9 +6,9 @@ import ChainIcon from '../ChainIcon/ChainIcon';
 import TokenRisktBadge from '../TokenRiskBadge/TokenRisktBadge';
 import { getChainByName, getChainIdByName } from 'chainsmith/src/utils';
 import Countup from 'react-countup';
-import { Button, TooltipContainer } from '../../atoms';
 import { ArrowRightLeftIcon, ScanSearchIcon } from 'lucide-react';
 import SwapButton from '../SwapButton/SwapButton';
+import AnalyzeTokenButton from '../AnalyzeTokenButton/AnlyzeTokenButton';
 import { ChainType } from '@lifi/widget';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
-  const { agentWallet } = useMagicContext();
+  const { agentWallet, userWallet } = useMagicContext();
   return (
     <React.Fragment>
       {Object.entries(multichainTokenData).map(([chainName, { tokens, totalUsdValue }]) => (
@@ -77,13 +77,17 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                           )}>
                           <ArrowRightLeftIcon size={10} />
                         </SwapButton>
-                        <TooltipContainer
-                          tooltipId={`${token.chainId}-${token.name}-analyze`}
-                          tooltipContent={'Analyze'}>
-                          <Button size={'2'} color="teal">
-                            <ScanSearchIcon size={10} />
-                          </Button>
-                        </TooltipContainer>
+
+                        <AnalyzeTokenButton
+                          token={token}
+                          tooltipContent="Analyze Token"
+                          // TODO: Fix hardcode
+                          reviewFrequency="WEEKLY"
+                          riskLevel="AGGRESSIVE"
+                          investmentObjective="GROWTH"
+                          walletAddress={selectState(userWallet)?.address}>
+                          <ScanSearchIcon size={10} />
+                        </AnalyzeTokenButton>
                         <SwapButton
                           type="TRANSFER"
                           token={token}

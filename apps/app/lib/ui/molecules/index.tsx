@@ -8,6 +8,8 @@ import TokenRiskBadge from './TokenRiskBadge/TokenRisktBadge';
 import SelectNetworkButton from './SelectNetworkButton/SelectNetworkButton';
 import SwapWidgetModal from './SwapWidgetModal/SwapWidgetModal';
 import SwapButton from './SwapButton/SwapButton';
+import AnalyzeTokenModal from './AnalyzeTokenModal/AnalyzeTokenModal';
+import AnalyzeTokenButton from './AnalyzeTokenButton/AnlyzeTokenButton';
 import AiChatModal from './AiChatModal/AiChatModal';
 import StakeKitWidgetModal from './StakeKitWidgetModal/StakeKitWidgetModal';
 import StakeKitWidgetButton from './StakeKitWidgetButton/StakeKitWidgetButton';
@@ -28,4 +30,6 @@ export {
   StakeKitWidgetModal,
   StakeKitWidgetButton,
   InvestmentObjectiveModal,
+  AnalyzeTokenModal,
+  AnalyzeTokenButton,
 };
