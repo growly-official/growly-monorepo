@@ -1,9 +1,8 @@
-import { TMarketToken } from 'chainsmith/src/types';
 import { Button, TooltipContainer } from '../../atoms';
 
 import { useState } from 'react';
 import { ButtonProps } from '@radix-ui/themes';
-import { makeid } from '@/core';
+import { agentService, makeid } from '@/core';
 import AnalyzeTokenModal from '../AnalyzeTokenModal/AnalyzeTokenModal';
 
 type Props = {
@@ -37,8 +36,12 @@ const AnalyzeTokenButton = ({
       tooltipContent={tooltipContent}>
       <Button
         {...buttonProps}
-        onClick={() => {
-          console.log(prompt);
+        onClick={async () => {
+          const response = await agentService.sendMessage(
+            'f8b5e449-301b-0502-bc57-9569416b1046',
+            prompt
+          );
+          console.log(response);
           setOpenAnalyzeModal(true);
         }}
         size={'2'}

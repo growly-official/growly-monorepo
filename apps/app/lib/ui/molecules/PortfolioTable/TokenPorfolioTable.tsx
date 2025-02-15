@@ -82,9 +82,9 @@ const TokenPortfolioTable = ({ multichainTokenData }: Props) => {
                           token={token}
                           tooltipContent="Analyze Token"
                           // TODO: Fix hardcode
-                          reviewFrequency="WEEKLY"
-                          riskLevel="AGGRESSIVE"
-                          investmentObjective="GROWTH"
+                          reviewFrequency={'DAILY'}
+                          riskLevel={'AGGRESSIVE'}
+                          investmentObjective={'GROWTH'}
                           walletAddress={selectState(userWallet)?.address}>
                           <ScanSearchIcon size={10} />
                         </AnalyzeTokenButton>
