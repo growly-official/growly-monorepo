@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "paths": {
+      "@/utils": ["./lib/utils/index.ts"],
+      "@/eliza": ["./lib/eliza/index.ts"],
+      "@/ui": ["./lib/ui/index.ts"],
+      "@/core": ["./lib/core/index.ts"]
+    },
+
+    "baseUrl": "./",
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "emitDeclarationOnly": true,
+    "composite": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src", "lib"],
+  "exclude": [".storybook/", "node_modules/"]
+}

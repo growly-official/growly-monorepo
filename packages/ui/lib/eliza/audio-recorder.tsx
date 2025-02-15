@@ -186,6 +186,7 @@ export const AudioRecorder = ({ className, timerClassName, agentId, onChange }: 
   // Effect to update the timer every second
   useEffect(() => {
     if (isRecording) {
+      // @ts-ignore
       timerTimeout = setTimeout(() => {
         setTimer(timer + 1);
       }, 1000);

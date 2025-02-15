@@ -9,7 +9,6 @@ import { ConnectWalletWithPrivyButton } from '../components';
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { ArrowRightLeftIcon } from 'lucide-react';
-import { SKApp, lightTheme } from '@stakekit/widget';
 import '@stakekit/widget/style.css';
 
 const Dashboard: React.FC<any> = () => {

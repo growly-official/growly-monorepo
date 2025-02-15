@@ -1,6 +1,6 @@
 import Dashboard from './Dashboard';
 import React from 'react';
-import { selectState, setState, useMagicContext, useMagicInit } from '@/core';
+import { selectState, setState, useMagicContext, useMagicInit } from 'growly-ui';
 import { ConnectWalletWithPrivyButton } from '../components';
 import { Molecules } from '@/ui';
 

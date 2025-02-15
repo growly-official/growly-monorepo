@@ -34,7 +34,7 @@ export class EvmChainPlugin {
   logger = new Logger({ name: 'EvmChainPlugin' });
 
   getChainMetadata = async (chainId: TChainId): Promise<TChainMetadataListResponse | undefined> => {
-    const metadata = Files.ChainList.ChainMetadataMap[chainId];
+    const metadata = (Files.ChainList.ChainMetadataMap as any)[chainId.toString()];
     const res = await axios.get(
       `https://raw.githubusercontent.com/ethereum-lists/chains/refs/heads/master/_data/icons/${metadata.icon}.json`
     );
@@ -58,7 +58,7 @@ export class EvmChainPlugin {
       const data: TChainMetadataListResponse[] = await Promise.all(
         responses.map(response => response.json())
       );
-      const multichainMetadata: TMultichain<TChainMetadataListResponse> = {};
+      const multichainMetadata: Partial<Record<number, TChainMetadataListResponse>> = {};
       const chainMetadataList = data.flat();
       for (const chainMetadata of chainMetadataList) {
         multichainMetadata[chainMetadata.chainId] = chainMetadata;
