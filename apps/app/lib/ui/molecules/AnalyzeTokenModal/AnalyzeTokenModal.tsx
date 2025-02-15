@@ -15,9 +15,9 @@ const AnalyzeTokenModal = ({
   open,
   handleOpen,
   token,
-  reviewFrequency,
-  riskLevel,
-  investmentObjective,
+  // reviewFrequency,
+  // riskLevel,
+  // investmentObjective,
   walletAddress,
 }: Props) => {
   return (
