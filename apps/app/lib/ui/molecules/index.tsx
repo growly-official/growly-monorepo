@@ -11,6 +11,7 @@ import SwapButton from './SwapButton/SwapButton';
 import AiChatModal from './AiChatModal/AiChatModal';
 import StakeKitWidgetModal from './StakeKitWidgetModal/StakeKitWidgetModal';
 import StakeKitWidgetButton from './StakeKitWidgetButton/StakeKitWidgetButton';
+import InvestmentObjectiveModal from './InvestmentObjectiveModal/InvestmentObjectiveModal';
 
 export {
   AiChatModal,
@@ -26,4 +27,5 @@ export {
   SwapButton,
   StakeKitWidgetModal,
   StakeKitWidgetButton,
+  InvestmentObjectiveModal,
 };

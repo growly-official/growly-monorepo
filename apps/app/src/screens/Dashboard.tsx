@@ -18,6 +18,7 @@ const Dashboard: React.FC<any> = () => {
   } = useMagic();
   const { tokenPortfolio, selectedNetworks } = useMagicContext();
   const [chatWithAiMessage, setChatWithAiMessage] = useState('');
+  const [openObjectiveModal, setOpenObjectiveModal] = useState(true);
 
   return (
     <div className="py-3 px-4 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
@@ -106,7 +107,10 @@ const Dashboard: React.FC<any> = () => {
               </div>
             </div>
           </Atoms.Loadable>
-
+          <Molecules.InvestmentObjectiveModal
+            open={openObjectiveModal}
+            handleOpen={open => setOpenObjectiveModal(open)}
+          />
           {/* <SKApp apiKey={import.meta.env.VITE_STAKEKIT_API_KEY} theme={lightTheme} /> */}
         </div>
       </div>
