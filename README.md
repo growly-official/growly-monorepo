@@ -3,6 +3,8 @@
 - Link to Frontend App demo: https://youtu.be/ay0k7SLdziw
 - Link to Agent demo: https://www.youtube.com/watch?v=qSdMv3Tuprk
 
+## Description
+
 ![Growly  Coverpage v2](https://github.com/user-attachments/assets/bce6918c-ab5d-4929-94d7-25dd397fff1e)
 
 Introducing Growly – Your Personalized Crypto Portfolio Management Assistant
