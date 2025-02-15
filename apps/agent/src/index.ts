@@ -14,6 +14,7 @@ import { startChat } from './chat/index.ts';
 import { initializeClients } from './clients/index.ts';
 import { getTokenForProvider, loadCharacters, parseArguments } from './config/index.ts';
 import { initializeDatabase } from './database/index.ts';
+import chainsmithPlugin from './packages/plugin-chainsmith/index.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,9 +37,9 @@ export function createAgent(character: Character, db: any, cache: any, token: st
     modelProvider: character.modelProvider,
     evaluators: [],
     character,
-    plugins: [bootstrapPlugin, nodePlugin].filter(Boolean),
+    plugins: [bootstrapPlugin, nodePlugin, chainsmithPlugin].filter(Boolean),
     providers: [],
-    actions: [],
+    actions: chainsmithPlugin.actions,
     services: [],
     managers: [],
     cacheManager: cache,

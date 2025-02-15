@@ -1,11 +1,10 @@
 import { Character, ModelProviderName } from '@elizaos/core';
-import chainsmithPlugin from './packages/plugin-chainsmith/index.ts';
 
 export const character: Character = {
   name: 'Growly',
-  plugins: [chainsmithPlugin],
+  plugins: [],
   clients: [],
-  modelProvider: ModelProviderName.OLLAMA,
+  modelProvider: ModelProviderName.OPENAI,
   settings: {
     secrets: {},
     chains: {
@@ -49,7 +48,7 @@ export const character: Character = {
       {
         user: '{{user1}}',
         content: {
-          text: 'Analyze portfolio of investor with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective. Wallet address: 0x...',
+          text: 'ANALYZE PORTFOLIO of investor with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective. Wallet address: 0xad...fs',
         },
       },
       {
@@ -59,28 +58,13 @@ export const character: Character = {
           action: 'ANALYZE_PORTFOLIO',
         },
       },
-      {
-        user: '{{agent}}',
-        content: {
-          text: 'Portfolio of wallet 0x... has a great mixture allocation between stablecoins and large cap like $ETH.',
-          content: {
-            score: 70,
-            summary:
-              'Portfolio of wallet 0x... has a great mixture allocation between stablecoins and large cap like $ETH.',
-            successActions: [
-              'Swap more meme or lowcap coin but always less than 10% allocation',
-              'Retain stablecoin allocation above 20%',
-            ],
-          },
-        },
-      },
     ],
     // Token
     [
       {
         user: '{{user}}',
         content: {
-          text: 'Recommend action for TOKEN $ETH for wallet address 0x.. with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective',
+          text: 'RECOMMEND ACTION for TOKEN $ETH for wallet address 0x.. with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective',
         },
       },
       {
@@ -90,27 +74,12 @@ export const character: Character = {
           action: 'RECOMMEND_TOKEN_ACTION',
         },
       },
-      {
-        user: '{{agent}}',
-        content: {
-          text: '$ETH has been under-performed for the last 1 weeks and is on it way to be down more. Consider lower the allocation.',
-          content: {
-            action: 'REBALANCE',
-            reason:
-              '$ETH has been under-performed for the last 1 weeks and is on it way to be down more. Consider lower the allocation.',
-            actionPayload: {
-              tokenIn: 'USDC',
-              amountOut: 100,
-            },
-          },
-        },
-      },
     ],
     [
       {
         user: '{{user}}',
         content: {
-          text: 'Recommend action for TOKEN $MORPHO for wallet address 0x.. with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective',
+          text: 'RECOMMEND ACTION for TOKEN $MORPHO for wallet address 0x.. with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective',
         },
       },
       {
@@ -118,18 +87,6 @@ export const character: Character = {
         content: {
           text: 'Analyzing $MORPHO for 0x...',
           action: 'RECOMMEND_TOKEN_ACTION',
-        },
-      },
-      {
-        user: '{{agent}}',
-        content: {
-          text: '$MORPHO has been under-performed for the last 1 weeks, but still have strong long-term potential. Keep holding it.',
-          content: {
-            action: 'HOLD',
-            reason:
-              '$MORPHO has been under-performed for the last 1 weeks, but still have strong long-term potential. Keep holding it.',
-            actionPayload: null,
-          },
         },
       },
     ],

@@ -196,7 +196,7 @@ export const analyzePortfolio: Action = {
       {
         user: '{{user1}}',
         content: {
-          text: 'Analyze portfolio of investor with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective. Wallet address: 0x...',
+          text: 'ANALYZE PORTFOLIO of investor with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective. Wallet address: 0x...',
         },
       },
       {

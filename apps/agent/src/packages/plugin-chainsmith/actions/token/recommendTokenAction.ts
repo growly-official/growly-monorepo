@@ -212,7 +212,7 @@ export const recommendTokenAction: Action = {
       {
         user: '{{user}}',
         content: {
-          text: 'Recommend action for TOKEN $ETH for wallet address 0x6c34C667632dC1aAF04F362516e6F44D006A58fa',
+          text: 'RECOMMEND ACTION for TOKEN $ETH for wallet address 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective',
         },
       },
       {
@@ -242,7 +242,7 @@ export const recommendTokenAction: Action = {
       {
         user: '{{user}}',
         content: {
-          text: 'Recommend action for TOKEN $MORPHO for wallet address 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY portfolio check frequency, AGGRESSIVE risk, and GROWTH investment objective',
+          text: 'RECOMMEND ACTION for TOKEN $MORPHO for wallet address 0x6c34C667632dC1aAF04F362516e6F44D006A58fa with WEEKLY check frequency, AGGRESSIVE risk, and GROWTH investment objective',
         },
       },
       {
