@@ -1,0 +1,27 @@
+services:
+  growly-agent:
+    # platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ['bun', 'start:agent']
+    image: growly-agent
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    restart: always
+#   ollama:
+#     image: ollama/ollama:latest
+#     restart: unless-stopped
+#     ports:
+#       - 11434:11434
+#     volumes:
+#       - ollama_storage:/root/.ollama
+
+# volumes:
+#   ollama_storage:
