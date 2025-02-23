@@ -1,12 +1,11 @@
 import Dashboard from './Dashboard';
 import React from 'react';
-import { selectState, setState, useMagicContext, useMagicInit } from '@/core';
+import { selectState, useMagicContext, useMagicInit } from '@/core';
 import { ConnectWalletWithPrivyButton } from '../components';
-import { Molecules } from '@/ui';
 
 const GettingStarted = () => {
   useMagicInit();
-  const { agentWallet, selectedNetworks } = useMagicContext();
+  const { agentWallet } = useMagicContext();
   return (
     <React.Fragment>
       {!selectState(agentWallet) ? (
@@ -16,7 +15,7 @@ const GettingStarted = () => {
             <h1 className="font-bold text-2xl mt-5 mb-1">Growly</h1>
             <p className="mb-4 text-center">Manage your onchain portfolio smarter with AI!</p>
             <ConnectWalletWithPrivyButton />
-            <Molecules.SelectNetworkButton
+            {/* <Molecules.SelectNetworkButton
               selectedNetworks={selectState(selectedNetworks)}
               onNetworkSelected={(ecosystem, chains) => {
                 setState(selectedNetworks)({
@@ -24,7 +23,7 @@ const GettingStarted = () => {
                   [ecosystem]: chains,
                 });
               }}
-            />
+            /> */}
           </div>
         </div>
       ) : (

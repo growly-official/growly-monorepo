@@ -1,4 +1,4 @@
-import { TChainId, TMarketToken } from 'chainsmith/src/types';
+import { TChainId, TMarketToken } from 'chainsmith-sdk/src/types';
 import { Button, TooltipContainer } from '../../atoms';
 import SwapWidgetModal from '../SwapWidgetModal/SwapWidgetModal';
 import { useState } from 'react';

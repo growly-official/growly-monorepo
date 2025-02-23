@@ -1,6 +1,6 @@
 import { ChainsmithApiService } from '@/core';
-import { TChainMetadataListResponse, TChainName } from 'chainsmith/src/types';
-import { getChainByName } from 'chainsmith/src/utils';
+import { TChainMetadataListResponse, TChainName } from 'chainsmith-sdk/src/types';
+import { getChainByName } from 'chainsmith-sdk/src/utils';
 import { useState, useEffect } from 'react';
 import { Avatar } from '@radix-ui/themes';
 

@@ -8,11 +8,11 @@ import {
   IEcosystemChainRegistry,
   TMultichain,
   TChainName,
-} from 'chainsmith/src/types';
+} from 'chainsmith-sdk/src/types';
 import { Card, Separator, TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { EcosystemRegistry } from 'chainsmith/src';
-import { getChainByName } from 'chainsmith/src/utils';
+import { EcosystemRegistry } from 'chainsmith-sdk/src';
+import { getChainByName } from 'chainsmith-sdk/src/utils';
 
 type Props = {
   searchQuery: {

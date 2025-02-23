@@ -1,9 +1,8 @@
-// import 'reflect-metadata';
+import 'reflect-metadata';
 
 import { DirectClient } from '@elizaos/client-direct';
 import { AgentRuntime, elizaLogger, settings, stringToUuid, type Character } from '@elizaos/core';
 import { bootstrapPlugin } from '@elizaos/plugin-bootstrap';
-import { createNodePlugin } from '@elizaos/plugin-node';
 import fs from 'fs';
 import net from 'net';
 import path from 'path';
@@ -24,12 +23,8 @@ export const wait = (minTime = 1000, maxTime = 3000) => {
   return new Promise(resolve => setTimeout(resolve, waitTime));
 };
 
-let nodePlugin: any | undefined;
-
 export function createAgent(character: Character, db: any, cache: any, token: string) {
   elizaLogger.success(elizaLogger.successesTitle, 'Creating runtime for character', character.name);
-
-  nodePlugin ??= createNodePlugin();
 
   return new AgentRuntime({
     databaseAdapter: db,
@@ -37,7 +32,7 @@ export function createAgent(character: Character, db: any, cache: any, token: st
     modelProvider: character.modelProvider,
     evaluators: [],
     character,
-    plugins: [bootstrapPlugin, nodePlugin, chainsmithPlugin].filter(Boolean),
+    plugins: [bootstrapPlugin, chainsmithPlugin].filter(Boolean),
     providers: [],
     actions: chainsmithPlugin.actions,
     services: [],

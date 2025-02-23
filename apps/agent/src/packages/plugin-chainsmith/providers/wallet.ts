@@ -13,10 +13,10 @@ import type { Address, PrivateKeyAccount } from 'viem';
 import { formatUnits } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
-import { alchemy } from 'chainsmith/src/rpc';
-import { TChain, TChainName, TClient, TWalletClient } from 'chainsmith/src/types';
-import { buildEvmChains, getChainByName } from 'chainsmith/src/utils';
-import { createClient, createWalletClient } from 'chainsmith/src/wrapper';
+import { alchemy } from 'chainsmith-sdk/src/rpc';
+import { TChain, TChainName, TClient, TWalletClient } from 'chainsmith-sdk/src/types';
+import { buildEvmChains, getChainByName } from 'chainsmith-sdk/src/utils';
+import { createClient, createWalletClient } from 'chainsmith-sdk/src/wrapper';
 
 export class WalletProvider {
   private cache: NodeCache;

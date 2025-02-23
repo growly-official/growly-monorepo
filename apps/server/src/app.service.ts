@@ -6,7 +6,7 @@ import {
   TChainId,
   TTokenPortfolio,
   TTokenTransferActivity,
-} from 'chainsmith/src/types/index.ts';
+} from 'chainsmith-sdk/src/types/index.ts';
 import { AdapterRegistry, initChainsmithSdk } from './config/index.ts';
 
 @Injectable()

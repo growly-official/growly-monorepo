@@ -9,9 +9,9 @@ import {
 import NodeCache from 'node-cache';
 import * as path from 'node:path';
 
-import type { TCMCUSDPrice } from 'chainsmith/src/adapters/coinmarketcap/types.d.ts';
-import { ChainsmithSdk } from 'chainsmith/src/index.ts';
-import { alchemy } from 'chainsmith/src/rpc/index.ts';
+import type { TCMCUSDPrice } from 'chainsmith-sdk/src/adapters/coinmarketcap/types.d.ts';
+import { ChainsmithSdk } from 'chainsmith-sdk/src/index.ts';
+import { alchemy } from 'chainsmith-sdk/src/rpc/index.ts';
 import {
   TAddress,
   TChain,
@@ -20,13 +20,13 @@ import {
   TMarketToken,
   TTokenPortfolio,
   TTokenSymbol,
-} from 'chainsmith/src/types/index.ts';
+} from 'chainsmith-sdk/src/types/index.ts';
 import {
   aggregateMultichainTokenBalance,
   buildEvmChains,
   formatNumberSI,
   formatNumberUSD,
-} from 'chainsmith/src/utils/index.ts';
+} from 'chainsmith-sdk/src/utils/index.ts';
 import { AdapterRegistry } from '../config/chainsmith.ts';
 import { WebSearchService } from '../services/tavily/index.ts';
 import { SearchResponse } from '../services/tavily/types.ts';

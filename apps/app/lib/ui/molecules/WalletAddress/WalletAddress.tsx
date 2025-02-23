@@ -1,4 +1,4 @@
-import { TAddress } from 'chainsmith/src/types';
+import { TAddress } from 'chainsmith-sdk/src/types';
 import { Avatar, Button } from '../../atoms';
 import { ButtonProps } from '@radix-ui/themes';
 import { ChevronDownIcon } from 'lucide-react';

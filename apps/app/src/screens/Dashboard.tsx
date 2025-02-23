@@ -1,4 +1,11 @@
-import { formatNumberUSD, selectState, setState, useMagicContext, useMagic } from '@/core';
+import {
+  formatNumberUSD,
+  selectState,
+  setState,
+  useMagicContext,
+  useMagic,
+  getJsonCacheData,
+} from '@/core';
 import { Atoms, Molecules } from '@/ui';
 import { ThreeStageState } from '@/core';
 import React, { useState } from 'react';
@@ -9,8 +16,6 @@ import { ConnectWalletWithPrivyButton } from '../components';
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { ArrowRightLeftIcon } from 'lucide-react';
-// import { SKApp, lightTheme } from '@stakekit/widget';
-// import '@stakekit/widget/style.css';
 
 const Dashboard: React.FC<any> = () => {
   const {
@@ -18,7 +23,9 @@ const Dashboard: React.FC<any> = () => {
   } = useMagic();
   const { tokenPortfolio, selectedNetworks } = useMagicContext();
   const [chatWithAiMessage, setChatWithAiMessage] = useState('');
-  const [openObjectiveModal, setOpenObjectiveModal] = useState(true);
+  const [openObjectiveModal, setOpenObjectiveModal] = useState(
+    !getJsonCacheData('investmentObjectives')
+  );
 
   return (
     <div className="py-3 px-4 rounded-xl flex flex-col max-w-[80rem] shadow-xl w-full h-[100vh] bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg">
@@ -111,7 +118,6 @@ const Dashboard: React.FC<any> = () => {
             open={openObjectiveModal}
             handleOpen={open => setOpenObjectiveModal(open)}
           />
-          {/* <SKApp apiKey={import.meta.env.VITE_STAKEKIT_API_KEY} theme={lightTheme} /> */}
         </div>
       </div>
     </div>

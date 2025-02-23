@@ -1,7 +1,7 @@
 import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
 import { Avatar } from '@radix-ui/themes';
-import { TAddress } from 'chainsmith/src/types';
+import { TAddress } from 'chainsmith-sdk/src/types';
 
 type Props = {
   address: TAddress;

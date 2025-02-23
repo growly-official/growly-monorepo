@@ -6,7 +6,7 @@ import {
   TMultichain,
   TTokenPortfolio,
   TTokenTransferActivity,
-} from 'chainsmith/src/types';
+} from 'chainsmith-sdk/src/types';
 
 const BACKEND_SERVER_URL = `http://localhost:${import.meta.env.VITE_SERVER_PORT}`;
 

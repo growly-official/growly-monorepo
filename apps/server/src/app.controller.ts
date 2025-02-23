@@ -5,9 +5,9 @@ import type {
   TChainMetadataListResponse,
   TChainName,
   TMultichain,
-} from 'chainsmith/src/types/chains.d.ts';
-import type { TTokenPortfolio } from 'chainsmith/src/types/stats.d.ts';
-import { TTokenTransferActivity } from 'chainsmith/src/types/tokens';
+} from 'chainsmith-sdk/src/types/chains.d.ts';
+import type { TTokenPortfolio } from 'chainsmith-sdk/src/types/stats.d.ts';
+import { TTokenTransferActivity } from 'chainsmith-sdk/src/types/tokens';
 
 @Controller()
 export class AppController {

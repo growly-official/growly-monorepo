@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TooltipContainer } from '../../atoms';
-// import { StakeKitWidgetModal } from '..';
+import { StakeKitWidgetModal } from '..';
 import { ButtonProps } from '@radix-ui/themes';
 
 const StakeKitWidgetButton = ({
@@ -18,7 +18,7 @@ const StakeKitWidgetButton = ({
       <Button {...buttonProps} onClick={() => setOpenModal(true)} size={'2'} color="yellow">
         {children}
       </Button>
-      {/* <StakeKitWidgetModal open={openModal} handleOpen={open => setOpenModal(open)} /> */}
+      <StakeKitWidgetModal open={openModal} handleOpen={open => setOpenModal(open)} />
     </TooltipContainer>
   );
 };

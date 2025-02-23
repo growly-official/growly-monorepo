@@ -1,6 +1,6 @@
 import { LiFiWidget, ToAddress, WidgetConfig } from '@lifi/widget';
 import { Modal } from '../../atoms';
-import { TChainId, TMarketToken } from 'chainsmith/src/types';
+import { TChainId, TMarketToken } from 'chainsmith-sdk/src/types';
 
 type Props = {
   type: 'TRANSFER' | 'SWAP';

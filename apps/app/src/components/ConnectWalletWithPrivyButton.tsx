@@ -1,7 +1,7 @@
 import { Atoms, Molecules } from '@/ui';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { useMemo } from 'react';
-import { TAddress } from 'chainsmith/src/types';
+import { TAddress } from 'chainsmith-sdk/src/types';
 import { Badge, Card } from '@radix-ui/themes';
 import { useState } from 'react';
 import { Wallet, WalletIcon } from 'lucide-react';

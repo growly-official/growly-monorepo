@@ -9,10 +9,10 @@ import {
   TTokenPortfolio,
   TTokenPortfolioStats,
   TTokenTransferActivity,
-} from 'chainsmith/src/types';
+} from 'chainsmith-sdk/src/types';
 import { StateEventRegistry } from '../types';
 import { ConnectedWallet } from '@privy-io/react-auth';
-import { LocalEvmSupportedChains } from '../chainsmith';
+import { BackgroundChains, CurrentNativeChain } from '../chainsmith';
 
 export enum BackgroundVariant {
   Image = 'Background Image',
@@ -76,6 +76,7 @@ export interface IMagicContext {
 
   // Networks
   selectedNetworks: UseState<TMultiEcosystem<TChainName[]>>;
+  currentNativeChain: UseState<TChainName>;
 
   // Special name service
   oneID: UseState<string>;
@@ -98,8 +99,9 @@ interface Props {
 }
 
 export const MagicProvider = ({ children }: Props) => {
+  const currentNativeChain = useState<TChainName>(CurrentNativeChain);
   const selectedNetworks = useState<TMultiEcosystem<TChainName[]>>({
-    evm: LocalEvmSupportedChains,
+    evm: BackgroundChains,
   });
   const [stateEvents, setStateEvents] = useState<StateEventRegistry>({});
 
@@ -130,6 +132,7 @@ export const MagicProvider = ({ children }: Props) => {
         stateEvents,
         setStateEvents,
         selectedNetworks,
+        currentNativeChain,
 
         userWallet,
         agentWallet,

@@ -16,8 +16,8 @@ export const useMagicInit = () => {
       const _userWallet = wallets.find(wallet => wallet.walletClientType !== 'privy');
       if (_userWallet) {
         setState(userWallet)(_userWallet);
-        // letsDoSomeMagic(_userWallet.address as any);
-        letsDoSomeMagic('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' as any);
+        letsDoSomeMagic(_userWallet.address as any);
+        // letsDoSomeMagic('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' as any);
         const embeddedWallet = wallets.find(wallet => wallet.walletClientType === 'privy');
         if (embeddedWallet) setState(agentWallet)(embeddedWallet);
       }

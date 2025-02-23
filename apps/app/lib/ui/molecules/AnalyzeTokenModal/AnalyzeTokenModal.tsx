@@ -1,4 +1,4 @@
-import { TMarketToken } from 'chainsmith/src/types';
+import { TMarketToken } from 'chainsmith-sdk/src/types';
 import { Modal } from '../../atoms';
 
 type Props = {
@@ -15,9 +15,9 @@ const AnalyzeTokenModal = ({
   open,
   handleOpen,
   token,
-  reviewFrequency,
-  riskLevel,
-  investmentObjective,
+  // reviewFrequency,
+  // riskLevel,
+  // investmentObjective,
   walletAddress,
 }: Props) => {
   return (

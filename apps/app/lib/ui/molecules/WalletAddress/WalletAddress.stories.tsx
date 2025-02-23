@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import WalletAddress from './WalletAddress';
-import { Wallets } from 'chainsmith/src/data';
+import { Wallets } from 'chainsmith-sdk/src/data';
 
 const meta: Meta<typeof WalletAddress> = {
   component: WalletAddress,

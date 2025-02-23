@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Button, Modal } from '../../atoms';
-import { EcosystemRegistry, Ecosystems } from 'chainsmith/src';
+import { EcosystemRegistry, Ecosystems } from 'chainsmith-sdk/src';
 import { CircleCheck } from 'lucide-react';
 import { Atoms } from '../..';
 import ChainList from '../ChainList/ChainList';
-import { TMultichain, TChainEcosystem, TChainName } from 'chainsmith/src/types';
+import { TMultichain, TChainEcosystem, TChainName } from 'chainsmith-sdk/src/types';
 import clsx from 'clsx';
-import { countExistentialObject, filterObject } from 'chainsmith/src/utils';
+import { countExistentialObject, filterObject } from 'chainsmith-sdk/src/utils';
 import { LocalEcosystemRegistry, mustBeBoolean } from '@/core';
 
 type Props = {

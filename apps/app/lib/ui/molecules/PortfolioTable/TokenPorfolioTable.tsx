@@ -1,10 +1,10 @@
 import { formatNumberUSD, selectState, useMagicContext } from '@/core';
 import { Table } from '@radix-ui/themes';
-import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith/src/types';
+import { TMultichain, TMarketTokenList, TChainName } from 'chainsmith-sdk/src/types';
 import React from 'react';
 import ChainIcon from '../ChainIcon/ChainIcon';
 import TokenRisktBadge from '../TokenRiskBadge/TokenRisktBadge';
-import { getChainByName, getChainIdByName } from 'chainsmith/src/utils';
+import { getChainByName, getChainIdByName } from 'chainsmith-sdk/src/utils';
 import Countup from 'react-countup';
 import { ArrowRightLeftIcon, ScanSearchIcon } from 'lucide-react';
 import SwapButton from '../SwapButton/SwapButton';

@@ -1,0 +1,28 @@
+services:
+  agent:
+    platform: linux/amd64
+    command: ['bun', 'start:agent']
+    image: growly-agent
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    ports:
+      - '3005:3005'
+    restart: always
+
+  server:
+    platform: linux/amd64
+    command: ['bun', 'start:server']
+    image: growly-agent
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    restart: always

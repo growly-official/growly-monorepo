@@ -1,4 +1,4 @@
-import { TAddress } from 'chainsmith/src/types';
+import { TAddress } from 'chainsmith-sdk/src/types';
 import { sepolia } from 'viem/chains';
 import { createWalletClient, custom } from 'viem';
 import { createSmartAccountClient } from 'permissionless';

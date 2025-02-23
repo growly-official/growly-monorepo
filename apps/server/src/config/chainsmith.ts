@@ -1,8 +1,8 @@
-import { rpc, adapters, ChainsmithSdk } from 'chainsmith/src/index.ts';
-import { EvmTokenPlugin } from 'chainsmith/src/plugins/evm/index.ts';
-import { alchemy } from 'chainsmith/src/rpc/index.ts';
-import { TChainName } from 'chainsmith/src/types/index.ts';
-import { buildEvmChains } from 'chainsmith/src/utils/index.ts';
+import { rpc, adapters, ChainsmithSdk } from 'chainsmith-sdk/src/index.ts';
+import { EvmTokenPlugin } from 'chainsmith-sdk/src/plugins/evm/index.ts';
+import { alchemy } from 'chainsmith-sdk/src/rpc/index.ts';
+import { TChainName } from 'chainsmith-sdk/src/types/index.ts';
+import { buildEvmChains } from 'chainsmith-sdk/src/utils/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
 

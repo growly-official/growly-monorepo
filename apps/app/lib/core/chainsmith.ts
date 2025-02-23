@@ -1,16 +1,12 @@
-import { IEcosystemChainRegistry, TChainName } from 'chainsmith/src/types';
+import { IEcosystemChainRegistry, TChainName } from 'chainsmith-sdk/src/types';
 
-export const LocalEvmSupportedChains: TChainName[] = [
-  'mainnet',
-  'base',
-  'optimism',
-  'arbitrum',
-  // 'sonic',
-  // 'gnosis',
-];
+export const BackgroundChains: TChainName[] = ['mainnet', 'base', 'optimism', 'arbitrum'];
+
+export const CurrentNativeChain: TChainName = 'sonic';
+
 export const LocalEcosystemRegistry: IEcosystemChainRegistry = {
   evm: {
-    chains: LocalEvmSupportedChains,
+    chains: BackgroundChains,
   },
   svm: {
     chains: [],

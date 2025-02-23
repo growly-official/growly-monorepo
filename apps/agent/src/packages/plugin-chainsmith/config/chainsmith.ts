@@ -1,5 +1,5 @@
-import { adapters } from 'chainsmith/src/index.ts';
-import { EvmTokenPlugin } from 'chainsmith/src/plugins/evm/index.ts';
+import { adapters } from 'chainsmith-sdk/src/index.ts';
+import { EvmTokenPlugin } from 'chainsmith-sdk/src/plugins/evm/index.ts';
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || '';
 

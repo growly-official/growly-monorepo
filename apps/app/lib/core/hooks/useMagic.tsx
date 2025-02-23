@@ -1,4 +1,4 @@
-import { calculateGasInETH, calculateMultichainTokenPortfolio } from 'chainsmith/src/utils';
+import { calculateGasInETH, calculateMultichainTokenPortfolio } from 'chainsmith-sdk/src/utils';
 import { toast } from 'react-toastify';
 import { delayMs, selectState, setState } from '../utils';
 import {
@@ -15,8 +15,8 @@ import {
   TChainName,
   TChainStats,
   TMultichain,
-} from 'chainsmith/src/types';
-import { calculateEVMStreaksAndMetrics } from 'chainsmith/src/adapters';
+} from 'chainsmith-sdk/src/types';
+import { calculateEVMStreaksAndMetrics } from 'chainsmith-sdk/src/adapters';
 import { ChainsmithApiService } from '../services';
 import { buildCachePayload, getRevalidatedJsonData } from '../helpers';
 
